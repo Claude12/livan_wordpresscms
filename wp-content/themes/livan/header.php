@@ -49,7 +49,15 @@
 							)
 						);
 						?>
+						<div>
+							<h2>for mobile only</h2>
+						</div>
 					</nav>
+
+				</div>
+
+				<div>
+					<h2>for desktop only</h2>
 				</div>
 			</div>
 		</header>
