@@ -1,28 +1,27 @@
-@use 'abstracts/variables';
-@use 'abstracts/functions';
-@use 'abstracts/mixins';
+@use "abstracts/variables";
+@use "abstracts/functions";
+@use "abstracts/mixins";
 
-@use 'base/reset';
-@use 'base/typography';
-@use 'base/colors';
-@use 'base/global';
+@use "base/reset";
+@use "base/typography";
+@use "base/colors";
+@use "base/global";
 
-@use 'components/buttons';
-@use 'components/cards';
-@use 'components/forms';
+@use "components/buttons";
+@use "components/cards";
+@use "components/forms";
 
-@use 'layout/grid';
-@use 'layout/header';
-@use 'layout/footer';
-@use 'layout/sidebar';
+@use "layout/grid";
+@use "layout/header";
+@use "layout/footer";
+@use "layout/sidebar";
 
-@use 'pages/home';
-@use 'pages/about';
-@use 'pages/contact';
+@use "pages/home";
+@use "pages/about";
+@use "pages/contact";
 
-@use 'utilities/spacing';
-@use 'utilities/visibility';
-@use 'utilities/z-index';
+@use "utilities/spacing";
+@use "utilities/visibility";
+@use "utilities/z-index";
 
-@use 'vendors/normalize';
-@use 'vendors/slick';
+@use "vendors/splide";

@@ -1,3 +1,6 @@
-@function px-to-rem($px, $base-font-size: 16px) {
-    @return #{$px / $base-font-size}rem;
+// Convert pixels to rem units
+@use "sass:math";
+
+@function rem($pixels, $base: 16px) {
+  @return #{math.div($pixels, $base)}rem;
 }

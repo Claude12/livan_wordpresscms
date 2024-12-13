@@ -1,41 +1,56 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
 // Import Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@200;600;700&display=swap");
 
 // Typography Styles
 body {
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
 }
 
 h1 {
-    font-size: 2.5rem;
+  font-size: rem(56px);
+  color: $blue-primary;
+
+  @include breakpoint(md) {
+    font-size: rem(120px);
+  }
 }
 
 h2 {
-    font-size: 2rem;
+  font-size: rem(26px);
 }
 
 h3 {
-    font-size: 1.75rem;
+  font-size: 1.75rem;
 }
 
 h4 {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 h5 {
-    font-size: 1.25rem;
+  font-size: 1.25rem;
 }
 
 h6 {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 strong {
-    font-weight: 700; // Use Lato Bold for emphasis
+  font-weight: 700; // Use Lato Bold for emphasis
 }
