@@ -1,0 +1,42 @@
+// Blue (Primary)
+$blue-primary: #1e90ff; // rgb(30, 144, 255)
+
+// Orange (Accent)
+$orange-accent: #ff7f50; // rgb(255, 127, 80)
+
+// Gray (Neutral)
+$gray-neutral: #4b4b4b; // rgb(75, 75, 75)
+
+// Light Gray (Subtle)
+$gray-light: #d3d3d3; // rgb(211, 211, 211)
+
+// Black (Bold and Sleek)
+$black-bold: #1a1a1a; // rgb(26, 26, 26)
+
+// White (Clean and Minimal)
+$white-clean: #ffffff; // rgb(255, 255, 255)
+
+// Color Classes
+.color-blue-primary {
+  color: $blue-primary;
+}
+
+.color-orange-accent {
+  color: $orange-accent;
+}
+
+.color-gray-neutral {
+  color: $gray-neutral;
+}
+
+.color-gray-light {
+  color: $gray-light;
+}
+
+.color-black-bold {
+  color: $black-bold;
+}
+
+.color-white-clean {
+  color: $white-clean;
+}

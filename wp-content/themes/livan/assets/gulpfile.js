@@ -7,7 +7,9 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const webpack = require('webpack-stream');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const browserSync = require('browser-sync').create();
 
+// CSS task
 const css = () => {
   return gulp
     .src('scss/**/*.scss')
@@ -15,9 +17,11 @@ const css = () => {
     .pipe(sass({ errLogToConsole: true }))
     .pipe(postcss([autoprefixer, cssnano]))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('../dist/css/'));
+    .pipe(gulp.dest('../dist/css/'))
+    .pipe(browserSync.stream());
 };
 
+// JS task
 const js = () => {
   return gulp
     .src('js/main.js')
@@ -30,18 +34,25 @@ const js = () => {
       webpack({
         mode: 'production',
         devtool: 'source-map',
-        plugins: [
-          new ESLintPlugin()
-        ],
+        plugins: [new ESLintPlugin()],
       })
     )
-    .pipe(gulp.dest('../dist/js/'));
+    .pipe(gulp.dest('../dist/js/'))
+    .pipe(browserSync.stream());
 };
 
+// Watch task
 const watchFiles = () => {
+  browserSync.init({
+    proxy: 'http://localhost/livan_wordpresscms/', // Replace with your local site URL
+    open: false, // Prevent the browser from automatically opening
+  });
+
   gulp.watch('scss/**/*.scss', css);
-  gulp.watch('js/**/*.js', js);
+  gulp.watch('js/**/*.js', js).on('change', browserSync.reload); // Reload for JS changes
+  gulp.watch('../**/*.php').on('change', browserSync.reload); // Reload for PHP changes
 };
 
-exports.watch = gulp.parallel(watchFiles, css, js);
+// Exports
+exports.watch = gulp.series(gulp.parallel(css, js), watchFiles);
 exports.build = gulp.parallel(css, js);

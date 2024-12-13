@@ -1,0 +1,15 @@
+@use "functions" as *;
+
+// Spacer Variables
+$spacer-4: rem(4px);
+$spacer-8: rem(8px);
+$spacer-16: rem(16px);
+$spacer-24: rem(24px);
+$spacer-32: rem(32px);
+$spacer-48: rem(48px);
+$spacer-64: rem(64px);
+
+$mobile-gutter: 20px;
+$desktop-gutter: 118px;
+
+$transition: 0.3s ease-in-out;
