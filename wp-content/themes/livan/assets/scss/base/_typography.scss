@@ -25,6 +25,8 @@ h6 {
 h1 {
   font-size: rem(56px);
   color: $blue-primary;
+  margin-top: $spacer-64;
+  padding: $spacer-64;
 
   @include breakpoint(md) {
     font-size: rem(120px);
