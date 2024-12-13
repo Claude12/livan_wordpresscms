@@ -45,6 +45,7 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+*.mp3
 
 # Wordpress
 wp-content/*
