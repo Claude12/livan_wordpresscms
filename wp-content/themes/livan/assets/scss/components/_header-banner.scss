@@ -1,0 +1,88 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.header-banner {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  overflow: hidden;
+  z-index: 9;
+  margin-top: -118px;
+
+  &__image {
+    &::before {
+      content: ""; /* Required to use the pseudo-element */
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+      z-index: 1;
+      opacity: 0; /* Start as invisible */
+      animation: fadeIn 1.5s ease 1.4s forwards; /* 0.5s fade-in after a 3s delay */
+    }
+
+    img {
+      width: 100%;
+      height: 800px;
+      object-fit: cover;
+      object-position: top;
+      animation: slideIn 1.5s ease-in-out forwards;
+    }
+  }
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-in-out forwards;
+    animation-delay: 1s;
+    max-width: 800px;
+    width: 100%;
+    z-index: 2;
+
+    h1 {
+      font-size: rem(52px);
+      font-weight: 700;
+      color: $white-clean;
+
+      @include min-breakpoint(md) {
+        font-size: rem(92px);
+      }
+    }
+
+    p {
+      font-size: rem(28px);
+      margin: 0;
+      color: $orange-accent;
+      letter-spacing: rem(2px);
+
+      @include min-breakpoint(md) {
+        letter-spacing: rem(6px);
+        font-size: rem(32px);
+      }
+    }
+  }
+
+  &__cta {
+    position: absolute;
+    bottom: -100px; /* Initially hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: all 1.5s ease-in-out;
+    z-index: 3;
+    font-size: 16px;
+    padding: 24px 32px;
+
+    @include min-breakpoint(md) {
+      padding: 24px 64px;
+    }
+  }
+}

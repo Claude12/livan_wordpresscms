@@ -1,0 +1,87 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+// Variables for buttons (optional, centralized in _variables.scss)
+$btn-font-size: 16px;
+$btn-border-radius: 50px;
+$btn-padding: rem(14px) rem(32px);
+$btn-primary-color: $white-clean;
+$btn-primary-bg: $orange-accent;
+$btn-primary-border: $orange-accent;
+$btn-secondary-color: $white-clean;
+$btn-secondary-bg: transparent;
+$btn-secondary-border: $orange-accent;
+
+// Base button styles
+.button {
+  display: inline-block;
+  font-size: $btn-font-size;
+  font-weight: 600;
+  padding: $btn-padding;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: $btn-border-radius;
+  cursor: pointer;
+  transition: $transition;
+  min-width: rem(100px);
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+  }
+
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Primary button variant
+.button--primary {
+  background-color: $btn-primary-bg;
+  color: $btn-primary-color;
+  border-color: $btn-primary-border;
+
+  &:hover {
+    
+  }
+
+  &:active {
+   
+  }
+}
+
+// Secondary button variant
+.button--secondary {
+  background-color: $btn-secondary-bg;
+  color: $btn-secondary-color;
+  border-color: $btn-secondary-border;
+
+  &:hover {
+    
+  }
+
+  &:active {
+    
+  }
+}
+
+// Outlined button variant
+.button--outline {
+  background-color: transparent;
+  color: $btn-primary-bg;
+  border-color: $btn-primary-border;
+
+  &:hover {
+    background-color: $btn-primary-bg;
+    color: $btn-primary-color;
+  }
+}

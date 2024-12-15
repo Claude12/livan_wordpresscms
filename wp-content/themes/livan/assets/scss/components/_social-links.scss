@@ -1,0 +1,10 @@
+@use "abstracts/variables" as *;
+
+ul.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacer-24;
+  text-align: center;
+  padding: 0;
+}

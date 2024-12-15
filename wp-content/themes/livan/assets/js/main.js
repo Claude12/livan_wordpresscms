@@ -1,11 +1,13 @@
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
-import showMoreLink from './show-more';
+import headerNav from './header';
+import headerBanner from './header-banner';
 import onPodcast from './podcast';
 
 jQuery(() => {
-  showMoreLink();
+  headerNav();
+  headerBanner();
   onPodcast();
   // ... any other imports and calls
 });

@@ -10,6 +10,8 @@
 @use "components/buttons";
 @use "components/cards";
 @use "components/forms";
+@use "components/social-links";
+@use "components/header-banner";
 
 @use "layout/grid";
 @use "layout/header";
@@ -22,6 +24,6 @@
 
 @use "utilities/spacing";
 @use "utilities/visibility";
-@use "utilities/z-index";
+@use "utilities/animations";
 
 @use "vendors/splide";
