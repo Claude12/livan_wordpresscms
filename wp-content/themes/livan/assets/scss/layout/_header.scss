@@ -1,10 +1,17 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
 .header {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  position: relative;
   z-index: 10;
-  background-color: #912105;
+  background-color: rgb(25, 31, 40, 0.7);
+  padding-top: $spacer-24;
+  padding-bottom: $spacer-24;
 
   &__container {
     padding: 0 30px;
@@ -15,41 +22,69 @@
     justify-content: space-between;
     min-height: 70px;
   }
+
+  &__logo {
+    a {
+      color: $white-clean;
+      font-size: rem(30px);
+      display: flex;
+      gap: $spacer-16;
+    }
+  }
+
+  &__menu-cta.d-mobile-only {
+    position: absolute;
+    bottom: $spacer-64;
+    left: 0;
+    right: 0;
+  }
 }
 
 .menu__icon {
   display: none;
 }
-.menu__list > li {
-  position: relative;
-  margin-left: 20px;
-}
-.menu__link {
-  color: #fff;
-  font-size: 18px;
-}
-.menu__sub-list {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #000;
-  padding: 15px;
-  min-width: 200px;
-}
-.menu__sub-list li {
-  margin-bottom: 10px;
-}
-.menu__sub-list li:last-child {
-  margin-bottom: 0px;
-}
-.menu__sub-link {
-  color: #fff;
-}
-.menu__sub-link:hover {
-  text-decoration: underline;
-}
+
 .menu__arrow {
   display: none;
+}
+
+.menu__body {
+  .menu {
+    display: grid;
+    gap: $spacer-48;
+    padding: 0;
+    text-align: center;
+
+    @include min-breakpoint(md) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    li {
+      list-style: none;
+
+      a {
+        color: $white-clean;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: $transition;
+        font-size: rem(32px);
+
+        @include min-breakpoint(md) {
+          font-size: rem(16px);
+        }
+
+        &:hover {
+          color: $orange-accent;
+        }
+      }
+
+      &.current-menu-item a {
+        color: $orange-accent;
+      }
+    }
+  }
 }
 /*-------------------------*/
 body._pc .menu__list > li:hover .menu__sub-list {
@@ -106,6 +141,10 @@ body._touch .menu__list > li._active .menu__arrow {
 }
 
 @media (max-width: 767px) {
+  .header {
+    padding-top: $spacer-8;
+    padding-bottom: $spacer-8;
+  }
   .menu__icon {
     z-index: 5;
     display: block;
@@ -158,7 +197,7 @@ body._touch .menu__list > li._active .menu__arrow {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    padding: 100px 30px 30px 30px;
+    padding: 200px $mobile-gutter $mobile-gutter;
     transition: left 0.3s ease 0s;
     /* for scroll on menu */
     overflow: auto;

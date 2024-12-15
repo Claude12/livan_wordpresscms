@@ -17,20 +17,16 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.header__title,
+.menu__body ul li a {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 h1 {
   font-size: rem(56px);
-  color: $blue-primary;
-  margin-top: $spacer-64;
-  padding: $spacer-4;
-
-  @include breakpoint(md) {
-    font-size: rem(60px);
-  }
 }
 
 h2 {
@@ -55,4 +51,11 @@ h6 {
 
 strong {
   font-weight: 700; // Use Lato Bold for emphasis
+}
+
+// Links
+a,
+p {
+  text-decoration: none;
+  font-size: rem(16px);
 }

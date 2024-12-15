@@ -27,7 +27,7 @@ $breakpoints: (
  *   // Styles for large screens (min-width: 992px)
  * }
  */
-@mixin breakpoint($point) {
+@mixin min-breakpoint($point) {
   @if $point == xs {
     @media (min-width: 320px) {
       @content;
