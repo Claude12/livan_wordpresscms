@@ -52,6 +52,7 @@
       font-weight: 700;
       color: $white-clean;
       text-shadow: $text-shadow;
+      line-height: 1.2;
 
       @include min-breakpoint(md) {
         font-size: rem(92px);
