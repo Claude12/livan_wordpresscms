@@ -53,6 +53,23 @@ function headerNav() {
     });
   }
 
+  // Disable scrolling when menu is active
+  function toggleBodyScroll(lock) {
+    if (lock) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = ''; // Re-enable scroll
+    }
+  }
+
+  // Detect menu open state
+  if (iconMenu && menuBody) {
+    iconMenu.addEventListener('click', function () {
+      const isMenuOpen = menuBody.classList.contains('_active');
+      toggleBodyScroll(isMenuOpen);
+    });
+  }
+
   // scroll on click
   const menuLinks = document.querySelectorAll('.menu__link[data-goto]');
   if (menuLinks.length > 0) {

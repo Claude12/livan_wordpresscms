@@ -28,6 +28,7 @@
       color: $white-clean;
       font-size: rem(30px);
       display: flex;
+      align-items: center;
       gap: $spacer-16;
     }
   }
@@ -196,7 +197,7 @@ body._touch .menu__list > li._active .menu__arrow {
     left: -100%;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.93);
     padding: 200px $mobile-gutter $mobile-gutter;
     transition: left 0.3s ease 0s;
     /* for scroll on menu */

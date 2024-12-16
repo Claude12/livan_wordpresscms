@@ -1,0 +1,23 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: $spacer-32;
+  margin-bottom: $spacer-32;
+
+  svg {
+    fill: $orange-accent;
+    height: 26px;
+    width: 100%;
+
+    @include min-breakpoint(md) {
+      height: 32px;
+    }
+  }
+}

@@ -19,7 +19,7 @@ function headerBanner() {
     // Display the CTA button with a slide-up animation after other animations
     setTimeout(function () {
         $('.header-banner__cta').css({
-            bottom: '170px', // Slide it into view
+            bottom: '180px', // Slide it into view
             opacity: 1, // Make it visible
         });
     }, 2000); // Delay to sync with other animations
