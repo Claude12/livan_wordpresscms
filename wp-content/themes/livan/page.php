@@ -16,16 +16,25 @@ get_header();
 ?>
 
 <main id="primary" class="site-main">
-	<section class="header-banner">
-		<div class="header-banner__image">
-			<img src="<?php echo get_template_directory_uri(); ?>/images/banner.jpg" alt="Header Banner Image">
-		</div>
-		<div class="header-banner__content">
-			<h1>Innovative Digital Solutions</h1>
-			<p>Web & Software Development</p>
-		</div>
-		<a class="button button--primary header-banner__cta">Get Started</a>
-	</section>
+	
+	<?php
+	while (have_posts()):
+		the_post();
+
+		// ACF - Flexible Content fields.
+		$sections = get_field('content_sections');
+
+		if ($sections):
+			foreach ($sections as $section):
+
+				$template = str_replace('_', '-', $section['acf_fc_layout']);
+				set_query_var('section', $section);
+				get_template_part('inc/blocks/' . $template);
+			endforeach;
+		endif;
+
+	endwhile; // End of the loop.
+	?>
 </main><!-- #main -->
 
 <?php
