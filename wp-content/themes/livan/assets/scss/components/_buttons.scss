@@ -7,11 +7,11 @@ $btn-font-size: 16px;
 $btn-border-radius: 50px;
 $btn-padding: rem(14px) rem(32px);
 $btn-primary-color: $white-clean;
-$btn-primary-bg: $orange-accent;
-$btn-primary-border: $orange-accent;
+$btn-primary-bg: $color-primary;
+$btn-primary-border: $color-primary;
 $btn-secondary-color: $white-clean;
 $btn-secondary-bg: transparent;
-$btn-secondary-border: $orange-accent;
+$btn-secondary-border: $color-primary;
 
 // Base button styles
 .button {

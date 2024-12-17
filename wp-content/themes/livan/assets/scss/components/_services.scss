@@ -19,15 +19,30 @@
     text-align: center;
 
     &-image {
-      width: rem(150px);
-      height: rem(150px);
+      width: rem(120px);
+      height: rem(120px);
       object-fit: cover;
       border-radius: 50%;
-      margin: 0 auto $spacer-16;
+      margin: 0 auto;
+    }
+
+    &-title {
+      margin-top: $spacer-16;
+      margin-bottom: $spacer-8;
+      color: $black-bold;
     }
 
     &-description {
       color: $gray-neutral;
+    }
+
+    &-link {
+      transition: $transition;
+
+      &:hover {
+        transform: translateY(-6px);
+        opacity: 0.9;
+      }
     }
   }
 }

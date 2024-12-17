@@ -4,17 +4,13 @@
 @use "base/colors" as *;
 
 .separator {
-  display: flex;
-  align-items: center;
+  display: grid;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-top: $spacer-32;
-  margin-bottom: $spacer-32;
+  margin: $spacer-32 auto;
 
   svg {
-    fill: $orange-accent;
+    fill: $color-primary;
     height: 26px;
-    width: 100%;
 
     @include min-breakpoint(md) {
       height: 32px;

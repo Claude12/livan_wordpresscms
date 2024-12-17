@@ -35,7 +35,7 @@ $socials = get_field('socials', 'option');
 			<div class="header__container">
 				<div class="header__logo">
 					<a href="<?php echo esc_url(home_url('/')); ?>">
-						<?php if ($nav_cta): ?>
+						<?php if ($site_logo): ?>
 							<img src="<?php echo esc_url($site_logo['url']); ?>" alt="<?php bloginfo('name'); ?>"
 								class="header__logo-image">
 						<?php endif; ?>
@@ -64,8 +64,8 @@ $socials = get_field('socials', 'option');
 										<li>
 											<a href="https://wa.me/<?php echo esc_attr($socials['whatsapp']); ?>"
 												target="_blank" rel="noopener noreferrer">
-												<img src="<?php echo get_template_directory_uri(); ?>/images/icons/whatsapp.svg"
-													width="40" height="40" alt="WhatsApp">
+												<img style="padding: 6px;" src="<?php echo get_template_directory_uri(); ?>/images/icons/whatsapp.svg"
+													width="54" height="54" alt="WhatsApp">
 											</a>
 										</li>
 									<?php endif; ?>
