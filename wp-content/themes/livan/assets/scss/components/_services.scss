@@ -39,7 +39,8 @@
     &-link {
       transition: $transition;
 
-      &:hover {
+      &:hover,
+      &:focus {
         transform: translateY(-6px);
         opacity: 0.9;
       }

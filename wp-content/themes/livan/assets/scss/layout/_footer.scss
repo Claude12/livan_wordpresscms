@@ -51,6 +51,13 @@
         li a {
           color: $white-clean;
           font-size: rem(15px);
+          transition: $transition;
+
+          &:hover,
+          &:focus {
+            text-decoration: underline;
+            opacity: 0.9;
+          }
         }
       }
     }

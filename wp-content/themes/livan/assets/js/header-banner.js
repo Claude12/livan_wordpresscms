@@ -2,27 +2,23 @@ function headerBanner() {
     // Fade-in animation for the content
     $('.header-banner__content').hide().fadeIn(2000);
 
-    // Slide-in animation for the image
-    $('.header-banner__image img').css('transform', 'translateY(-100%)').animate(
-        { transform: 'translateY(0)' },
-        {
-            duration: 1500,
-            easing: 'easeInOutQuad',
-            step: function (now, fx) {
-                if (fx.prop === 'transform') {
-                    $(this).css('transform', `translateY(${now}%)`);
-                }
-            },
-        }
-    );
-
     // Display the CTA button with a slide-up animation after other animations
     setTimeout(function () {
         $('.header-banner__cta').css({
-            bottom: '180px', // Slide it into view
+            bottom: '200px', // Slide it into view
             opacity: 1, // Make it visible
         });
     }, 2000); // Delay to sync with other animations
+
+    $("#scrollButton").on("click", function (e) {
+        e.preventDefault(); // Prevent default behavior
+
+        // Animate the scroll 600px down from the current position
+        $("html, body").animate(
+            { scrollTop: $(window).scrollTop() + 800 },
+            800 // Duration in milliseconds for smooth scroll
+        );
+    });
 }
 
 export default headerBanner;

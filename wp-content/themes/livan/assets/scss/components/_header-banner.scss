@@ -36,7 +36,7 @@
 
   &__content {
     position: absolute;
-    top: 380px;
+    top: 360px;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -93,16 +93,20 @@
 
   /* Mouse Icon Button */
   &__scroll {
-    position: relative;
-    z-index: 3;
-    display: block;
-    margin: -120px auto 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    opacity: 0;
-    animation: fadeIn 1s ease-in-out 6s forwards, bounce 1.5s infinite 6s;
+    display: none;
+
+    @include min-breakpoint(md) {
+      position: relative;
+      z-index: 3;
+      display: block;
+      margin: -120px auto 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out 4.5s forwards, bounce 1.5s infinite 4.5s;
+    }
 
     svg {
       fill: $white-clean;

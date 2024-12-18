@@ -1,15 +1,16 @@
 function smoothScroll() {
-  $('a[href^="#"]').on("click", function (e) {
+  const OFFSET = 123;
+
+  $('a[href^="#"]').on('click', function (e) {
     e.preventDefault();
 
-    var target = $(this.getAttribute("href"));
+    const target = $(this.hash);
     if (target.length) {
-      $("html, body").animate(
-        {
-          scrollTop: target.offset().top - 50, // Adjust offset if you have a sticky header
-        },
-        800 // Duration in milliseconds
-      );
+      const targetOffset = target.offset().top - OFFSET;
+
+      $('html, body').animate({
+        scrollTop: targetOffset
+      }, 800);
     }
   });
 }
