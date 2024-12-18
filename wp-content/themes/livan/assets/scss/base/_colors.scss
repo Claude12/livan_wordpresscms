@@ -1,8 +1,5 @@
-// Blue (Primary)
-$blue-primary: #1e90ff; // rgb(30, 144, 255)
-
-// Orange (Accent)
-$orange-accent: #dd8603; // rgb(255, 127, 80)
+//(Primary)
+$color-primary: #00bea3;
 
 // Gray (Neutral)
 $gray-neutral: #4b4b4b; // rgb(75, 75, 75)
@@ -13,16 +10,18 @@ $gray-light: #d3d3d3; // rgb(211, 211, 211)
 // Black (Bold and Sleek)
 $black-bold: #1a1a1a; // rgb(26, 26, 26)
 
+// Black (Bold and Sleek) - Mobile Header and Footer BG
+$black-bold-98: rgba(26, 26, 26, 0.98);
+
+// Black (Bold and Light) - Header BG
+$black-bold-5: rgba(26, 26, 26, 0.5);
+
 // White (Clean and Minimal)
 $white-clean: #ffffff; // rgb(255, 255, 255)
 
 // Color Classes
-.color-blue-primary {
-  color: $blue-primary;
-}
-
-.color-orange-accent {
-  color: $orange-accent;
+.color-primary {
+  color: $color-primary;
 }
 
 .color-gray-neutral {

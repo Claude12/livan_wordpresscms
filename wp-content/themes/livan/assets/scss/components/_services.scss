@@ -1,0 +1,49 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.service-block {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacer-32;
+
+    @include min-breakpoint(md) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: $spacer-64;
+    }
+  }
+
+  &__item {
+    text-align: center;
+
+    &-image {
+      width: rem(120px);
+      height: rem(120px);
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+
+    &-title {
+      margin-top: $spacer-16;
+      margin-bottom: $spacer-8;
+      color: $black-bold;
+    }
+
+    &-description {
+      color: $gray-neutral;
+    }
+
+    &-link {
+      transition: $transition;
+
+      &:hover,
+      &:focus {
+        transform: translateY(-6px);
+        opacity: 0.9;
+      }
+    }
+  }
+}

@@ -154,10 +154,6 @@ function livan_scripts()
 	// Enqueue JS
 	wp_enqueue_script('theme-script', get_template_directory_uri() . '/dist/js/main.js', array('jquery'), $js_version, true);
 	wp_enqueue_script('splide-js', get_template_directory_uri() . '/dist/vendor/splide.min.js', array(), null, true);
-
-	// From theme to be removed later
-	wp_enqueue_script('navigation', get_template_directory_uri() . '/js/navigation.js', array(), null, true);
-	wp_enqueue_script('customizer', get_template_directory_uri() . '/js/customizer.js', array(), null, true);
 }
 add_action('wp_enqueue_scripts', 'livan_scripts');
 

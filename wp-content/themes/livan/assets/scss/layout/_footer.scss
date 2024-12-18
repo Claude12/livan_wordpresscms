@@ -1,0 +1,69 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.footer {
+  &-top {
+    display: grid;
+    justify-content: center;
+    background-color: $black-bold-98;
+    padding: $spacer-64 $mobile-gutter;
+  }
+
+  &-brand {
+    &__logo {
+      margin: 0 auto $spacer-24;
+      object-fit: contain;
+    }
+
+    &__title {
+      margin: 0;
+      color: $white-clean;
+      font-size: rem(30px);
+    }
+  }
+
+  &-bottom {
+    color: $white-clean;
+    background-color: $color-primary;
+    padding-top: $spacer-24;
+    padding-bottom: $spacer-24;
+
+    .container {
+      display: grid;
+      justify-content: center;
+      gap: $spacer-16;
+
+      @include min-breakpoint(md) {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+        gap: 0;
+      }
+
+      .footer-nav ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: $spacer-24;
+
+        li a {
+          color: $white-clean;
+          font-size: rem(15px);
+          transition: $transition;
+
+          &:hover,
+          &:focus {
+            text-decoration: underline;
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+  }
+
+  &-copyright p {
+    font-size: rem(15px);
+  }
+}

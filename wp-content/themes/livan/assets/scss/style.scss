@@ -13,6 +13,7 @@
 @use "components/social-links";
 @use "components/header-banner";
 @use "components/separator";
+@use "components/services";
 
 @use "layout/grid";
 @use "layout/header";
@@ -26,5 +27,6 @@
 @use "utilities/spacing";
 @use "utilities/visibility";
 @use "utilities/animations";
+@use "utilities/curve";
 
 @use "vendors/splide";

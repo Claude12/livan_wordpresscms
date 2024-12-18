@@ -10,6 +10,7 @@
 body {
   font-family: "Lato", sans-serif;
   font-weight: 400;
+  line-height: 1.5;
 }
 
 h1,
@@ -22,7 +23,6 @@ h6,
 .menu__body ul li a {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  line-height: 1.2;
 }
 
 h1 {
@@ -31,10 +31,11 @@ h1 {
 
 h2 {
   font-size: rem(26px);
+  margin-bottom: $spacer-16;
 }
 
 h3 {
-  font-size: 1.75rem;
+  font-size: rem(24px);
 }
 
 h4 {
@@ -57,5 +58,5 @@ strong {
 a,
 p {
   text-decoration: none;
-  font-size: rem(16px);
+  font-size: rem(18px);
 }
