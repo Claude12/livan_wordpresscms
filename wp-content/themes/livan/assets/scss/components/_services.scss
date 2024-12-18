@@ -21,9 +21,14 @@
     &-image {
       width: rem(120px);
       height: rem(120px);
-      object-fit: cover;
+      padding: $spacer-32;
       border-radius: 50%;
       margin: 0 auto;
+
+      img {
+        object-fit: contain;
+        object-position: top;
+      }
     }
 
     &-title {

@@ -7,7 +7,6 @@ ul {
   margin: 0;
 }
 
-.section,
 .container {
   padding-left: $mobile-gutter;
   padding-right: $mobile-gutter;
@@ -23,4 +22,8 @@ ul {
 
 .d-grid {
   display: grid;
+}
+
+.d-none {
+  display: none;
 }
