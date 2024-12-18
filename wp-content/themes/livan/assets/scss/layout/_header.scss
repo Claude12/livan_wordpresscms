@@ -30,6 +30,10 @@
       display: flex;
       align-items: center;
       gap: $spacer-16;
+
+      .header__title {
+        color: $white-clean;
+      }
     }
   }
 

@@ -9,7 +9,7 @@ $btn-padding: rem(14px) rem(32px);
 $btn-primary-color: $white-clean;
 $btn-primary-bg: $color-primary;
 $btn-primary-border: $color-primary;
-$btn-secondary-color: $white-clean;
+$btn-secondary-color: $color-primary;
 $btn-secondary-bg: transparent;
 $btn-secondary-border: $color-primary;
 
@@ -28,10 +28,6 @@ $btn-secondary-border: $color-primary;
   transition: $transition;
   min-width: rem(100px);
 
-  &:hover {
-    filter: brightness(0.9);
-  }
-
   &:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
@@ -48,14 +44,12 @@ $btn-secondary-border: $color-primary;
 .button--primary {
   background-color: $btn-primary-bg;
   color: $btn-primary-color;
-  border-color: $btn-primary-border;
+  border: 3px solid $btn-primary-border;
 
-  &:hover {
-    
-  }
-
+  &:hover,
   &:active {
-   
+    background-color: $btn-secondary-bg;
+    color: $btn-secondary-color;
   }
 }
 
@@ -63,14 +57,18 @@ $btn-secondary-border: $color-primary;
 .button--secondary {
   background-color: $btn-secondary-bg;
   color: $btn-secondary-color;
-  border-color: $btn-secondary-border;
+  border: 3px solid $btn-secondary-border;
+  padding: rem(24px) re(32px);
+  transition: $transition;
 
-  &:hover {
-    
+  @include min-breakpoint(md) {
+    padding: rem(24px) rem(64px);
   }
 
+  &:hover,
   &:active {
-    
+    background-color: $btn-secondary-color;
+    color: $btn-primary-color;
   }
 }
 

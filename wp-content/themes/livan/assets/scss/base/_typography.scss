@@ -23,6 +23,7 @@ h6,
 .menu__body ul li a {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
+  color: $black-bold;
 }
 
 h1 {
@@ -30,12 +31,12 @@ h1 {
 }
 
 h2 {
-  font-size: rem(26px);
+  font-size: rem(32px);
   margin-bottom: $spacer-16;
 }
 
 h3 {
-  font-size: rem(24px);
+  font-size: rem(26px);
 }
 
 h4 {
@@ -59,4 +60,8 @@ a,
 p {
   text-decoration: none;
   font-size: rem(18px);
+}
+
+p {
+  color: $black-bold;
 }

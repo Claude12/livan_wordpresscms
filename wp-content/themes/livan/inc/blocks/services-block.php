@@ -5,6 +5,7 @@
  * @package WordPress
  */
 
+$service_title = $section['service_title'];
 $service_items = $section['service_items'];
 $block_anchor = $section['block_anchor'];
 $background_color = $section['background_color'];
@@ -15,6 +16,9 @@ $icon_background_color = $section['icon_background_color'];
     <section class="service-block" id="<?php echo esc_attr($block_anchor); ?>"
         style="background-color: <?php echo esc_attr($background_color); ?>;">
         <div class="container">
+            <?php if ($service_title): ?>
+                <h2><?php echo esc_html($service_title); ?></h2>
+            <?php endif; ?>
             <div class="service-block__grid">
                 <?php foreach ($service_items as $service_item):
                     $service_icon = $service_item['service_icon']; // Image field

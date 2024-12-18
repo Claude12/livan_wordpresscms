@@ -4,6 +4,10 @@
 @use "base/colors" as *;
 
 .service-block {
+  h2 {
+    text-align: center;
+    margin-bottom: $spacer-48;
+  }
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -34,11 +38,6 @@
     &-title {
       margin-top: $spacer-16;
       margin-bottom: $spacer-8;
-      color: $black-bold;
-    }
-
-    &-description {
-      color: $gray-neutral;
     }
 
     &-link {
