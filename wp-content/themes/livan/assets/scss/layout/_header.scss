@@ -88,6 +88,22 @@
       &.current-menu-item a {
         color: $color-primary;
       }
+
+      & > a[href^="#"] {
+        display: none;
+
+        @include min-breakpoint(md) {
+          display: initial;
+        }
+      }
+
+      &:has(a[href^="#"]) {
+        display: none;
+
+        @include min-breakpoint(md) {
+          display: initial;
+        }
+      }
     }
   }
 }

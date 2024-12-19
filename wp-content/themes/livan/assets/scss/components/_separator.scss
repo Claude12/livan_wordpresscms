@@ -19,6 +19,7 @@
     svg {
       fill: $color-primary;
       height: 26px;
+      transform: rotate(90deg);
 
       @include min-breakpoint(md) {
         height: 32px;
