@@ -1,0 +1,36 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.scroll-to-top {
+  position: fixed;
+  bottom: rem(112px);
+  right: $spacer-4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: $transition;
+
+  @include min-breakpoint(md) {
+    bottom: rem(72px);
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  svg {
+    stroke: $color-primary;
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

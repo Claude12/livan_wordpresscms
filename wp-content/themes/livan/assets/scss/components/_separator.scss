@@ -4,7 +4,12 @@
 @use "base/colors" as *;
 
 .separator {
-  min-height: $spacer-64;
+  min-height: rem(96px);
+
+  @include min-breakpoint(md) {
+    min-height: rem(128px);
+  }
+
   .d-grid {
     justify-content: center;
     margin: auto;
@@ -14,6 +19,7 @@
     svg {
       fill: $color-primary;
       height: 26px;
+      transform: rotate(90deg);
 
       @include min-breakpoint(md) {
         height: 32px;

@@ -81,13 +81,19 @@
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
-    transition: all 1.5s ease-in-out;
+    transition: bottom 1.5s ease-in-out, opacity 1.5s ease-in-out;
     z-index: 3;
     font-size: rem(16px);
     padding: rem(24px) re(32px);
 
     @include min-breakpoint(md) {
       padding: rem(24px) rem(64px);
+    }
+
+    &:hover {
+      filter: brightness(0.95);
+      color: $white-clean;
+      background-color: $color-primary;
     }
   }
 
