@@ -184,3 +184,25 @@ if (defined('JETPACK__VERSION')) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Removes default support for the 'title-tag' feature.
+ */
+function custom_theme_setup()
+{
+	remove_theme_support('title-tag');
+}
+add_action('after_setup_theme', 'custom_theme_setup');
+
+/**
+ * Removes the 'max-image-preview:large' directive from the robots default meta tag.
+ */
+function remove_max_image_preview()
+{
+	remove_filter('wp_robots', 'wp_robots_max_image_preview_large');
+}
+add_action('init', 'remove_max_image_preview');
+
+
+
+
+

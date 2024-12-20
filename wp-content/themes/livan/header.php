@@ -2,14 +2,26 @@
 /**
  * The header for our theme
  *
- * This is the template that displays all of the <head> section and everything up until <div id="content">
+ * Displays the <head> section and everything up until <div id="content">
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
  * @package livan
  */
 
+// SEO meta fields from ACF
+$meta_title = get_field('meta_title') ?: get_the_title(); // Fallback to post/page title
+$meta_description = get_field('meta_description') ?: ''; // Fallback to empty if not set
+$canonical_url = get_field('canonical_url') ?: get_permalink(); // Fallback to current URL
+$meta_robots = get_field('meta_robots') ?: 'index, follow'; // Default to 'index, follow'
+$focus_keyword = get_field('focus_keyword') ?: ''; // Optional field
+
+// Global settings from ACF Options Page
+$site_logo = get_field('site_logo', 'option'); // Logo stored in options
+$nav_cta = get_field('nav_cta', 'option'); // Call-to-action stored in options
+$socials = get_field('socials', 'option'); // Social links stored in options
 ?>
+
 <!doctype html>
 <html <?php language_attributes(); ?>>
 
@@ -18,14 +30,49 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
+	<!-- SEO Meta Tags -->
+	<title><?php echo esc_html($meta_title); ?></title>
+	<meta name="description" content="<?php echo esc_attr($meta_description); ?>">
+	<meta name="robots" content="<?php echo esc_attr($meta_robots); ?>, max-image-preview:large">
+	<link rel="canonical" href="<?php echo esc_url($canonical_url); ?>">
+
+	<?php if ($focus_keyword): ?>
+		<meta name="keywords" content="<?php echo esc_attr($focus_keyword); ?>">
+	<?php endif; ?>
+
+	<!-- JSON-LD Structured Data for WebPage -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "WebPage",
+		"name": "<?php echo esc_js($meta_title); ?>",
+		"description": "<?php echo esc_js($meta_description); ?>",
+		"url": "<?php echo esc_url($canonical_url); ?>",
+		"inLanguage": "en",
+		"isPartOf": {
+			"@type": "WebSite",
+			"name": "<?php echo esc_js(get_bloginfo('name')); ?>",
+			"url": "<?php echo esc_url(home_url()); ?>"
+		},
+		"keywords": "<?php echo esc_js($focus_keyword); ?>"
+	}
+	</script>
+
+	<!-- Validation for Focus Keyword Usage -->
+	<?php
+	if ($focus_keyword) {
+		if (stripos($meta_title, $focus_keyword) === false) {
+			echo '<!-- Warning: Focus Keyword not found in Meta Title -->';
+		}
+		if (stripos($meta_description, $focus_keyword) === false) {
+			echo '<!-- Warning: Focus Keyword not found in Meta Description -->';
+		}
+	}
+	?>
+
+	<!-- WordPress Head -->
 	<?php wp_head(); ?>
 </head>
-
-<?php
-$site_logo = get_field('site_logo', 'option');
-$nav_cta = get_field('nav_cta', 'option');
-$socials = get_field('socials', 'option');
-?>
 
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
@@ -64,7 +111,8 @@ $socials = get_field('socials', 'option');
 										<li>
 											<a href="https://wa.me/<?php echo esc_attr($socials['whatsapp']); ?>"
 												target="_blank" rel="noopener noreferrer">
-												<img style="padding: 6px;" src="<?php echo get_template_directory_uri(); ?>/images/icons/whatsapp.svg"
+												<img style="padding: 6px;"
+													src="<?php echo get_template_directory_uri(); ?>/images/icons/whatsapp.svg"
 													width="54" height="54" alt="WhatsApp">
 											</a>
 										</li>
