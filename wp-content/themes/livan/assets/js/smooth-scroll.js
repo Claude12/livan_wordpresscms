@@ -18,7 +18,7 @@ function smoothScroll() {
 
   // Show or hide the button
   $(window).scroll(function () {
-    if ($(this).scrollTop() > 1500) {
+    if ($(this).scrollTop() > 2000) {
       $scrollToTop.addClass('show');
     } else {
       $scrollToTop.removeClass('show');
