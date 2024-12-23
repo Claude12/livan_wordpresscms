@@ -4,8 +4,12 @@
 @use "base/colors" as *;
 
 .image-text-block {
+  padding-top: $spacer-64;
+  padding-bottom: $spacer-64;
+
   &__content {
     display: flex;
+    align-items: center;
     gap: $spacer-24;
     flex-wrap: wrap;
     width: 100%;
