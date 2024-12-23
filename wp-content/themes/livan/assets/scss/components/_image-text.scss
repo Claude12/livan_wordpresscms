@@ -1,0 +1,63 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.image-text-block {
+  &__content {
+    display: flex;
+    gap: $spacer-24;
+    flex-wrap: wrap;
+    width: 100%;
+
+    @include min-breakpoint(md) {
+      flex-wrap: nowrap;
+      gap: $spacer-48;
+    }
+  }
+
+  &__image {
+    width: 100%;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    @include min-breakpoint(md) {
+      width: 50%;
+      margin-bottom: 0;
+    }
+  }
+
+  &__text {
+    width: 100%;
+
+    @include min-breakpoint(md) {
+      width: 50%;
+    }
+  }
+
+  // Modifier for left-aligned image
+  &--left {
+    .container {
+      flex-direction: column;
+
+      @include min-breakpoint(md) {
+        flex-direction: row;
+      }
+    }
+  }
+
+  // Modifier for right-aligned image
+  &--right {
+    .container {
+      flex-direction: column;
+
+      @include min-breakpoint(md) {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+}

@@ -35,7 +35,6 @@ $socials = get_field('socials', 'option'); // Social links stored in options
 	<meta name="description" content="<?php echo esc_attr($meta_description); ?>">
 	<meta name="robots" content="<?php echo esc_attr($meta_robots); ?>, max-image-preview:large">
 	<link rel="canonical" href="<?php echo esc_url($canonical_url); ?>">
-
 	<?php if ($focus_keyword): ?>
 		<meta name="keywords" content="<?php echo esc_attr($focus_keyword); ?>">
 	<?php endif; ?>
