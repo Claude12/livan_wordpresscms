@@ -15,7 +15,7 @@ function headerBanner() {
 
         // Animate the scroll 600px down from the current position
         $("html, body").animate(
-            { scrollTop: $(window).scrollTop() + 800 },
+            { scrollTop: $(window).scrollTop() + 500 },
             300 // Duration in milliseconds for smooth scroll
         );
     });

@@ -1,0 +1,36 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.rte {
+  a {
+    font-weight: 600;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.button--secondary {
+      color: $color-primary;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: $white-clean;
+        text-decoration: none;
+      }
+    }
+
+    &.button--primary {
+      color: $white-clean;
+      &:hover,
+      &:active,
+      &:focus {
+        color: $color-primary;
+        text-decoration: none;
+      }
+    }
+  }
+}
