@@ -11,11 +11,10 @@
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: $spacer-32;
+    gap: $spacer-64;
 
     @include min-breakpoint(md) {
       grid-template-columns: repeat(3, 1fr);
-      gap: $spacer-64;
     }
   }
 
