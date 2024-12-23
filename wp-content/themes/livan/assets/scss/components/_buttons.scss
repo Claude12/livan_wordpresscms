@@ -31,7 +31,7 @@ $btn-secondary-border: $color-primary;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    box-shadow: none;
   }
 
   &:disabled,
@@ -51,6 +51,8 @@ $btn-secondary-border: $color-primary;
   &:active {
     background-color: $btn-secondary-bg;
     color: $btn-secondary-color;
+    outline: none;
+    box-shadow: none;
   }
 }
 
@@ -70,6 +72,8 @@ $btn-secondary-border: $color-primary;
   &:active {
     background-color: $btn-secondary-color;
     color: $btn-primary-color;
+    outline: none;
+    box-shadow: none;
   }
 }
 
