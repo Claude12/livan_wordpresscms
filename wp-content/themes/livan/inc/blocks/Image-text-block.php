@@ -24,11 +24,11 @@ if ($block_image && $block_text):
                         <img src="<?php echo esc_url($block_image['url']); ?>"
                             alt="<?php echo esc_attr($block_image['alt']); ?>" />
                     </div>
-                    <div class="image-text-block__text">
+                    <div class="image-text-block__text rte">
                         <?php echo wp_kses_post($block_text); ?>
                     </div>
                 <?php else: ?>
-                    <div class="image-text-block__text">
+                    <div class="image-text-block__text rte">
                         <?php echo wp_kses_post($block_text); ?>
                     </div>
                     <div class="image-text-block__image">

@@ -48,7 +48,7 @@ $icon_background_color = $section['icon_background_color'];
                             <?php endif; ?>
 
                             <?php if ($service_description): ?>
-                                <div class="service-block__item-description">
+                                <div class="service-block__item-description rte">
                                     <?php echo wp_kses_post($service_description); ?>
                                 </div>
                             <?php endif; ?>
