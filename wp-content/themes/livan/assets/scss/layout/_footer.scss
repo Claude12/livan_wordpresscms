@@ -13,14 +13,16 @@
 
   &-brand {
     &__logo {
-      margin: 0 auto $spacer-24;
+      margin: 0 auto $spacer-16;
       object-fit: contain;
+      max-height: rem(46px);
     }
 
     &__title {
-      margin: 0;
+      margin: 0 0 $spacer-16;
       color: $white-clean;
       font-size: rem(30px);
+      text-shadow: $text-shadow;
     }
   }
 
