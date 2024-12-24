@@ -58,7 +58,7 @@
           &:hover,
           &:focus {
             text-decoration: underline;
-            opacity: 0.9;
+            opacity: $opacity;
           }
         }
       }

@@ -14,7 +14,8 @@ $banner_cta = $section['banner_cta'];
 <section class="header-banner curve-bottom">
     <?php if ($banner_image): ?>
         <div class="header-banner__image">
-            <img src="<?php echo esc_url($banner_image['url']); ?>" alt="<?php echo esc_attr($banner_image['alt']); ?>">
+            <img src="<?php echo esc_url($banner_image['url']); ?>" alt="<?php echo esc_attr($banner_image['alt']); ?>"
+                loading="lazy" />
         </div>
     <?php endif; ?>
 

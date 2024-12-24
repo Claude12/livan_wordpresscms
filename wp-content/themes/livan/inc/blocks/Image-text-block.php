@@ -22,7 +22,7 @@ if ($block_image && $block_text):
                 <?php if ($image_left): ?>
                     <div class="image-text-block__image">
                         <img src="<?php echo esc_url($block_image['url']); ?>"
-                            alt="<?php echo esc_attr($block_image['alt']); ?>" />
+                            alt="<?php echo esc_attr($block_image['alt']); ?>" loading="lazy" />
                     </div>
                     <div class="image-text-block__text rte">
                         <?php echo wp_kses_post($block_text); ?>
@@ -33,7 +33,7 @@ if ($block_image && $block_text):
                     </div>
                     <div class="image-text-block__image">
                         <img src="<?php echo esc_url($block_image['url']); ?>"
-                            alt="<?php echo esc_attr($block_image['alt']); ?>" />
+                            alt="<?php echo esc_attr($block_image['alt']); ?>" loading="lazy" />
                     </div>
                 <?php endif; ?>
             </div>

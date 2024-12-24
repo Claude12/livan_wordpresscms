@@ -44,11 +44,28 @@
       &:hover,
       &:focus {
         transform: translateY(-6px);
-        opacity: 0.9;
+        opacity: $opacity;
 
         h3 {
           text-decoration: underline;
         }
+      }
+    }
+
+    &-cta {
+      margin-top: $spacer-8;
+      display: inline-block;
+      animation: moveSideToSide 1.5s ease-in-out infinite;
+
+      @include min-breakpoint(md) {
+        margin-top: $spacer-24;
+      }
+
+      &:hover,
+      &:active,
+      &:focus {
+        opacity: $opacity;
+        animation: none;
       }
     }
   }

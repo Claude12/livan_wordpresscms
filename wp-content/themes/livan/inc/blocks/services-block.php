@@ -52,6 +52,23 @@ $icon_background_color = $section['icon_background_color'];
                                     <?php echo wp_kses_post($service_description); ?>
                                 </div>
                             <?php endif; ?>
+                            <?php if ($service_link && isset($service_link['url'])): ?>
+                                <div class="service-block__item-cta">
+                                    <svg fill="#00bea3" width="64px" height="64px" viewBox="0 0 256 256" id="Flat"
+                                        xmlns="http://www.w3.org/2000/svg">
+
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M128,28A100,100,0,1,0,228,128,100.11332,100.11332,0,0,0,128,28Zm0,192a92,92,0,1,1,92-92A92.10416,92.10416,0,0,1,128,220Zm30.67578-94.97314a3.99976,3.99976,0,0,1,0,5.94628l-40,36a3.99992,3.99992,0,0,1-5.35156-5.94628L150.02051,128,113.32422,94.97314a3.99992,3.99992,0,0,1,5.35156-5.94628Z" />
+                                        </g>
+
+                                    </svg>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <?php if ($service_link && isset($service_link['url'])): ?>

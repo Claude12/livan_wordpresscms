@@ -26,3 +26,12 @@
   }
 }
 
+@keyframes moveSideToSide {
+  0%,
+  100% {
+    transform: translateX(0); /* Start and end at the original position */
+  }
+  50% {
+    transform: translateX(10px); /* Move 10px to the right */
+  }
+}
