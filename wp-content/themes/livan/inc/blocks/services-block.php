@@ -37,7 +37,7 @@ $icon_background_color = $section['icon_background_color'];
                                 <div class="service-block__item-image"
                                     style="background-color: <?php echo esc_attr($icon_background_color); ?>;">
                                     <img src="<?php echo esc_url($service_icon['url']); ?>"
-                                        alt="<?php echo esc_attr($service_icon['alt']); ?>" />
+                                        alt="<?php echo esc_attr($service_icon['alt']); ?>" width="56" height="56" />
                                 </div>
                             <?php endif; ?>
 

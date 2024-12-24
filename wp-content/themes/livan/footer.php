@@ -39,7 +39,7 @@ $socials = get_field('socials', 'option');
 			<a href="<?php echo esc_url(home_url('/')); ?>">
 				<?php if ($site_logo): ?>
 					<img src="<?php echo esc_url($site_logo['url']); ?>" alt="<?php bloginfo('name'); ?>"
-						class="footer-brand__logo">
+						class="footer-brand__logo" width="46" height="46" />
 				<?php endif; ?>
 			</a>
 			<a href="<?php echo esc_url(home_url('/')); ?>">
@@ -57,7 +57,7 @@ $socials = get_field('socials', 'option');
 								rel="noopener noreferrer">
 								<img style="padding: 6px;"
 									src="<?php echo get_template_directory_uri(); ?>/images/icons/whatsapp.svg" width="54"
-									height="54" alt="WhatsApp">
+									height="54" alt="WhatsApp" />
 							</a>
 						</li>
 					<?php endif; ?>
@@ -65,7 +65,7 @@ $socials = get_field('socials', 'option');
 						<li>
 							<a href="<?php echo esc_url($socials['linkedin']); ?>" target="_blank" rel="noopener noreferrer">
 								<img src="<?php echo get_template_directory_uri(); ?>/images/icons/linkedin.svg" width="54"
-									height="54" alt="LinkedIn">
+									height="54" alt="LinkedIn" />
 							</a>
 						</li>
 					<?php endif; ?>

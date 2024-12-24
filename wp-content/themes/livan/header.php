@@ -82,8 +82,8 @@ $socials = get_field('socials', 'option'); // Social links stored in options
 				<div class="header__logo">
 					<a href="<?php echo esc_url(home_url('/')); ?>">
 						<?php if ($site_logo): ?>
-							<img src="<?php echo esc_url($site_logo['url']); ?>" alt="<?php bloginfo('name'); ?>"
-								class="header__logo-image">
+							<img src="<?php echo esc_url($site_logo['url']); ?>" alt="<?php bloginfo('name'); ?>" width="46"
+								height="46" class="header__logo-image" />
 						<?php endif; ?>
 						<span class="header__title"><?php bloginfo('name'); ?></span>
 					</a>
