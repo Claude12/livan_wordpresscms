@@ -202,3 +202,20 @@ function remove_max_image_preview()
 	remove_filter('wp_robots', 'wp_robots_max_image_preview_large');
 }
 add_action('init', 'remove_max_image_preview');
+
+
+/**
+ * Security Headers.
+ */
+function add_custom_security_headers()
+{
+	header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+	header("X-Content-Type-Options: nosniff");
+	header("X-Frame-Options: SAMEORIGIN");
+	header("Referrer-Policy: no-referrer-when-downgrade");
+	header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
+	header("Cross-Origin-Opener-Policy: same-origin");
+	header("Cross-Origin-Embedder-Policy: require-corp");
+	header("X-XSS-Protection: 1; mode=block");
+}
+add_action('send_headers', 'add_custom_security_headers');
