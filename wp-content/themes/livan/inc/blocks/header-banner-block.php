@@ -15,7 +15,8 @@ $banner_cta = $section['banner_cta'];
     <?php if ($banner_image): ?>
         <div class="header-banner__image">
             <img src="<?php echo esc_url($banner_image['url']); ?>" alt="<?php echo esc_attr($banner_image['alt']); ?>"
-                loading="lazy" />
+                width="<?php echo esc_attr($banner_image['width']); ?>"
+                height="<?php echo esc_attr($banner_image['height']); ?>" />
         </div>
     <?php endif; ?>
 
