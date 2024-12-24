@@ -66,6 +66,7 @@
       &:focus {
         opacity: $opacity;
         animation: none;
+        animation-fill-mode: forwards;
       }
     }
   }
