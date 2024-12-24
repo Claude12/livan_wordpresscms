@@ -60,6 +60,7 @@
 
       @include min-breakpoint(md) {
         margin-top: $spacer-24;
+        margin-bottom: $spacer-16;
       }
 
       &:hover,
