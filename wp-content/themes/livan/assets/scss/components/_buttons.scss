@@ -29,11 +29,6 @@ $btn-secondary-border: $color-primary;
   transition: $transition;
   min-width: rem(100px);
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-  }
-
   &:disabled,
   &.disabled {
     cursor: not-allowed;
@@ -51,6 +46,8 @@ $btn-secondary-border: $color-primary;
   &:active {
     background-color: $btn-secondary-bg;
     color: $btn-secondary-color;
+    outline: none;
+    box-shadow: none;
   }
 }
 
@@ -70,6 +67,13 @@ $btn-secondary-border: $color-primary;
   &:active {
     background-color: $btn-secondary-color;
     color: $btn-primary-color;
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:focus {
+    background-color: $btn-secondary-bg;
+    color: $btn-secondary-color !important;
   }
 }
 

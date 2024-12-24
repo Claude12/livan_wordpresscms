@@ -11,6 +11,6 @@ ul.social-links {
   transition: $transition;
 
   li:hover {
-    opacity: 0.8;
+    opacity: $opacity;
   }
 }

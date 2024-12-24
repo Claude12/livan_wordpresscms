@@ -11,11 +11,10 @@
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: $spacer-32;
+    gap: $spacer-64;
 
     @include min-breakpoint(md) {
       grid-template-columns: repeat(3, 1fr);
-      gap: $spacer-64;
     }
   }
 
@@ -45,11 +44,30 @@
       &:hover,
       &:focus {
         transform: translateY(-6px);
-        opacity: 0.9;
+        opacity: $opacity;
 
         h3 {
           text-decoration: underline;
         }
+      }
+    }
+
+    &-cta {
+      margin-top: $spacer-8;
+      display: inline-block;
+      animation: moveSideToSide 1.5s ease-in-out infinite;
+      transition: $transition;
+
+      @include min-breakpoint(md) {
+        margin-top: $spacer-24;
+      }
+
+      &:hover,
+      &:active,
+      &:focus {
+        opacity: $opacity;
+        animation: none;
+        animation-fill-mode: forwards;
       }
     }
   }

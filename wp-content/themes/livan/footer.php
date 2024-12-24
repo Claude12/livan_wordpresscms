@@ -85,7 +85,7 @@ $socials = get_field('socials', 'option');
 			<div class="footer-menu">
 				<?php
 				wp_nav_menu([
-					'theme_location' => 'footer-menu',
+					'theme_location' => 'menu-2',
 					'menu_class' => 'footer-nav',
 					'container' => 'nav',
 					'depth' => 1

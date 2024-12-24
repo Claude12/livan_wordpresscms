@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 100;
   background-color: $black-bold-5;
   padding-top: $spacer-24;
   padding-bottom: $spacer-24;
@@ -29,10 +29,16 @@
       font-size: rem(30px);
       display: flex;
       align-items: center;
-      gap: $spacer-16;
+      gap: $spacer-8;
 
       .header__title {
         color: $white-clean;
+        text-shadow: $text-shadow;
+      }
+
+      img {
+        max-height: rem(46px);
+        object-fit: contain;
       }
     }
   }
