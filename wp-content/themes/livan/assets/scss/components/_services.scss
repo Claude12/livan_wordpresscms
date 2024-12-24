@@ -56,6 +56,7 @@
       margin-top: $spacer-8;
       display: inline-block;
       animation: moveSideToSide 1.5s ease-in-out infinite;
+      transition: $transition;
 
       @include min-breakpoint(md) {
         margin-top: $spacer-24;
