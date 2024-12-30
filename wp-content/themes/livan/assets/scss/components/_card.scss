@@ -1,0 +1,58 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.card {
+  background-color: $gray-light;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: $transition;
+
+  &:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+  }
+
+  img {
+    height: auto;
+    object-fit: cover;
+    object-position: top;
+    width: 100%;
+  }
+
+  &-body {
+    padding: $spacer-16 $spacer-16 $spacer-32;
+
+    h3 {
+      line-height: 1.2;
+      margin-bottom: $spacer-16;
+      transition: $transition;
+      @include truncate(2);
+      font-size: rem(18px);
+
+      &:hover,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+
+    p {
+      margin-bottom: $spacer-24;
+      font-size: rem(16px);
+      @include truncate(3);
+    }
+
+    &__cta {
+      color: $color-primary;
+      transition: $transition;
+      font-size: rem(16px);
+
+      &:hover,
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+}
