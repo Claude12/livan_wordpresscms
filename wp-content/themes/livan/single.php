@@ -10,31 +10,28 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<main id="primary" class="site-main">
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+	<?php
+	while (have_posts()):
+		the_post();
 
-			get_template_part( 'template-parts/content', get_post_type() );
+		// ACF - Flexible Content fields.
+		$sections = get_field('content_sections');
 
-			the_post_navigation(
-				array(
-					'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'livan' ) . '</span> <span class="nav-title">%title</span>',
-					'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'livan' ) . '</span> <span class="nav-title">%title</span>',
-				)
-			);
+		if ($sections):
+			foreach ($sections as $section):
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+				$template = str_replace('_', '-', $section['acf_fc_layout']);
+				set_query_var('section', $section);
+				get_template_part('inc/blocks/' . $template);
+			endforeach;
+		endif;
 
-		endwhile; // End of the loop.
-		?>
+	endwhile; // End of the loop.
+	?>
 
-	</main><!-- #main -->
+</main><!-- #main -->
 
 <?php
-get_sidebar();
 get_footer();
