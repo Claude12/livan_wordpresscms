@@ -3,13 +3,6 @@ function headerNav() {
   const isMobile = /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
   document.body.classList.add(isMobile ? '_touch' : '_pc');
 
-  // Toggle sub-menu on arrow click
-  document.querySelectorAll('.menu__arrow').forEach((arrow) => {
-    arrow.addEventListener('click', () => {
-      arrow.parentElement.classList.toggle('_active');
-    });
-  });
-
   // Burger menu toggle
   const iconMenu = document.querySelector('.menu__icon');
   const menuBody = document.querySelector('.menu__body');
@@ -39,12 +32,6 @@ function headerNav() {
           menuBody.classList.remove('_active');
           iconMenu.classList.remove('_active');
           document.body.classList.remove('_lock');
-          toggleBodyScroll(false);
-
-          // Auto-close sub-menus
-          document.querySelectorAll('.menu__arrow').forEach((arrow) => {
-            arrow.parentElement.classList.remove('_active');
-          });
         }
 
         // Smooth scroll
@@ -58,7 +45,7 @@ function headerNav() {
     });
   });
 
-  //remove active class on anchor links
+  //Remove active class on anchor links
   $('a[href*="#"]').each(function () {
     // Check if the href contains a '#' and remove the class from the parent <li>
     var href = $(this).attr('href');
@@ -66,6 +53,41 @@ function headerNav() {
       $(this).closest('li').removeClass('current-menu-item');
     }
   });
+
+  // Drropdown Menus
+  $('li.menu-item.menu-item-has-children > a').click(function (e) {
+    e.preventDefault();
+
+    const parentLi = $(this).parent('li');
+    const subMenu = parentLi.find('ul.sub-menu');
+
+    // Toggle 'expanded' class and animate sub-menu
+    if (parentLi.hasClass('expanded')) {
+      parentLi.removeClass('expanded');
+      subMenu.css({ opacity: 0, transform: 'translateY(-10px)' });
+      setTimeout(() => subMenu.css({ display: 'none' }), 300); // Hide after transition
+    } else {
+      parentLi.addClass('expanded');
+      subMenu.css({ display: 'block' });
+      setTimeout(() => subMenu.css({ opacity: 1, transform: 'translateY(0)' }), 10); // Delay for smooth transition
+    }
+
+    // Close other open menus
+    parentLi.siblings().removeClass('expanded').find('ul.sub-menu').css({
+      opacity: 0,
+      transform: 'translateY(-10px)',
+      display: 'none',
+    });
+
+    e.stopPropagation(); // Prevent click from propagating
+  });
+
+  // Remove 'expanded' class when clicking anywhere else
+  $(document).click(function () {
+    $('li.menu-item.menu-item-has-children').removeClass('expanded');
+    $('ul.sub-menu').css({ opacity: 0, transform: 'translateY(-10px)', display: 'none' });
+  });
+
 }
 
 export default headerNav;
