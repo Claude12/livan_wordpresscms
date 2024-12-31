@@ -57,6 +57,15 @@ function headerNav() {
       }
     });
   });
+
+  //remove active class on anchor links
+  $('a[href*="#"]').each(function () {
+    // Check if the href contains a '#' and remove the class from the parent <li>
+    var href = $(this).attr('href');
+    if (href.includes('#')) {
+      $(this).closest('li').removeClass('current-menu-item');
+    }
+  });
 }
 
 export default headerNav;
