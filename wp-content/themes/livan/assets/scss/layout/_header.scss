@@ -62,12 +62,13 @@
 .menu__body {
   .menu {
     display: grid;
-    gap: $spacer-48;
+    gap: $spacer-8;
     padding: 0;
     text-align: center;
 
     @include min-breakpoint(md) {
       display: flex;
+      gap: $spacer-48;
       align-items: center;
       justify-content: center;
     }
@@ -239,7 +240,7 @@ ul li.menu-item-has-children {
     position: relative;
     background-color: transparent;
     min-width: 100%;
-    padding: $spacer-48 $spacer-24 0;
+    padding: $spacer-8 $spacer-16 0;
     opacity: 0;
     transform: translateY(-10px);
     transition: $transition;
@@ -254,7 +255,11 @@ ul li.menu-item-has-children {
     }
 
     li {
-      margin-bottom: $spacer-32;
+      margin-bottom: $spacer-16;
+
+      @include min-breakpoint(md) {
+        margin-bottom: $spacer-32;
+      }
 
       &:last-child {
         margin: 0;
