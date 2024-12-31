@@ -1,0 +1,8 @@
+[20-Dec-2024 11:33:19 UTC] PHP Fatal error:  Uncaught Error: Class "WP_Query" not found in /home/a5qdao55kx35/public_html/livandigitalsolutions.co.uk/wp-content/themes/livan/sitemap.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/a5qdao55kx35/public_html/livandigitalsolutions.co.uk/wp-content/themes/livan/sitemap.php on line 13
+[20-Dec-2024 11:33:28 UTC] PHP Fatal error:  Uncaught Error: Class "WP_Query" not found in /home/a5qdao55kx35/public_html/livandigitalsolutions.co.uk/wp-content/themes/livan/sitemap.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/a5qdao55kx35/public_html/livandigitalsolutions.co.uk/wp-content/themes/livan/sitemap.php on line 13
