@@ -64,8 +64,16 @@ $socials = get_field('socials', 'option');
 					<?php if (!empty($socials['linkedin'])): ?>
 						<li>
 							<a href="<?php echo esc_url($socials['linkedin']); ?>" target="_blank" rel="noopener noreferrer">
-								<img src="<?php echo get_template_directory_uri(); ?>/images/icons/linkedin.svg" width="54"
-									height="54" alt="LinkedIn" />
+								<img src="<?php echo get_template_directory_uri(); ?>/images/icons/linkedin.svg" width="55"
+									height="55" alt="LinkedIn" />
+							</a>
+						</li>
+					<?php endif; ?>
+					<?php if (!empty($socials['facebook'])): ?>
+						<li>
+							<a href="<?php echo esc_url($socials['facebook']); ?>" target="_blank" rel="noopener noreferrer">
+								<img src="<?php echo get_template_directory_uri(); ?>/images/icons/facebook.svg" width="42"
+									height="42" alt="Facebook" />
 							</a>
 						</li>
 					<?php endif; ?>
