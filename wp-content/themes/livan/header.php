@@ -25,6 +25,17 @@ $socials = get_field('socials', 'option'); // Social links stored in options
 
 	<!-- WordPress Head -->
 	<?php wp_head(); ?>
+
+	<!-- Fonts -->
+	<link rel="preload"
+		href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@500;600;700&display=swap"
+		as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<noscript>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@500;600;700&display=swap"
+			rel="stylesheet" />
+	</noscript>
+
 </head>
 
 <body <?php body_class(); ?>>
