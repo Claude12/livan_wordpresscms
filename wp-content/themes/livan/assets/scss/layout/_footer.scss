@@ -34,7 +34,7 @@
 
     .container {
       display: grid;
-      justify-content: center;
+      text-align: center;
       gap: $spacer-16;
 
       @include min-breakpoint(md) {
@@ -47,8 +47,13 @@
       .footer-menu ul.footer-nav {
         list-style: none;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: $spacer-24;
+        gap: rem(12px);
+
+        @include min-breakpoint(md) {
+          gap: $spacer-24;
+        }
 
         li a {
           color: $white-clean;

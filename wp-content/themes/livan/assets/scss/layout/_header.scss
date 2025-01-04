@@ -62,12 +62,13 @@
 .menu__body {
   .menu {
     display: grid;
-    gap: $spacer-48;
+    gap: $spacer-8;
     padding: 0;
     text-align: center;
 
     @include min-breakpoint(md) {
       display: flex;
+      gap: $spacer-48;
       align-items: center;
       justify-content: center;
     }
@@ -94,32 +95,10 @@
       &.current-menu-item a {
         color: $color-primary;
       }
-
-      & > a[href^="#"] {
-        display: none;
-
-        @include min-breakpoint(md) {
-          display: initial;
-        }
-      }
-
-      &:has(a[href^="#"]) {
-        display: none;
-
-        @include min-breakpoint(md) {
-          display: initial;
-        }
-      }
     }
   }
 }
 /*-------------------------*/
-body._pc .menu__list > li:hover .menu__sub-list {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, 0);
-  pointer-events: all;
-}
 body._touch .menu__list > li {
   display: flex;
   align-items: center;
@@ -137,13 +116,6 @@ body._touch .menu__arrow {
   border-right: 5px solid transparent;
   border-top: 10px solid #fff;
 }
-
-body._touch .menu__list > li._active .menu__sub-list {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, 0);
-  pointer-events: all;
-}
 body._touch .menu__list > li._active .menu__arrow {
   transform: rotate(180deg);
 }
@@ -152,18 +124,6 @@ body._touch .menu__list > li._active .menu__arrow {
   .menu__list {
     display: flex;
     align-items: center;
-  }
-  .menu__list > li {
-    /* padding from link to sub links area to avoid breaking hover on mouse move */
-    padding: 10px 0;
-  }
-  .menu__sub-list {
-    transform: translate(0, 10px);
-    opacity: 0;
-    visibility: hidden;
-    /* to avoid mistaken hover */
-    pointer-events: none;
-    transition: all 0.3s ease 0s;
   }
 }
 
@@ -224,7 +184,7 @@ body._touch .menu__list > li._active .menu__arrow {
     width: 100%;
     height: 100%;
     background-color: $black-bold-98;
-    padding: 200px $mobile-gutter $mobile-gutter;
+    padding: 120px $mobile-gutter $mobile-gutter;
     transition: left 0.3s ease 0s;
     /* for scroll on menu */
     overflow: auto;
@@ -240,21 +200,95 @@ body._touch .menu__list > li._active .menu__arrow {
   .menu__list > li:last-child {
     margin-bottom: 0;
   }
-  .menu__list > li._active .menu__sub-list {
-    display: block;
-  }
   .menu__link {
     font-size: 24px;
   }
-  .menu__sub-list {
-    position: relative;
-    background-color: #fff;
-    flex: 1 1 100%;
-    margin-top: 20px;
-    display: none;
+}
+
+// Dropdown Menus
+ul li.menu-item-has-children {
+  position: relative;
+  display: block;
+
+  @include min-breakpoint(md) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .menu__sub-link {
-    font-size: 20px;
-    color: #000;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(4px);
+    transition: $transition;
+
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background-image: url("../../images/icons/down-arrow.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: $transition;
+    }
+  }
+
+  ul.sub-menu {
+    display: none;
+    position: relative;
+    background-color: transparent;
+    min-width: 100%;
+    padding: $spacer-8 $spacer-16 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: $transition;
+
+    @include min-breakpoint(md) {
+      position: absolute;
+      top: 71px;
+      left: -100%;
+      background-color: $white-clean;
+      min-width: 300px;
+      padding: $spacer-48 $spacer-24;
+    }
+
+    li {
+      margin-bottom: $spacer-16;
+
+      @include min-breakpoint(md) {
+        margin-bottom: $spacer-32;
+      }
+
+      &:last-child {
+        margin: 0;
+      }
+
+      a {
+        color: $white-clean;
+        font-size: rem(18px);
+
+        @include min-breakpoint(md) {
+          color: $black-bold;
+          font-size: rem(15px);
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.expanded {
+    a::after {
+      transform: rotate(180deg);
+    }
+    ul.sub-menu {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
