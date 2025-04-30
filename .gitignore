@@ -49,6 +49,8 @@ Thumbs.db
 
 # Wordpress
 wp-content/*
+wp-content/plugins/akismet/
+wp-content/themes/twenty*/
 !wp-content/plugins/
 !wp-content/themes/
 wp-includes/*
@@ -63,3 +65,5 @@ wp-includes/*
 
 # Log files
 *.log
+
+/vendor/
