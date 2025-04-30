@@ -12,6 +12,7 @@ namespace W3TC;
  *
  * phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
  * phpcs:disable WordPress.WP.AlternativeFunctions
+ * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
  */
 class Generic_Environment {
 	/**
@@ -109,8 +110,7 @@ class Generic_Environment {
 
 		if ( $this->advanced_cache_installed() ) {
 			if ( $this->is_advanced_cache_add_in() ) {
-				$script_data = @wp_remote_get( $dst );
-				if ( @wp_remote_get( $src ) === $script_data ) {
+				if ( @hash_file( 'sha256', $src ) === @hash_file( 'sha256', $dst ) ) {
 					return;
 				}
 			} elseif ( 'yes' === get_transient( 'w3tc_remove_add_in_pgcache' ) ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedElseif

@@ -11,6 +11,7 @@ namespace W3TC;
  * Class Util_Debug
  *
  * phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+ * phpcs:disable WordPress.WP.AlternativeFunctions
  */
 class Util_Debug {
 	/**
@@ -59,8 +60,15 @@ class Util_Debug {
 			$dir_path = Util_Environment::cache_dir( 'log' );
 		}
 
-		// Prefix the postfix (log subdirectory).
-		$postfix = hash( 'crc32b', W3TC_DIR . \WP_CACHE_KEY_SALT ) . '-' . $postfix;
+		/**
+		 * Prefix the postfix (log subdirectory).
+		 *
+		 * Uses a definition/contant that should exist in "wp-config.php".
+		 *
+		 * @link https://api.wordpress.org/secret-key/1.1/salt/
+		 */
+		$salt    = defined( 'NONCE_SALT' ) ? NONCE_SALT : '';
+		$postfix = hash( 'crc32b', W3TC_DIR . $salt ) . '-' . $postfix;
 
 		$filename = $dir_path . '/' . $postfix . '/' . $module . '.log';
 		if ( ! is_dir( dirname( $filename ) ) ) {
@@ -118,7 +126,7 @@ class Util_Debug {
 			$method            = ( ! empty( $i['class'] ) ? $i['class'] . '--' : '' ) . $i['function'];
 			$args              = ' ' . self::encode_params( $i['args'] );
 			$backtrace_lines[] = "\t#" . ( $pos ) . ' ' . $filename . '(' . $line . '): ' . $method . $args;
-			$pos++;
+			++$pos;
 		}
 
 		$message = $message;
@@ -183,7 +191,7 @@ class Util_Debug {
 			$args_strings[] = $s;
 		} else {
 			foreach ( $args as $arg ) {
-				$s = json_encode( $arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+				$s = wp_json_encode( $arg, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 				if ( strlen( $s ) > 100 ) {
 					$s = substr( $s, 0, 98 ) . '..';
 				}

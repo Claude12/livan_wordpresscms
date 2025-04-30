@@ -224,154 +224,72 @@ abstract class FormSelector implements IntegrationInterface {
 	 */
 	public function register_block() {
 
+		$type_string  = [ 'type' => 'string' ];
+		$type_boolean = [ 'type' => 'boolean' ];
+
 		$attributes = [
-			'clientId'              => [
-				'type' => 'string',
-			],
-			'formId'                => [
-				'type' => 'string',
-			],
-			'displayTitle'          => [
-				'type' => 'boolean',
-			],
-			'displayDesc'           => [
-				'type' => 'boolean',
-			],
-			'className'             => [
-				'type' => 'string',
-			],
-			'theme'                 => [
-				'type' => 'string',
-			],
-			'themeName'             => [
-				'type' => 'string',
-			],
-			'fieldSize'             => [
-				'type' => 'string',
-			],
-			'fieldBorderRadius'     => [
-				'type' => 'string',
-			],
-			'fieldBorderStyle'      => [
-				'type' => 'string',
-			],
-			'fieldBorderSize'       => [
-				'type' => 'string',
-			],
-			'fieldBackgroundColor'  => [
-				'type' => 'string',
-			],
-			'fieldBorderColor'      => [
-				'type' => 'string',
-			],
-			'fieldTextColor'        => [
-				'type' => 'string',
-			],
-			'fieldMenuColor'        => [
-				'type' => 'string',
-			],
-			'labelSize'             => [
-				'type' => 'string',
-			],
-			'labelColor'            => [
-				'type' => 'string',
-			],
-			'labelSublabelColor'    => [
-				'type' => 'string',
-			],
-			'labelErrorColor'       => [
-				'type' => 'string',
-			],
-			'buttonSize'            => [
-				'type' => 'string',
-			],
-			'buttonBorderStyle'     => [
-				'type' => 'string',
-			],
-			'buttonBorderSize'      => [
-				'type' => 'string',
-			],
-			'buttonBorderRadius'    => [
-				'type' => 'string',
-			],
-			'buttonBackgroundColor' => [
-				'type' => 'string',
-			],
-			'buttonBorderColor'     => [
-				'type' => 'string',
-			],
-			'buttonTextColor'       => [
-				'type' => 'string',
-			],
-			'pageBreakColor'        => [
-				'type' => 'string',
-			],
-			'backgroundImage'       => [
-				'type' => 'string',
-			],
-			'backgroundPosition'    => [
-				'type' => 'string',
-			],
-			'backgroundRepeat'      => [
-				'type' => 'string',
-			],
-			'backgroundSizeMode'    => [
-				'type' => 'string',
-			],
-			'backgroundSize'        => [
-				'type' => 'string',
-			],
-			'backgroundWidth'       => [
-				'type' => 'string',
-			],
-			'backgroundHeight'      => [
-				'type' => 'string',
-			],
-			'backgroundUrl'         => [
-				'type' => 'string',
-			],
-			'backgroundColor'       => [
-				'type' => 'string',
-			],
-			'containerPadding'      => [
-				'type' => 'string',
-			],
-			'containerBorderStyle'  => [
-				'type' => 'string',
-			],
-			'containerBorderWidth'  => [
-				'type' => 'string',
-			],
-			'containerBorderColor'  => [
-				'type' => 'string',
-			],
-			'containerBorderRadius' => [
-				'type' => 'string',
-			],
-			'containerShadowSize'   => [
-				'type' => 'string',
-			],
-			'customCss'             => [
-				'type' => 'string',
-			],
-			'copyPasteJsonValue'    => [
-				'type' => 'string',
-			],
+			'clientId'              => $type_string,
+			'formId'                => $type_string,
+			'displayTitle'          => $type_boolean,
+			'displayDesc'           => $type_boolean,
+			'className'             => $type_string,
+			'theme'                 => $type_string,
+			'themeName'             => $type_string,
+			'fieldSize'             => $type_string,
+			'fieldBorderRadius'     => $type_string,
+			'fieldBorderStyle'      => $type_string,
+			'fieldBorderSize'       => $type_string,
+			'fieldBackgroundColor'  => $type_string,
+			'fieldBorderColor'      => $type_string,
+			'fieldTextColor'        => $type_string,
+			'fieldMenuColor'        => $type_string,
+			'labelSize'             => $type_string,
+			'labelColor'            => $type_string,
+			'labelSublabelColor'    => $type_string,
+			'labelErrorColor'       => $type_string,
+			'buttonSize'            => $type_string,
+			'buttonBorderStyle'     => $type_string,
+			'buttonBorderSize'      => $type_string,
+			'buttonBorderRadius'    => $type_string,
+			'buttonBackgroundColor' => $type_string,
+			'buttonBorderColor'     => $type_string,
+			'buttonTextColor'       => $type_string,
+			'pageBreakColor'        => $type_string,
+			'backgroundImage'       => $type_string,
+			'backgroundPosition'    => $type_string,
+			'backgroundRepeat'      => $type_string,
+			'backgroundSizeMode'    => $type_string,
+			'backgroundSize'        => $type_string,
+			'backgroundWidth'       => $type_string,
+			'backgroundHeight'      => $type_string,
+			'backgroundUrl'         => $type_string,
+			'backgroundColor'       => $type_string,
+			'containerPadding'      => $type_string,
+			'containerBorderStyle'  => $type_string,
+			'containerBorderWidth'  => $type_string,
+			'containerBorderColor'  => $type_string,
+			'containerBorderRadius' => $type_string,
+			'containerShadowSize'   => $type_string,
+			'customCss'             => $type_string,
+			'copyPasteJsonValue'    => $type_string,
 		];
 
 		$this->register_styles();
 
+		/**
+		 * Modify WPForms block attributes.
+		 *
+		 * @since 1.5.8.2
+		 *
+		 * @param array $attributes Attributes.
+		 */
+		$attributes = apply_filters( 'wpforms_gutenberg_form_selector_attributes', $attributes ); // phpcs:ignore WPForms.PHP.ValidateHooks.InvalidHookName
+
 		register_block_type(
 			'wpforms/form-selector',
 			[
-				/**
-				 * Modify WPForms block attributes.
-				 *
-				 * @since 1.5.8.2
-				 *
-				 * @param array $attributes Attributes.
-				 */
-				'attributes'      => apply_filters( 'wpforms_gutenberg_form_selector_attributes', $attributes ), // phpcs:ignore WPForms.PHP.ValidateHooks.InvalidHookName
+				'api_version'     => $this->get_block_api_version(),
+				'attributes'      => $attributes,
 				'style'           => 'wpforms-gutenberg-form-selector',
 				'editor_style'    => 'wpforms-integrations',
 				'render_callback' => [ $this, 'get_form_html' ],
@@ -404,13 +322,21 @@ abstract class FormSelector implements IntegrationInterface {
 		}
 
 		$css_file = $this->disable_css_setting === 2 ? 'base' : 'full';
+		$handle   = 'wpforms-gutenberg-form-selector';
 
 		wp_register_style(
-			'wpforms-gutenberg-form-selector',
+			$handle,
 			WPFORMS_PLUGIN_URL . "assets/css/frontend/{$this->render_engine}/wpforms-{$css_file}{$min}.css",
 			[ 'wp-edit-blocks', 'wpforms-integrations' ],
 			WPFORMS_VERSION
 		);
+
+		// Add root CSS variables for the Modern Markup mode for full styles.
+		if ( empty( $this->css_vars_obj ) || $this->render_engine !== 'modern' || $css_file !== 'full' ) {
+			return;
+		}
+
+		wp_add_inline_style( $handle, $this->css_vars_obj->get_root_vars_css() );
 	}
 
 	/**
@@ -1059,8 +985,6 @@ abstract class FormSelector implements IntegrationInterface {
 			return;
 		}
 
-		$this->css_vars_obj->output_root();
-
 		if ( $this->render_engine === 'classic' || $this->disable_css_setting !== 1 ) {
 			return;
 		}
@@ -1140,5 +1064,21 @@ abstract class FormSelector implements IntegrationInterface {
 		}
 
 		return (bool) $media_enabled;
+	}
+
+	/**
+	 * Get block API version based on WP core version.
+	 *
+	 * @since 1.9.3
+	 *
+	 * @return int Block API version.
+	 */
+	private function get_block_api_version(): int {
+
+		if ( $this->is_legacy_block() ) {
+			return 1;
+		}
+
+		return version_compare( $GLOBALS['wp_version'], '6.3', '<' ) ? 2 : 3;
 	}
 }

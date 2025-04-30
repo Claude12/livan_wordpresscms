@@ -5,4 +5,4 @@
 - then setup your wp-config file
 
 ### Note
-Do NOT push any composer files! We are just using theme to install WP-Core.
+Do NOT push any composer files! We are just using them to install WP-Core.

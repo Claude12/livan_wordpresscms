@@ -232,7 +232,7 @@ class Help {
 			'providers/activecampaign'                => 'activecampaign',
 			'providers/campaign_monitor'              => 'campaign monitor',
 			'providers/constant_contact'              => 'constant contact',
-			'providers/convertkit'                    => 'convertkit',
+			'providers/convertkit'                    => 'kit',
 			'providers/drip'                          => 'drip',
 			'providers/dropbox'                       => 'dropbox',
 			'providers/getresponse'                   => 'getresponse',
@@ -240,11 +240,15 @@ class Help {
 			'providers/mailchimp'                     => 'mailchimp',
 			'providers/mailchimpv3'                   => 'mailchimp',
 			'providers/mailerlite'                    => 'mailerlite',
+			'providers/mailpoet'                      => 'mailpoet',
+			'providers/make'                          => 'make',
 			'providers/zapier'                        => 'zapier',
 			'providers/salesforce'                    => 'salesforce',
-			'providers/sendinblue'                    => 'sendinblue',
+			'providers/sendinblue'                    => 'brevo',
 			'providers/slack'                         => 'slack',
 			'providers/hubspot'                       => 'hubspot',
+			'providers/twilio'                        => 'twilio',
+			'providers/pipedrive'                     => 'pipedrive',
 			'payments'                                => '',
 			'payments/paypal_commerce'                => 'paypal commerce',
 			'payments/paypal_standard'                => 'paypal standard',
@@ -285,6 +289,7 @@ class Help {
 			],
 			'form template'             => [
 				'/docs/how-to-create-a-custom-form-template/',
+				'/docs/generating-forms-with-wpforms-ai/',
 			],
 			'add fields'                => [
 				'/docs/how-to-choose-the-right-form-field-for-your-forms/',
@@ -1203,8 +1208,17 @@ class Help {
 			'mailerlite'                => [
 				'/docs/install-use-mailerlite-addon-wpforms/',
 			],
+			'mailpoet'                  => [
+				'/docs/mailpoet-addon/',
+			],
+			'make'                      => [
+				'/docs/make-addon/',
+			],
 			'zapier'                    => [
 				'/docs/how-to-install-and-use-zapier-addon-with-wpforms/',
+			],
+			'pipedrive'                 => [
+				'/docs/pipedrive-addon/',
 			],
 			'salesforce'                => [
 				'/docs/how-to-install-and-use-the-salesforce-addon-with-wpforms/',
@@ -1213,10 +1227,13 @@ class Help {
 				'/docs/how-to-install-and-use-the-sendinblue-addon-with-wpforms/',
 			],
 			'slack'                     => [
-				'/docs/slack-addon',
+				'/docs/slack-addon/',
 			],
 			'hubspot'                   => [
 				'/docs/how-to-install-and-use-the-hubspot-addon-in-wpforms/',
+			],
+			'twilio'                    => [
+				'/docs/twilio-addon/',
 			],
 			'integrate'                 => [
 				'/docs/how-to-install-and-use-zapier-addon-with-wpforms/',

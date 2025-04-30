@@ -55,22 +55,24 @@ const wpf = {
 	 */
 	bindUIActions() {
 		// The following items should all trigger the fieldUpdate trigger.
-		jQuery( document ).on( 'wpformsFieldAdd', wpf.setFieldOrders );
-		jQuery( document ).on( 'wpformsFieldDelete', wpf.setFieldOrders );
-		jQuery( document ).on( 'wpformsFieldMove', wpf.setFieldOrders );
-		jQuery( document ).on( 'wpformsFieldAdd', wpf.setChoicesOrders );
-		jQuery( document ).on( 'wpformsFieldChoiceAdd', wpf.setChoicesOrders );
-		jQuery( document ).on( 'wpformsFieldChoiceDelete', wpf.setChoicesOrders );
-		jQuery( document ).on( 'wpformsFieldChoiceMove', wpf.setChoicesOrders );
-		jQuery( document ).on( 'wpformsFieldAdd', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldDelete', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldMove', wpf.fieldUpdate );
-		jQuery( document ).on( 'focusout', '.wpforms-field-option-row-label input', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldChoiceAdd', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldChoiceDelete', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldChoiceMove', wpf.fieldUpdate );
-		jQuery( document ).on( 'wpformsFieldDynamicChoiceToggle', wpf.fieldUpdate );
-		jQuery( document ).on( 'focusout', '.wpforms-field-option-row-choices input.label', wpf.fieldUpdate );
+		jQuery( document )
+			.on( 'wpformsFieldAdd', wpf.setFieldOrders )
+			.on( 'wpformsFieldDuplicated', wpf.setFieldOrders )
+			.on( 'wpformsFieldDelete', wpf.setFieldOrders )
+			.on( 'wpformsFieldMove', wpf.setFieldOrders )
+			.on( 'wpformsFieldAdd', wpf.setChoicesOrders )
+			.on( 'wpformsFieldChoiceAdd', wpf.setChoicesOrders )
+			.on( 'wpformsFieldChoiceDelete', wpf.setChoicesOrders )
+			.on( 'wpformsFieldChoiceMove', wpf.setChoicesOrders )
+			.on( 'wpformsFieldAdd', wpf.fieldUpdate )
+			.on( 'wpformsFieldDelete', wpf.fieldUpdate )
+			.on( 'wpformsFieldMove', wpf.fieldUpdate )
+			.on( 'wpformsFieldChoiceAdd', wpf.fieldUpdate )
+			.on( 'wpformsFieldChoiceDelete', wpf.fieldUpdate )
+			.on( 'wpformsFieldChoiceMove', wpf.fieldUpdate )
+			.on( 'wpformsFieldDynamicChoiceToggle', wpf.fieldUpdate )
+			.on( 'focusout', '.wpforms-field-option-row-label input', wpf.fieldUpdate )
+			.on( 'focusout', '.wpforms-field-option-row-choices input.label', wpf.fieldUpdate );
 	},
 
 	/**
@@ -356,8 +358,10 @@ const wpf = {
 				// Get the name format and split it into an array.
 				const nameFormat = fields[ key ].format;
 
-				// Add the name fields to the fields object
-				fields[ key ].additional = nameFormat.split( '-' );
+				if ( nameFormat ) {
+					// Add the name fields to the field object
+					fields[ key ].additional = nameFormat.split( '-' );
+				}
 			}
 
 			if ( fields[ key ]?.type === 'address' ) {
@@ -1290,6 +1294,63 @@ const wpf = {
 			rect.bottom <= ( window.innerHeight || document.documentElement.clientHeight ) &&
 			rect.right <= ( window.innerWidth || document.documentElement.clientWidth )
 		);
+	},
+
+	/**
+	 * Copy the target element to clipboard.
+	 *
+	 * @since 1.9.5
+	 *
+	 * @param {Object} event         Event object.
+	 * @param {jQuery} $copyButton   Copy button.
+	 * @param {jQuery} targetElement Target element.
+	 */
+	copyValueToClipboard( event, $copyButton, targetElement ) {
+		event.preventDefault();
+
+		// Use Clipboard API for modern browsers and HTTPS connections, in other cases use old-fashioned way.
+		if ( navigator.clipboard ) {
+			navigator.clipboard.writeText( targetElement.val() ).then(
+				function() {
+					$copyButton.find( 'span' ).removeClass( 'dashicons-admin-page' ).addClass( 'dashicons-yes-alt' );
+				}
+			);
+
+			return;
+		}
+
+		targetElement.attr( 'disabled', false ).focus().select();
+
+		document.execCommand( 'copy' );
+
+		$copyButton.find( 'span' ).removeClass( 'dashicons-admin-page' ).addClass( 'dashicons-yes-alt' );
+
+		targetElement.attr( 'disabled', true );
+	},
+
+	/**
+	 * Utility for tracking the repeated execution.
+	 *
+	 * @since 1.9.5
+	 *
+	 * @param {string} context Context key.
+	 * @param {number} timeout Debounce timeout.
+	 *
+	 * @return {boolean} It returns `false` when called the first time, `true` -
+	 * if called repeatedly (with the same `context` argument) until the timeout is over.
+	 */
+	isRepeatedCall( context, timeout = 500 ) {
+		wpf.isRepeatedCallData = wpf.isRepeatedCallData || {};
+
+		if ( wpf.isRepeatedCallData[ context ] ) {
+			return true;
+		}
+
+		wpf.isRepeatedCallData[ context ] = true;
+
+		setTimeout( () => wpf.isRepeatedCallData[ context ] = false, timeout );
+
+		return false;
 	},
 };
 

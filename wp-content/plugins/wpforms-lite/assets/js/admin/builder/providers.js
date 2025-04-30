@@ -147,8 +147,7 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 			 */
 			request( provider, custom ) {
 				const $holder = app.getProviderHolder( provider ),
-					$lock = $holder.find( '.wpforms-builder-provider-connections-save-lock' ),
-					$error = $holder.find( '.wpforms-builder-provider-connections-error' );
+					$lock = $holder.find( '.wpforms-builder-provider-connections-save-lock' );
 
 				const params = {
 					url: wpforms_builder.ajax_url,
@@ -157,9 +156,14 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 					beforeSend() {
 						$holder.addClass( 'loading' );
 						$lock.val( 1 );
-						$error.hide();
+						app.ui.getProviderError( provider ).hide();
 					},
 				};
+
+				// Hidden class is used only for initial get connections request when connections are not set yet.
+				if ( custom.data.task !== 'connections_get' ) {
+					$holder.find( '.wpforms-builder-provider-title-spinner' ).removeClass( 'wpforms-hidden' );
+				}
 
 				custom.data = app.ajax._mergeData( provider, custom.data || {} );
 				$.extend( params, custom );
@@ -176,7 +180,7 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 						console.error( textStatus ); // eslint-disable-line no-console
 
 						$lock.val( 1 );
-						$error.show();
+						app.ui.showError( provider );
 					} )
 					.always( function( dataOrjqXHR, textStatus, jqXHROrerrorThrown ) { // eslint-disable-line no-unused-vars
 						$holder.removeClass( 'loading' );
@@ -544,9 +548,10 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 			for ( const orderNumber in fields ) {
 				const field = fields[ orderNumber ];
 				const id = field.id;
+				const type = field.type;
 				const label = wpf.sanitizeHTML( field.label?.toString().trim() || wpforms_builder.field + ' #' + id );
 
-				options.push( { value: id, text: label } );
+				options.push( { value: id, text: label, type } );
 
 				if ( 'name' !== field.type || ! field.format ) {
 					optionsWithSubfields.push( { value: id, text: label } );
@@ -561,6 +566,9 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 				} );
 			}
 
+			// Add ability to filter options for providers before rendering them.
+			app.panelHolder.trigger( 'WPForms.Admin.Builder.Providers.FilterOptions', [ options ] );
+			app.panelHolder.trigger( 'WPForms.Admin.Builder.Providers.FilterOptionsWithSubfields', [ optionsWithSubfields ] );
 			$( '.wpforms-builder-provider-connection-fields-table .wpforms-builder-provider-connection-field-value' ).each( function() {
 				const $select = $( this );
 				const value = $select.val();
@@ -569,10 +577,11 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 				// and don't have the support-subfields attribute.
 				const isSupportSubfields = $select.data( 'support-subfields' ) || Boolean( $select.find( 'option[value$=".first"]' ).length );
 				const newOptions = isSupportSubfields ? optionsWithSubfields : options;
+				const placeholder = $select.data( 'placeholder' ) && $select.data( 'placeholder' ).length ? $select.data( 'placeholder' ) : wpforms_builder_providers.custom_fields_placeholder;
 
 				$newSelect.append( $( '<option>', {
 					value: '',
-					text: wpforms_builder_providers.custom_fields_placeholder,
+					text: placeholder,
 				} ) );
 
 				newOptions.forEach( function( option ) {
@@ -722,8 +731,7 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 			 * @param {string} provider Current provider slug.
 			 */
 			connectionAdd( provider ) {
-				const providerClass = app.getProviderClass( provider ),
-					defaultValue = providerClass && typeof providerClass.setDefaultModalValue === 'function' ? providerClass.setDefaultModalValue() : '';
+				const defaultValue = app.ui.getDefaultConnectionName( provider ).trim();
 
 				$.confirm( {
 					title: false,
@@ -809,6 +817,37 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 			},
 
 			/**
+			 * Get the default name for a new connection.
+			 *
+			 * @since 1.9.3
+			 * @since 1.9.5 Remove support of the `providerClass.setDefaultModalValue` method.
+			 *
+			 * @param {string} provider Current provider slug.
+			 *
+			 * @return {string} Returns the default name for a new connection.
+			 */
+			getDefaultConnectionName( provider ) {
+				const providerName = app.getProviderHolder( provider ).data( 'provider-name' );
+				const numberOfConnections = app.ui.getCountConnectionsOf( provider );
+				const defaultName = `${ providerName } ${ wpforms_builder.connection_label }`;
+
+				return numberOfConnections < 1 ? defaultName : '';
+			},
+
+			/**
+			 * Get the number of connections for the provider.
+			 *
+			 * @since 1.9.3
+			 *
+			 * @param {string} provider Current provider slug.
+			 *
+			 * @return {number} Returns the number of connections for the provider.
+			 */
+			getCountConnectionsOf( provider ) {
+				return app.getProviderHolder( provider ).find( '.wpforms-builder-provider-connection' ).length;
+			},
+
+			/**
 			 * Update the check icon of the provider in the sidebar.
 			 *
 			 * @since 1.9.0
@@ -820,6 +859,48 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 					$sidebarItem = $( '.wpforms-panel-sidebar-section-' + $connection.target.dataset.provider );
 
 				$sidebarItem.find( '.fa-check-circle-o' ).toggleClass( 'wpforms-hidden', $( $section ).find( '.wpforms-builder-provider-connection' ).length <= 0 );
+			},
+
+			/**
+			 * Retrieves the error message element for the specified provider.
+			 *
+			 * @since 1.9.5
+			 *
+			 * @param {string} provider The name of the provider.
+			 *
+			 * @return {Object} The jQuery object containing the error message element for the provider.
+			 */
+			getProviderError( provider ) {
+				return $( `#wpforms-${ provider }-builder-provider-error` );
+			},
+
+			/**
+			 * Displays an error message for the specified provider in the UI.
+			 * This method checks if an error already exists for the provider and displays it.
+			 * If no error exists, it dynamically creates and displays a new error template.
+			 *
+			 * @since 1.9.5
+			 *
+			 * @param {string} provider The provider for which the error message is displayed.
+			 */
+			showError( provider ) {
+				const $error = app.ui.getProviderError( provider );
+
+				if ( $error.length ) {
+					$error.show();
+
+					return;
+				}
+
+				const templateId = `wpforms-${ provider }-builder-content-connection-default-error`;
+				const $holder = app.getProviderHolder( provider ).find( '.wpforms-builder-provider-connections' );
+
+				// Register and prepend template.
+				app.Templates.add( [ templateId ] );
+				$holder.prepend( app.Templates.get( templateId )() );
+
+				// Show error.
+				app.ui.getProviderError( provider ).show();
 			},
 
 			/**
@@ -1004,13 +1085,24 @@ WPForms.Admin.Builder.Providers = WPForms.Admin.Builder.Providers || ( function(
 		 * Get a provider JS object.
 		 *
 		 * @since 1.9.2.3
+		 * @since 1.9.3 Added support for "-" in provider names.
+		 * @deprecated 1.9.5 Not used anymore.
 		 *
 		 * @param {string} provider Provider name.
 		 *
 		 * @return {Object|null} Return provider object or null.
 		 */
 		getProviderClass( provider ) {
-			const getClassName = provider.charAt( 0 ).toUpperCase() + provider.slice( 1 );
+			// eslint-disable-next-line no-console
+			console.warn( 'WARNING! Function "WPForms.Admin.Builder.Providers.getProviderClass()" has been deprecated!' );
+
+			// Convert part of the provider name to uppercase.
+			const upperProviderPart = ( providerPart ) => (
+				providerPart.charAt( 0 ).toUpperCase() + providerPart.slice( 1 )
+			);
+
+			// Convert provider name to a class name.
+			const getClassName = provider.split( '-' ).map( upperProviderPart ).join( '' );
 
 			if ( typeof WPForms.Admin.Builder.Providers[ getClassName ] === 'undefined' ) {
 				return null;

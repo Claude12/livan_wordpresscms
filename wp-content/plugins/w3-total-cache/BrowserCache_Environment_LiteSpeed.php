@@ -13,6 +13,8 @@ namespace W3TC;
  * phpcs:disable Squiz.Strings.DoubleQuoteUsage.NotRequired
  *
  * Rules generation for OpenLiteSpeed
+ *
+ * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
  */
 class BrowserCache_Environment_LiteSpeed {
 	/**
@@ -242,6 +244,20 @@ class BrowserCache_Environment_LiteSpeed {
 					$add_header_rules[] = 'set Pragma "no-store"';
 					$add_header_rules[] = 'unset Cache-Control';
 					$add_header_rules[] = 'set Cache-Control "no-store"';
+					break;
+
+				case 'cache_immutable':
+					$add_header_rules[] = 'unset Pragma';
+					$add_header_rules[] = 'set Pragma public';
+					$add_header_rules[] = 'unset Cache-Control';
+					$add_header_rules[] = "set Cache-Control \"public, max-age=$lifetime, immutable\"";
+					break;
+
+				case 'cache_immutable_nomaxage':
+					$add_header_rules[] = 'unset Pragma';
+					$add_header_rules[] = 'set Pragma public';
+					$add_header_rules[] = 'unset Cache-Control';
+					$add_header_rules[] = 'set Cache-Control "public, immutable"';
 					break;
 			}
 		}

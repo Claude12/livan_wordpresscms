@@ -11,6 +11,7 @@ namespace W3TC;
  * Class: Util_Environment
  *
  * phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+ * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
  */
 class Util_Environment {
 	/**
@@ -1397,23 +1398,38 @@ class Util_Environment {
 	}
 
 	/**
+	 * Pro constants?
+	 *
+	 * @since 2.8.3
+	 *
+	 * @static
+	 *
+	 * @param Config $config Config.
+	 *
+	 * @return bool
+	 */
+	public static function is_pro_constant( $config = null ) {
+		return ( defined( 'W3TC_PRO' ) && W3TC_PRO ) || ( defined( 'W3TC_ENTERPRISE' ) && W3TC_ENTERPRISE );
+	}
+
+	/**
 	 * Quotes regular expression string.
 	 *
 	 * @static
 	 *
-	 * @param string $string    String.
-	 * @param string $delimiter Delimeter.
+	 * @param string $string_value String.
+	 * @param string $delimiter    Delimeter.
 	 *
 	 * @return string
 	 */
-	public static function preg_quote( $string, $delimiter = '~' ) {
-		$string = preg_quote( $string, $delimiter );
-		$string = strtr(
-			$string,
+	public static function preg_quote( $string_value, $delimiter = '~' ) {
+		$string_value = preg_quote( $string_value, $delimiter );
+		$string_value = strtr(
+			$string_value,
 			array( ' ' => '\ ' )
 		);
 
-		return $string;
+		return $string_value;
 	}
 
 	/**
@@ -1432,18 +1448,18 @@ class Util_Environment {
 	 *
 	 * @static
 	 *
-	 * @param mixed $var Value.
+	 * @param mixed $value Value.
 	 *
 	 * @return mixed
 	 */
-	public static function stripslashes( $var ) {
-		if ( is_string( $var ) ) {
-			return stripslashes( $var );
-		} elseif ( is_array( $var ) ) {
-			$var = array_map( array( '\W3TC\Util_Environment', 'stripslashes' ), $var );
+	public static function stripslashes( $value ) {
+		if ( is_string( $value ) ) {
+			return stripslashes( $value );
+		} elseif ( is_array( $value ) ) {
+			$value = array_map( array( '\W3TC\Util_Environment', 'stripslashes' ), $value );
 		}
 
-		return $var;
+		return $value;
 	}
 
 	/**
@@ -1833,5 +1849,18 @@ class Util_Environment {
 		$result = wp_remote_post( $cron_request['url'], $cron_request['args'] );
 
 		return $result;
+	}
+
+	/**
+	 * Gets the BoldGrid API URL
+	 *
+	 * This URL can be overridden by defining W3TC_API2_URL
+	 *
+	 * @since 2.8.3
+	 *
+	 * @return string The API URL to use for requests.
+	 */
+	public static function get_api_base_url() {
+		return defined( 'W3TC_API2_URL' ) && W3TC_API2_URL ? esc_url( W3TC_API2_URL, array( 'https' ), '' ) : 'https://api2.w3-edge.com';
 	}
 }

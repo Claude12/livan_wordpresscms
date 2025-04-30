@@ -667,15 +667,22 @@ function wpforms_get_total_payment( $fields ) {
 	}
 
 	foreach ( $fields as $field ) {
-		if ( ! empty( $field['amount'] ) ) {
-			$amount = wpforms_sanitize_amount( $field['amount'] );
-
-			if ( ! empty( $field['quantity'] ) ) {
-				$amount *= (int) $field['quantity'];
-			}
-
-			$total += $amount;
+		// Skip the field hidden by conditional logic.
+		if ( isset( $field['visible'] ) && $field['visible'] === false ) {
+			continue;
 		}
+
+		if ( empty( $field['amount'] ) ) {
+			continue;
+		}
+
+		$amount = wpforms_sanitize_amount( $field['amount'] );
+
+		if ( ! empty( $field['quantity'] ) ) {
+			$amount *= (int) $field['quantity'];
+		}
+
+		$total += $amount;
 	}
 
 	$total = max( 0, $total );
@@ -772,4 +779,29 @@ function wpforms_payment_format_quantity( array $field ): string {
 		$field['value'],
 		$field['quantity'] ?? 1
 	);
+}
+
+/**
+ * Get the multiplier for a given currency based on its decimal places.
+ *
+ * This function returns a scaling factor used to convert between
+ * the smallest currency unit (e.g., cents for USD) and the standard
+ * representation.
+ * For example,
+ * - USD (2 decimal places) → returns 100
+ * - JPY (0 decimal places) → returns 1
+ *
+ * @since 1.9.5
+ *
+ * @param string $currency Currency.
+ *
+ * @return int
+ */
+function wpforms_get_currency_multiplier( string $currency = '' ): int {
+
+	if ( ! $currency ) {
+		$currency = wpforms_get_currency();
+	}
+
+	return (int) str_pad( 1, wpforms_get_currency_decimals( strtolower( $currency ) ) + 1, 0, STR_PAD_RIGHT );
 }

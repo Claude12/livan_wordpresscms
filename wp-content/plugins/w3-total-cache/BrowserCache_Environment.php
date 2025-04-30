@@ -563,7 +563,7 @@ class BrowserCache_Environment {
 				$scriptelem      = trim( $config->get_string( 'browsercache.security.csp.scriptelem' ) );
 				$scriptattr      = trim( $config->get_string( 'browsercache.security.csp.scriptattr' ) );
 				$styleelem       = trim( $config->get_string( 'browsercache.security.csp.styleelem' ) );
-				$scriptelem      = trim( $config->get_string( 'browsercache.security.csp.styleattr' ) );
+				$styleattr       = trim( $config->get_string( 'browsercache.security.csp.styleattr' ) );
 				$worker          = trim( $config->get_string( 'browsercache.security.csp.worker' ) );
 				$default         = trim( $config->get_string( 'browsercache.security.csp.default' ) );
 
@@ -798,16 +798,25 @@ class BrowserCache_Environment {
 					$headers_rules .= "        Header set Pragma \"no-store\"\n";
 					$headers_rules .= "        Header set Cache-Control \"no-store\"\n";
 					break;
+
+				case 'cache_immutable':
+					$lifetime       = $config->get_integer( 'browsercache.' . $section . '.lifetime' );
+					$headers_rules .= "        Header set Pragma \"public\"\n";
+					$headers_rules .= "        Header set Cache-Control \"public, max-age=" . $lifetime . ", immutable\"\n";
+					break;
+
+				case 'cache_immutable_nomaxage':
+					$headers_rules .= "        Header set Pragma \"public\"\n";
+					$headers_rules .= "        Header set Cache-Control \"public, immutable\"\n";
+					break;
 			}
 		}
 
 		if ( $etag ) {
 			$rules .= "    FileETag MTime Size\n";
-		} else {
-			if ( $compatibility ) {
-				$rules         .= "    FileETag None\n";
-				$headers_rules .= "        Header unset ETag\n";
-			}
+		} elseif ( $compatibility ) {
+			$rules         .= "    FileETag None\n";
+			$headers_rules .= "        Header unset ETag\n";
 		}
 
 		if ( $unset_setcookie ) {

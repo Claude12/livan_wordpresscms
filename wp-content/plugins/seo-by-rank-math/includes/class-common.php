@@ -16,6 +16,8 @@ use RankMath\Traits\Ajax;
 use RankMath\Traits\Meta;
 use RankMath\Traits\Hooker;
 use RankMath\Helpers\Str;
+use WP_Error;
+use WP_Term;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,7 +26,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Common {
 
-	use Hooker, Ajax, Meta;
+	use Hooker;
+	use Ajax;
+	use Meta;
 
 	/**
 	 * Constructor method.
@@ -36,6 +40,7 @@ class Common {
 		// Change Permalink for primary term.
 		$this->filter( 'post_type_link', 'post_type_link', 9, 2 );
 		$this->filter( 'post_link_category', 'post_link_category', 10, 3 );
+		$this->filter( 'wc_product_post_type_link_product_cat', 'post_link_category', 10, 3 );
 
 		// Reorder categories listing: put primary at the beginning.
 		$this->filter( 'get_the_terms', 'reorder_the_terms', 10, 3 );
@@ -172,13 +177,13 @@ class Common {
 	/**
 	 * Hide rank math meta keys
 	 *
-	 * @param bool   $protected Whether the key is considered protected.
-	 * @param string $meta_key  Meta key.
+	 * @param bool   $is_protected Whether the key is considered protected.
+	 * @param string $meta_key     Meta key.
 	 *
 	 * @return bool
 	 */
-	public function hide_rank_math_meta( $protected, $meta_key ) {
-		return Str::starts_with( 'rank_math_', $meta_key ) ? true : $protected;
+	public function hide_rank_math_meta( $is_protected, $meta_key ) {
+		return Str::starts_with( 'rank_math_', $meta_key ) ? true : $is_protected;
 	}
 
 	/**
@@ -207,7 +212,7 @@ class Common {
 	/**
 	 * Get chain of hierarchical links.
 	 *
-	 * @param WP_Term $term The term in question.
+	 * @param WP_Term|WP_Error $term The term in question.
 	 *
 	 * @return string
 	 */
@@ -248,7 +253,7 @@ class Common {
 
 		// Early Bail if Primary term is not assigned to the post.
 		$terms = wp_get_post_terms( $post_id, $taxonomy, [ 'fields' => 'ids' ] );
-		if ( empty( $terms ) || ! in_array( $primary, $terms, true ) ) {
+		if ( empty( $terms ) || ! in_array( absint( $primary ), $terms, true ) ) {
 			return false;
 		}
 

@@ -24,11 +24,7 @@ h6,
 }
 
 h1 {
-  font-size: rem(36px);
-
-  @include min-breakpoint(md) {
-    font-size: rem(56px);
-  }
+  font-size: clamp(rem(36px), 5vw, rem(56px));
 }
 
 h2 {
