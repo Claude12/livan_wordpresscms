@@ -67,3 +67,7 @@ wp-includes/*
 *.log
 
 /vendor/
+
+# Ignore Composer files
+composer.json
+composer.lock
