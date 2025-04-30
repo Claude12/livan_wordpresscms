@@ -3,7 +3,7 @@
   "description": "WordPress project with core installed in root using Composer",
   "type": "project",
   "require": {
-    "johnpbloch/wordpress": "6.8.1",
+    "johnpbloch/wordpress": "^6.8",
     "johnpbloch/wordpress-core-installer": "^2.0"
   },
   "extra": {
