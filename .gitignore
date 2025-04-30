@@ -69,5 +69,4 @@ wp-includes/*
 /vendor/
 
 # Ignore Composer files
-composer.json
 composer.lock
