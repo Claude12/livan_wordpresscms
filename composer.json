@@ -1,32 +1,18 @@
 {
-  "name": "johnpbloch/wordpress-core",
-  "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
-  "keywords": [
-    "wordpress",
-    "blog",
-    "cms"
-  ],
-  "type": "wordpress-core",
-  "homepage": "https://wordpress.org/",
-  "license": "GPL-2.0-or-later",
-  "authors": [
-    {
-      "name": "WordPress Community",
-      "homepage": "https://wordpress.org/about/"
-    }
-  ],
-  "support": {
-    "issues": "https://core.trac.wordpress.org/",
-    "forum": "https://wordpress.org/support/",
-    "wiki": "https://codex.wordpress.org/",
-    "irc": "irc://irc.freenode.net/wordpress",
-    "source": "https://core.trac.wordpress.org/browser"
-  },
+  "name": "livandigitalsolutions/livan-website",
+  "description": "WordPress project with core installed in root using Composer",
+  "type": "project",
   "require": {
-    "php": ">=7.2.24",
-    "ext-json": "*"
+    "johnpbloch/wordpress": "^6.8",
+    "johnpbloch/wordpress-core-installer": "^2.0"
   },
-  "provide": {
-    "wordpress/core-implementation": "6.8.1"
+  "extra": {
+    "wordpress-install-dir": "./"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true
+    }
   }
 }
