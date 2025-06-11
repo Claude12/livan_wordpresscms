@@ -16,11 +16,10 @@
   }
 
   img {
-    height: auto;
     object-fit: cover;
     object-position: top;
     width: 100%;
-    min-height: 216px;
+    height: 216px;
   }
 
   &-body {
@@ -32,6 +31,7 @@
       transition: $transition;
       @include truncate(2);
       font-size: rem(18px);
+      height: 44px;
 
       &:hover,
       &:active {
