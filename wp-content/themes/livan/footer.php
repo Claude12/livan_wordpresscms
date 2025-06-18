@@ -10,6 +10,7 @@
  */
 
 $site_logo = get_field('site_logo', 'option');
+$site_note = get_field('site_note', 'option');
 $socials = get_field('socials', 'option');
 
 ?>
@@ -43,7 +44,7 @@ $socials = get_field('socials', 'option');
 				<?php endif; ?>
 			</a>
 			<a href="<?php echo esc_url(home_url('/')); ?>">
-				<h2 class="footer-brand__title"><?php bloginfo('name'); ?></h2>
+				<h2 class="footer-brand__title" style="text-align: center;"><?php bloginfo('name'); ?></h2>
 			</a>
 		</div>
 
@@ -80,6 +81,15 @@ $socials = get_field('socials', 'option');
 				</ul>
 			<?php endif; ?>
 		</div>
+
+		<!-- Footer disclaimer -->
+		<?php if ($site_note): ?>
+			<div class="footer-disclaimer">
+				<p>
+					<?php echo wp_kses_post($site_note); ?>
+				</p>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<!-- Copyright Section -->

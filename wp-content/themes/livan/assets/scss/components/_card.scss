@@ -49,11 +49,35 @@
       color: $color-primary;
       transition: $transition;
       font-weight: 700;
+      display: block;
 
       &:hover,
       &:active {
         text-decoration: underline;
       }
+    }
+  }
+
+  &--works {
+    h3 {
+      height: auto;
+      font-size: rem(26px);
+      margin-top: $spacer-16;
+
+      &:hover,
+      &:active {
+        text-decoration: none;
+      }
+    }
+
+    img {
+      height: rem(280px);
+      object-position: top left;
+    }
+
+    .card-body__cta {
+      margin-top: $spacer-24;
+      text-align: center;
     }
   }
 }

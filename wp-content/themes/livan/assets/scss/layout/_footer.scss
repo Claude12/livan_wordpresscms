@@ -70,6 +70,17 @@
     }
   }
 
+  &-disclaimer {
+    margin-top: $spacer-24;
+
+    p {
+      font-size: rem(13px);
+      font-weight: 500;
+      color: $white-clean;
+      text-align: center;
+    }
+  }
+
   &-copyright p {
     font-size: rem(15px);
     color: $white-clean;
