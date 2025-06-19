@@ -52,15 +52,15 @@ $background_color = $section['background_color'];
                                     <?php echo wp_kses_post($desc); ?>
                                 </div>
                             <?php endif; ?>
-
-                            <?php if (!empty($link_url)): ?>
-                                <a class="card-body__cta" href="<?php echo esc_url($link_url); ?>"
-                                    target="<?php echo esc_attr($link_target); ?>" title="<?php echo esc_attr($link_title); ?>"
-                                    rel="noopener bookmark">
-                                    <?php echo esc_html($link_title); ?>
-                                </a>
-                            <?php endif; ?>
                         </div>
+
+                        <?php if (!empty($link_url)): ?>
+                            <a class="card-body__cta link" href="<?php echo esc_url($link_url); ?>"
+                                target="<?php echo esc_attr($link_target); ?>" title="<?php echo esc_attr($link_title); ?>"
+                                rel="noopener bookmark">
+                                <?php echo esc_html($link_title); ?>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>

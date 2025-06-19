@@ -44,18 +44,6 @@
       font-size: rem(16px);
       @include truncate(3);
     }
-
-    &__cta {
-      color: $color-primary;
-      transition: $transition;
-      font-weight: 700;
-      display: block;
-
-      &:hover,
-      &:active {
-        text-decoration: underline;
-      }
-    }
   }
 
   &--works {
@@ -75,9 +63,14 @@
       object-position: top left;
     }
 
-    .card-body__cta {
-      margin-top: $spacer-24;
-      text-align: center;
+    .card-body {
+      height: rem(300px);
+      padding-bottom: 0;
+
+      &__cta {
+        text-align: center;
+        margin-bottom: $spacer-32;
+      }
     }
   }
 }

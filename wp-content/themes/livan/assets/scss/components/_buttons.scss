@@ -88,3 +88,18 @@ $btn-secondary-border: $color-primary;
     color: $btn-primary-color;
   }
 }
+
+.link {
+  color: $color-primary;
+  transition: $transition;
+  font-weight: 700;
+  display: block;
+  font-size: rem(22px);
+  text-transform: uppercase;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    text-decoration: underline;
+  }
+}
