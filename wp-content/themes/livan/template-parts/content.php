@@ -26,7 +26,7 @@
 					<?php the_excerpt(); ?>
 				</div><!-- .entry-excerpt -->
 
-				<a class="card-body__cta" href="<?php the_permalink(); ?>" rel="bookmark">
+				<a class="card-body__cta link" href="<?php the_permalink(); ?>" rel="bookmark">
 					Read more
 				</a>
 			</div>
