@@ -825,6 +825,48 @@
                             "show_color_wheel": true
                         },
                         {
+                            "key": "field_6850formstand01",
+                            "label": "Standalone",
+                            "name": "standalone",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "Adds form--standalone class to the section",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "allow_in_bindings": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
+                            "key": "field_6850form00001",
+                            "label": "Title",
+                            "name": "form_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
                             "key": "field_6769b17566fa7",
                             "label": "Form Shortcode",
                             "name": "form_shortcode",
@@ -1032,7 +1074,7 @@
                             "label": "Section Title",
                             "name": "section_title",
                             "aria-label": "",
-                            "type": "text",
+                            "type": "wysiwyg",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1042,11 +1084,11 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "maxlength": "",
                             "allow_in_bindings": 0,
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": ""
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1,
+                            "delay": 0
                         },
                         {
                             "key": "field_6850a1b2c3d52",

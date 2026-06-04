@@ -3,6 +3,13 @@ function faqAccordion() {
 
   if (!items.length) return;
 
+  // Open first item by default
+  const firstAnswer = items[0].querySelector('.faq-block__answer');
+  items[0].classList.add('_active');
+  items[0].querySelector('.faq-block__question').setAttribute('aria-expanded', 'true');
+  firstAnswer.setAttribute('aria-hidden', 'false');
+  firstAnswer.style.maxHeight = firstAnswer.scrollHeight + 'px';
+
   items.forEach((item) => {
     const btn = item.querySelector('.faq-block__question');
     const answer = item.querySelector('.faq-block__answer');

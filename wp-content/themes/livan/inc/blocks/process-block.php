@@ -16,8 +16,8 @@ $process_items    = $section['process_items'];
         <div class="container">
 
             <?php if ($section_title): ?>
-                <div class="process-block__header">
-                    <h2 class="process-block__title" animate="fade-in"><?php echo esc_html($section_title); ?></h2>
+                <div class="process-block__header rte" animate="fade-in">
+                    <?php echo wp_kses_post($section_title); ?>
                 </div>
             <?php endif; ?>
 
