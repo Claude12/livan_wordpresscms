@@ -49,7 +49,6 @@
     color: $white-clean;
     text-shadow: $text-shadow;
     margin: 0;
-    font-size: clamp(rem(24px), 3vw, rem(36px));
 
     @include min-breakpoint(md) {
       max-width: 65%;

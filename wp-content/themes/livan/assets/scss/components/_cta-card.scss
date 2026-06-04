@@ -1,0 +1,57 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.cta-card-block {
+  padding: $spacer-64 0;
+
+  &__card {
+    background: linear-gradient(135deg, #0a3d35 0%, #006b5a 100%);
+    border-radius: rem(20px);
+    padding: $spacer-64 $spacer-32;
+    text-align: center;
+
+    @include min-breakpoint(md) {
+      padding: $spacer-64;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: rem(48px);
+    height: rem(48px);
+    margin: 0 auto $spacer-24;
+    color: $color-primary;
+  }
+
+  &__heading {
+    color: $white-clean;
+    font-size: clamp(rem(28px), 4vw, rem(48px));
+    font-weight: 700;
+    margin-bottom: $spacer-16;
+    text-shadow: none;
+  }
+
+  &__subheading {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: rem(18px);
+    max-width: 600px;
+    margin: 0 auto $spacer-48;
+    line-height: 1.6;
+  }
+}
+
+.button--cta-card {
+  background-color: $color-primary;
+  color: $white-clean;
+  border: 3px solid $color-primary;
+  font-weight: 700;
+
+  &:hover,
+  &:active {
+    background-color: transparent;
+    color: $white-clean;
+    border-color: $white-clean;
+  }
+}
