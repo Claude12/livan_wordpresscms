@@ -96,7 +96,7 @@ $socials = get_field('socials', 'option');
 	<div class="footer-bottom">
 		<div class="container">
 			<div class="footer-copyright">
-				<p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All Rights Reserved.</p>
+				<p>&copy; <?php echo date_i18n('Y'); ?> <?php bloginfo('name'); ?>. All Rights Reserved.</p>
 			</div>
 
 			<!-- Footer Menu -->

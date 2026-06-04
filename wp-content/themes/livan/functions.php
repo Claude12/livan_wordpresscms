@@ -196,7 +196,6 @@ function add_custom_security_headers()
 	header("Referrer-Policy: no-referrer-when-downgrade");
 	header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 	header("Cross-Origin-Opener-Policy: same-origin");
-	header("Cross-Origin-Embedder-Policy: require-corp");
 	header("X-XSS-Protection: 1; mode=block");
 }
 add_action('send_headers', 'add_custom_security_headers');

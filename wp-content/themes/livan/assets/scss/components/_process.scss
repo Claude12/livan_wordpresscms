@@ -1,0 +1,66 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.process-block {
+  padding-bottom: $spacer-24;
+  &__header {
+    text-align: center;
+    margin-bottom: $spacer-48;
+  }
+
+  &__title {
+    margin-bottom: 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacer-16;
+
+    @include min-breakpoint(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  &__card {
+    background-color: $white-clean;
+    border-radius: 8px;
+    padding: $spacer-24;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: $transition;
+
+    &:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
+  }
+
+  &__number {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    font-size: rem(48px);
+    font-weight: 700;
+    color: $color-primary;
+    line-height: 1;
+    margin-bottom: $spacer-16;
+    opacity: 0.7;
+  }
+
+  &__item-title {
+    font-size: rem(18px);
+    margin-bottom: $spacer-8;
+  }
+
+  &__item-desc {
+    font-size: rem(15px);
+    color: $gray-neutral;
+    margin: 0;
+    line-height: 1.6;
+  }
+}

@@ -64,7 +64,7 @@
     }
 
     .card-body {
-      height: rem(300px);
+      min-height: rem(300px);
       padding-bottom: 0;
 
       &__cta {

@@ -1,48 +1,47 @@
 <?php
 
 /**
- * ACF: Flexible Content > Layouts > Image Text Block
+ * ACF: Flexible Content > Layouts > 50/50 Block
  *
  * @package WordPress
  */
 
 $background_color = $section['background_color'];
-$block_image = $section['block_image'];
-$block_text = $section['block_text'];
-$image_left = $section['image_left'];
-
-// Ensure fields are available
-if ($block_image && $block_text):
+$left_type        = $section['left_type'];
+$left_image       = $section['left_image'];
+$left_text        = $section['left_text'];
+$right_type       = $section['right_type'];
+$right_image      = $section['right_image'];
+$right_text       = $section['right_text'];
 ?>
 
-    <section class="image-text-block <?php echo $image_left ? 'image-text-block--left' : 'image-text-block--right'; ?>"
-        style="background-color: <?php echo esc_attr($background_color); ?>;">
-        <div class="container">
-            <div class="image-text-block__content" animate="slide-in-up">
-                <?php if ($image_left): ?>
-                    <div class="image-text-block__image">
-                        <img src="<?php echo esc_url($block_image['url']); ?>"
-                            alt="<?php echo esc_attr($block_image['alt']); ?>"
-                            width="<?php echo esc_attr($block_image['width']); ?>"
-                            height="<?php echo esc_attr($block_image['height']); ?>" loading="lazy" />
-                    </div>
-                    <div class="image-text-block__text rte">
-                        <?php echo wp_kses_post($block_text); ?>
-                    </div>
-                <?php else: ?>
-                    <div class="image-text-block__text rte">
-                        <?php echo wp_kses_post($block_text); ?>
-                    </div>
-                    <div class="image-text-block__image">
-                        <img src="<?php echo esc_url($block_image['url']); ?>"
-                            alt="<?php echo esc_attr($block_image['alt']); ?>"
-                            width="<?php echo esc_attr($block_image['width']); ?>"
-                            height="<?php echo esc_attr($block_image['height']); ?>" loading="lazy" />
-                    </div>
+<section class="fifty-fifty-block" style="background-color: <?php echo esc_attr($background_color); ?>;">
+    <div class="container">
+        <div class="fifty-fifty-block__content" animate="slide-in-up">
+            <div class="fifty-fifty-block__side">
+                <?php if ($left_type === 'image' && $left_image): ?>
+                    <img
+                        src="<?php echo esc_url($left_image['url']); ?>"
+                        alt="<?php echo esc_attr($left_image['alt']); ?>"
+                        width="<?php echo esc_attr($left_image['width']); ?>"
+                        height="<?php echo esc_attr($left_image['height']); ?>"
+                        loading="lazy" />
+                <?php elseif ($left_type === 'text' && $left_text): ?>
+                    <div class="rte"><?php echo wp_kses_post($left_text); ?></div>
+                <?php endif; ?>
+            </div>
+            <div class="fifty-fifty-block__side">
+                <?php if ($right_type === 'image' && $right_image): ?>
+                    <img
+                        src="<?php echo esc_url($right_image['url']); ?>"
+                        alt="<?php echo esc_attr($right_image['alt']); ?>"
+                        width="<?php echo esc_attr($right_image['width']); ?>"
+                        height="<?php echo esc_attr($right_image['height']); ?>"
+                        loading="lazy" />
+                <?php elseif ($right_type === 'text' && $right_text): ?>
+                    <div class="rte"><?php echo wp_kses_post($right_text); ?></div>
                 <?php endif; ?>
             </div>
         </div>
-    </section>
-<?php
-endif;
-?>
+    </div>
+</section>

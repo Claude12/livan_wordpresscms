@@ -14,7 +14,7 @@ $rte = $section['rte_content'];
     <div class="container">
         <div class="rte">
             <?php if ($rte) { ?>
-                <?php echo $rte; ?>
+                <?php echo wp_kses_post($rte); ?>
             <?php } ?>
         </div>
     </div>

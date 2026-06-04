@@ -56,7 +56,7 @@ $btn-secondary-border: $color-primary;
   background-color: $btn-secondary-bg;
   color: $btn-secondary-color;
   border: 3px solid $btn-secondary-border;
-  padding: rem(24px) re(32px);
+  padding: rem(24px) rem(32px);
   transition: $transition;
 
   @include min-breakpoint(md) {
@@ -74,6 +74,19 @@ $btn-secondary-border: $color-primary;
   &:focus {
     background-color: $btn-secondary-bg;
     color: $btn-secondary-color !important;
+  }
+}
+
+// White outline variant — for use on coloured backgrounds
+.button--outline-white {
+  background-color: transparent;
+  color: $white-clean;
+  border: 3px solid $white-clean;
+
+  &:hover,
+  &:active {
+    background-color: $white-clean;
+    color: $black-bold;
   }
 }
 

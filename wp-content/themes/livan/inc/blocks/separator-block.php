@@ -12,12 +12,10 @@ $curve_position = $section['curve_position'];
 
 // Determine the class to add based on hide_svg and curve_position
 $curve_class = '';
-if ($hide_svg) {
-    if ($curve_position === 'top') {
-        $curve_class = 'curve-top';
-    } elseif ($curve_position === 'bottom') {
-        $curve_class = 'curve-bottom';
-    }
+if ($curve_position === 'top') {
+    $curve_class = 'curve-top';
+} elseif ($curve_position === 'bottom') {
+    $curve_class = 'curve-bottom';
 }
 ?>
 

@@ -54,38 +54,58 @@ function headerNav() {
     }
   });
 
-  // Drropdown Menus
+  // Dropdown Menus
+  // Use window.innerWidth (not UA sniffing) so hamburger/desktop
+  // behaviour is always in sync with the CSS breakpoint (768px).
+  let hideTimeout;
+
+  // Desktop hover (≥768px)
+  $('li.menu-item-has-children').on('mouseenter', function () {
+    if (window.innerWidth < 768) return;
+    clearTimeout(hideTimeout);
+    $(this).siblings().removeClass('expanded');
+    $(this).addClass('expanded');
+  }).on('mouseleave', function () {
+    if (window.innerWidth < 768) return;
+    const $item = $(this);
+    hideTimeout = setTimeout(function () {
+      $item.removeClass('expanded');
+    }, 1000);
+  });
+
+  // Mobile/tablet click — hamburger menu context (<768px)
   $('li.menu-item.menu-item-has-children > a').click(function (e) {
+    if (window.innerWidth >= 768) return;
     e.preventDefault();
 
     const parentLi = $(this).parent('li');
     const subMenu = parentLi.find('ul.sub-menu');
 
-    // Toggle 'expanded' class and animate sub-menu
     if (parentLi.hasClass('expanded')) {
       parentLi.removeClass('expanded');
       subMenu.css({ opacity: 0, transform: 'translateY(-10px)' });
-      setTimeout(() => subMenu.css({ display: 'none' }), 300); // Hide after transition
+      setTimeout(() => subMenu.css({ display: 'none' }), 300);
     } else {
       parentLi.addClass('expanded');
       subMenu.css({ display: 'block' });
-      setTimeout(() => subMenu.css({ opacity: 1, transform: 'translateY(0)' }), 10); // Delay for smooth transition
+      setTimeout(() => subMenu.css({ opacity: 1, transform: 'translateY(0)' }), 10);
     }
 
-    // Close other open menus
     parentLi.siblings().removeClass('expanded').find('ul.sub-menu').css({
       opacity: 0,
       transform: 'translateY(-10px)',
       display: 'none',
     });
 
-    e.stopPropagation(); // Prevent click from propagating
+    e.stopPropagation();
   });
 
-  // Remove 'expanded' class when clicking anywhere else
+  // Close on outside click
   $(document).click(function () {
-    $('li.menu-item.menu-item-has-children').removeClass('expanded');
-    $('ul.sub-menu').css({ opacity: 0, transform: 'translateY(-10px)', display: 'none' });
+    $('li.menu-item-has-children').removeClass('expanded');
+    if (window.innerWidth < 768) {
+      $('ul.sub-menu').css({ opacity: 0, transform: 'translateY(-10px)', display: 'none' });
+    }
   });
 
 }

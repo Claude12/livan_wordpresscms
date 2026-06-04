@@ -1,0 +1,77 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.faq-block {
+  &__header {
+    text-align: center;
+    margin-bottom: $spacer-48;
+  }
+
+  &__list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacer-16;
+  }
+
+  &__item {
+    background-color: $white-clean;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  &__question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacer-16;
+    padding: $spacer-24;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    color: $black-bold;
+    transition: $transition;
+
+    span {
+      font-size: clamp(20px, 2vw, 22px);
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: $color-primary;
+    transition: transform $transition;
+
+    ._active & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+
+    &-inner {
+      padding: 0 $spacer-24 $spacer-24;
+
+      p {
+        color: $gray-neutral;
+        margin: 0;
+        line-height: 1.6;
+      }
+    }
+  }
+}

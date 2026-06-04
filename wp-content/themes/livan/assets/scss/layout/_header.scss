@@ -120,7 +120,7 @@ body._touch .menu__list > li._active .menu__arrow {
   transform: rotate(180deg);
 }
 /*-------------------------*/
-@media (min-width: 767px) {
+@include min-breakpoint(md) {
   .menu__list {
     display: flex;
     align-items: center;
@@ -291,4 +291,5 @@ ul li.menu-item-has-children {
       transform: translateY(0);
     }
   }
+
 }
