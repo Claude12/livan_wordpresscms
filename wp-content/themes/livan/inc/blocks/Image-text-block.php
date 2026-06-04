@@ -13,12 +13,12 @@ $image_left = $section['image_left'];
 
 // Ensure fields are available
 if ($block_image && $block_text):
-    ?>
+?>
 
     <section class="image-text-block <?php echo $image_left ? 'image-text-block--left' : 'image-text-block--right'; ?>"
         style="background-color: <?php echo esc_attr($background_color); ?>;">
         <div class="container">
-            <div class="image-text-block__content">
+            <div class="image-text-block__content" animate="slide-in-up">
                 <?php if ($image_left): ?>
                     <div class="image-text-block__image">
                         <img src="<?php echo esc_url($block_image['url']); ?>"
@@ -43,6 +43,6 @@ if ($block_image && $block_text):
             </div>
         </div>
     </section>
-    <?php
+<?php
 endif;
 ?>

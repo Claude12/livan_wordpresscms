@@ -1,0 +1,41 @@
+//(Primary)
+$color-primary: #00bea3;
+
+// Gray (Neutral)
+$gray-neutral: #4b4b4b; // rgb(75, 75, 75)
+
+// Light Gray (Subtle)
+$gray-light: #f4f4f5;
+
+// Black (Bold and Sleek)
+$black-bold: #1a1a1a; // rgb(26, 26, 26)
+
+// Black (Bold and Sleek) - Mobile Header and Footer BG
+$black-bold-98: rgba(26, 26, 26, 0.98);
+
+// Black (Bold and Light) - Header BG
+$black-bold-5: rgba(26, 26, 26, 0.5);
+
+// White (Clean and Minimal)
+$white-clean: #ffffff; // rgb(255, 255, 255)
+
+// Color Classes
+.color-primary {
+  color: $color-primary;
+}
+
+.color-gray-neutral {
+  color: $gray-neutral;
+}
+
+.color-gray-light {
+  color: $gray-light;
+}
+
+.color-black-bold {
+  color: $black-bold;
+}
+
+.color-white-clean {
+  color: $white-clean;
+}

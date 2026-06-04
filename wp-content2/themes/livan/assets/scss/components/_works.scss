@@ -1,0 +1,28 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.works-block {
+  padding: 60px 0;
+
+  &__title {
+    text-align: center;
+  }
+
+  &__intro {
+    text-align: center;
+    font-size: rem(18px);
+    max-width: 85%;
+    margin: 0 auto $spacer-48;
+  }
+
+  &__grid {
+    display: grid;
+    gap: $spacer-32;
+
+    @include min-breakpoint(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

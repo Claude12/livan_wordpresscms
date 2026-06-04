@@ -16,7 +16,7 @@ use RankMath\Traits\Ajax;
 use RankMath\Traits\Meta;
 use RankMath\Traits\Hooker;
 use RankMath\Admin\Admin_Helper;
-use RankMath\Helpers\DB;
+use RankMath\Helpers\DB as DB_Helper;
 use RankMath\Helpers\Param;
 use RankMath\Helpers\Attachment;
 
@@ -147,15 +147,15 @@ abstract class Plugin_Importer {
 
 		return array_intersect_key(
 			[
-				'settings'     => esc_html__( 'Import Settings', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import plugin settings, global meta, sitemap settings, etc.', 'rank-math' ) ),
-				'postmeta'     => esc_html__( 'Import Post Meta', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import meta information of your posts/pages like the focus keyword, titles, descriptions, robots meta, OpenGraph info, etc.', 'rank-math' ) ),
-				'termmeta'     => esc_html__( 'Import Term Meta', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import data like category, tag, and CPT meta data from SEO.', 'rank-math' ) ),
-				'usermeta'     => esc_html__( 'Import Author Meta', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import meta information like titles, descriptions, focus keyword, robots meta, etc., of your author archive pages.', 'rank-math' ) ),
-				'redirections' => esc_html__( 'Import Redirections', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import all the redirections you have already set up in Yoast Premium.', 'rank-math' ) ),
-				'blocks'       => esc_html__( 'Import Blocks', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import and convert all compatible blocks in post contents.', 'rank-math' ) ),
-				'locations'    => esc_html__( 'Import Locations', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import Locations Settings from Yoast plugin.', 'rank-math' ) ),
-				'news'         => esc_html__( 'Import News Settings', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import News Settings from Yoast News Add-on.', 'rank-math' ) ),
-				'video'        => esc_html__( 'Import Video Sitemap Settings', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import Video Sitemap Settings from Yoast Video Add-on.', 'rank-math' ) ),
+				'settings'     => esc_html__( 'Import Settings', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import plugin settings, global meta, sitemap settings, etc.', 'seo-by-rank-math' ) ),
+				'postmeta'     => esc_html__( 'Import Post Meta', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import meta information of your posts/pages like the focus keyword, titles, descriptions, robots meta, OpenGraph info, etc.', 'seo-by-rank-math' ) ),
+				'termmeta'     => esc_html__( 'Import Term Meta', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import data like category, tag, and CPT meta data from SEO.', 'seo-by-rank-math' ) ),
+				'usermeta'     => esc_html__( 'Import Author Meta', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import meta information like titles, descriptions, focus keyword, robots meta, etc., of your author archive pages.', 'seo-by-rank-math' ) ),
+				'redirections' => esc_html__( 'Import Redirections', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import all the redirections you have already set up in Yoast Premium.', 'seo-by-rank-math' ) ),
+				'blocks'       => esc_html__( 'Import Blocks', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import and convert all compatible blocks in post contents.', 'seo-by-rank-math' ) ),
+				'locations'    => esc_html__( 'Import Locations', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import Locations Settings from Yoast plugin.', 'seo-by-rank-math' ) ),
+				'news'         => esc_html__( 'Import News Settings', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import News Settings from Yoast News Add-on.', 'seo-by-rank-math' ) ),
+				'video'        => esc_html__( 'Import Video Sitemap Settings', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import Video Sitemap Settings from Yoast Video Add-on.', 'seo-by-rank-math' ) ),
 			],
 			array_combine(
 				$this->choices,
@@ -199,7 +199,7 @@ abstract class Plugin_Importer {
 	 */
 	public function run_import( $perform ) {
 		if ( ! method_exists( $this, $perform ) ) {
-			throw new Exception( esc_html__( 'Unable to perform action this time.', 'rank-math' ) );
+			throw new Exception( esc_html__( 'Unable to perform action this time.', 'seo-by-rank-math' ) );
 		}
 
 		/**
@@ -248,7 +248,7 @@ abstract class Plugin_Importer {
 		}
 
 		if ( 'termmeta' === $action || 'redirections' === $action ) {
-			return sprintf( $message, $result['count'] );
+			return is_array( $result ) ? sprintf( $message, $result['count'] ) : $message;
 		}
 
 		return $message;
@@ -439,7 +439,7 @@ abstract class Plugin_Importer {
 	 */
 	protected function get_post_ids( $count = false ) {
 		$paged = $this->get_pagination_arg( 'page' );
-		$table = DB::query_builder( 'posts' )->whereIn( 'post_type', Helper::get_accessible_post_types() );
+		$table = DB_Helper::query_builder( 'posts' )->whereIn( 'post_type', Helper::get_accessible_post_types() );
 
 		return $count ? absint( $table->selectCount( 'ID', 'total' )->getVar() ) :
 			$table->select( 'ID' )->page( $paged - 1, $this->items_per_page )->get();
@@ -453,7 +453,7 @@ abstract class Plugin_Importer {
 	 */
 	protected function get_user_ids( $count = false ) {
 		$paged = $this->get_pagination_arg( 'page' );
-		$table = DB::query_builder( 'users' );
+		$table = DB_Helper::query_builder( 'users' );
 
 		return $count ? absint( $table->selectCount( 'ID', 'total' )->getVar() ) :
 			$table->select( 'ID' )->page( $paged - 1, $this->items_per_page )->get();
@@ -491,9 +491,9 @@ abstract class Plugin_Importer {
 		}
 
 		$result = false;
-		$result = DB::query_builder( 'usermeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
-		$result = DB::query_builder( 'termmeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
-		$result = DB::query_builder( 'postmeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
+		$result = DB_Helper::query_builder( 'usermeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
+		$result = DB_Helper::query_builder( 'termmeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
+		$result = DB_Helper::query_builder( 'postmeta' )->whereLike( 'meta_key', $this->meta_key )->delete();
 
 		return $result;
 	}
@@ -508,7 +508,7 @@ abstract class Plugin_Importer {
 			return false;
 		}
 
-		$table = DB::query_builder( 'options' );
+		$table = DB_Helper::query_builder( 'options' );
 		foreach ( $this->option_keys as $option_key ) {
 			$table->orWhereLike( 'option_name', $option_key );
 		}
@@ -528,7 +528,7 @@ abstract class Plugin_Importer {
 		}
 
 		foreach ( $this->table_names as $table ) {
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}{$table}" );
+			DB_Helper::query( "DROP TABLE IF EXISTS {$wpdb->prefix}{$table}" );
 		}
 
 		return true;
@@ -544,7 +544,7 @@ abstract class Plugin_Importer {
 			return false;
 		}
 
-		$table = DB::query_builder( 'options' )->select( 'option_id' );
+		$table = DB_Helper::query_builder( 'options' )->select( 'option_id' );
 		foreach ( $this->option_keys as $option_key ) {
 			if ( '%' === substr( $option_key, -1 ) ) {
 				$table->orWhereLike( 'option_name', substr( $option_key, 0, -1 ), '' );
@@ -566,7 +566,7 @@ abstract class Plugin_Importer {
 			return false;
 		}
 
-		$result = DB::query_builder( 'postmeta' )->select( 'meta_id' )->whereLike( 'meta_key', $this->meta_key, '' )->getVar();
+		$result = DB_Helper::query_builder( 'postmeta' )->select( 'meta_id' )->whereLike( 'meta_key', $this->meta_key, '' )->getVar();
 		return absint( $result ) > 0 ? true : false;
 	}
 

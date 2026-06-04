@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ACF: Flexible Content > Layouts > Works Block
  *
@@ -13,11 +14,11 @@ $background_color = $section['background_color'];
 ?>
 
 <?php if ($works_items && is_array($works_items) && count($works_items) > 0): ?>
-    <section class="works-block" id="<?php echo esc_attr($block_anchor); ?>"
+    <section class="works-block" animate="slide-in-up" id="<?php echo esc_attr($block_anchor); ?>"
         style="background-color: <?php echo esc_attr($background_color); ?>;">
         <div class="container">
             <?php if ($works_title): ?>
-                <h2 class="works-block__title"><?php echo esc_html($works_title); ?></h2>
+                <h2 class="works-block__title" animate="fade-in"><?php echo esc_html($works_title); ?></h2>
             <?php endif; ?>
 
             <?php if ($works_intro): ?>
@@ -33,8 +34,8 @@ $background_color = $section['background_color'];
                     $image = $item['image'];
                     $title = $item['title'];
                     $desc = $item['description'];
-                    ?>
-                    <div class="card card--works">
+                ?>
+                    <div class="card card--works" animate="fade-in">
                         <?php if ($image): ?>
                             <div class="works-block__image">
                                 <img src="<?php echo esc_url($image['url']); ?>"

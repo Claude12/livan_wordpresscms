@@ -10,7 +10,7 @@ $background_color = $section['background_color'];
 $rte = $section['rte_content'];
 ?>
 
-<section style="background-color: <?php echo esc_attr($background_color); ?>;">
+<section style="background-color: <?php echo esc_attr($background_color); ?>;" animate="slide-in-up">
     <div class="container">
         <div class="rte">
             <?php if ($rte) { ?>

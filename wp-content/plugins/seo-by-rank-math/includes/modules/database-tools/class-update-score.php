@@ -15,6 +15,7 @@ use RankMath\Helpers\Param;
 use RankMath\Traits\Hooker;
 use RankMath\Paper\Paper;
 use RankMath\Admin\Metabox\Screen;
+use RankMath\Helpers\DB as DB_Helper;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,7 +46,7 @@ class Update_Score {
 	public function __construct() {
 		$this->batch_size = absint( apply_filters( 'rank_math/recalculate_scores_batch_size', 25 ) );
 
-		$this->filter( 'rank_math/tools/update_seo_score', 'update_seo_score' );
+		$this->filter( 'rank_math/tools/update_seo_score', 'update_seo_score', 10, 2 );
 
 		$this->screen = new Screen();
 		$this->screen->load_screen( 'post' );
@@ -67,6 +68,7 @@ class Update_Score {
 			'wp-components'      => '',
 			'wp-element'         => '',
 			'wp-block-editor'    => '',
+			'wp-wordcount'       => '',
 			'rank-math-analyzer' => rank_math()->plugin_url() . 'assets/admin/js/analyzer.js',
 		];
 
@@ -97,9 +99,21 @@ class Update_Score {
 
 	/**
 	 * Function to Update the SEO score.
+	 *
+	 * @param string               $message The message to return.
+	 * @param WP_REST_Request|null $request The request object.
+	 *
+	 * @return array|string The message to return.
 	 */
-	public function update_seo_score() {
-		$args   = Param::post( 'args', [], FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+	public function update_seo_score( $message = '', $request = null ) {
+		if ( ! $request ) {
+			// For backward compatibility where $request is not passed.
+			$args = Param::post( 'args', [], FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		} else {
+			$params = $request->get_params();
+			$args   = $params['args'] ?? [];
+		}
+
 		$offset = isset( $args['offset'] ) ? absint( $args['offset'] ) : 0;
 
 		// We get "paged" when running from the importer.
@@ -108,7 +122,7 @@ class Update_Score {
 			$offset = ( $paged - 1 ) * $this->batch_size;
 		}
 
-		$update_all = ! isset( $args['update_all_scores'] ) || ! empty( $args['update_all_scores'] );
+		$update_all = ! empty( $args['update_all_scores'] );
 		$query_args = [
 			'post_type'      => $this->get_post_types(),
 			'posts_per_page' => $this->batch_size,
@@ -177,6 +191,7 @@ class Update_Score {
 				'content'      => wpautop( $post->post_content ),
 				'url'          => urldecode( get_the_permalink( $post_id ) ),
 				'hasContentAi' => ! empty( Helper::get_post_meta( 'contentai_score', $post_id ) ),
+				'post_type'    => $post_type,
 			];
 
 			if ( has_post_thumbnail( $post_id ) ) {
@@ -229,7 +244,7 @@ class Update_Score {
 			$query .= " AND (SELECT COUNT(*) FROM {$wpdb->postmeta} as pm2 WHERE pm2.post_id = p.ID AND pm2.meta_key = 'rank_math_seo_score' AND pm2.meta_value != '') = 0";
 		}
 
-		$update_score_post_ids = $wpdb->get_var( $wpdb->prepare( $query, $post_types ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- It's prepared above.
+		$update_score_post_ids = DB_Helper::get_var( $wpdb->prepare( $query, $post_types ) );
 
 		return (int) $update_score_post_ids;
 	}

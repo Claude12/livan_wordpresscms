@@ -149,7 +149,7 @@ class Extension_CloudFlare_Plugin {
 					'key'                   => $c->get_string( array( 'cloudflare', 'key' ) ),
 					'zone_id'               => $c->get_string( array( 'cloudflare', 'zone_id' ) ),
 					'timelimit_api_request' => $c->get_integer(
-						array( 'cloudflare', 'timelimit.api_request' ),
+						array( 'cloudflare', 'timelimit.api_request' )
 					),
 				)
 			);
@@ -200,7 +200,7 @@ class Extension_CloudFlare_Plugin {
 					'key'                   => $c->get_string( array( 'cloudflare', 'key' ) ),
 					'zone_id'               => $c->get_string( array( 'cloudflare', 'zone_id' ) ),
 					'timelimit_api_request' => $c->get_integer(
-						array( 'cloudflare', 'timelimit.api_request' ),
+						array( 'cloudflare', 'timelimit.api_request' )
 					),
 				)
 			);
@@ -481,7 +481,7 @@ class Extension_CloudFlare_Plugin {
 		// Extract out the main IP pieces.
 		$ip_pieces     = explode( '::', $left_piece, 2 );
 		$main_ip_piece = $ip_pieces[0];
-		$last_ip_piece = $ip_pieces[1];
+		$last_ip_piece = isset( $ip_pieces[1] ) ? $ip_pieces[1] : '';
 
 		// Pad out the shorthand entries.
 		$main_ip_pieces = explode( ':', $main_ip_piece );

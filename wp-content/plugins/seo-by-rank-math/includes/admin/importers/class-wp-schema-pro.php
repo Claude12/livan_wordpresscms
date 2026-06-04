@@ -11,6 +11,7 @@
 namespace RankMath\Admin\Importers;
 
 use RankMath\Helper;
+use RankMath\Helpers\DB as DB_Helper;
 use RankMath\Admin\Admin_Helper;
 use RankMath\Helpers\Str;
 
@@ -573,7 +574,7 @@ class WP_Schema_Pro extends Plugin_Importer {
 		$meta_args .= " OR pm.meta_value LIKE '%\"{$post_type}|all\"%'";
 		$meta_args .= " OR pm.meta_value LIKE '%\"post-{$post_id}\"%'";
 
-		$local_posts = $wpdb->get_col( $query . ' AND (' . $meta_args . ')' . $orderby ); // phpcs:ignore
+		$local_posts = DB_Helper::get_col( $query . ' AND (' . $meta_args . ')' . $orderby );
 		if ( empty( $local_posts ) ) {
 			return false;
 		}
@@ -599,8 +600,8 @@ class WP_Schema_Pro extends Plugin_Importer {
 	 */
 	public function get_choices() {
 		return [
-			'settings' => esc_html__( 'Import Settings', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Plugin settings and site-wide meta data.', 'rank-math' ) ),
-			'postmeta' => esc_html__( 'Import Schemas', 'rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import all Schema data for Posts, Pages, and custom post types.', 'rank-math' ) ),
+			'settings' => esc_html__( 'Import Settings', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Plugin settings and site-wide meta data.', 'seo-by-rank-math' ) ),
+			'postmeta' => esc_html__( 'Import Schemas', 'seo-by-rank-math' ) . Admin_Helper::get_tooltip( esc_html__( 'Import all Schema data for Posts, Pages, and custom post types.', 'seo-by-rank-math' ) ),
 		];
 	}
 
@@ -630,11 +631,11 @@ class WP_Schema_Pro extends Plugin_Importer {
 				'rating'       => 'review.reviewRating.ratingValue',
 			],
 			'course'               => [
-				'name'             => 'name',
-				'description'      => 'description',
-				'orgnization-name' => 'provider.name',
-				'same-as'          => 'provider.sameAs',
-				'rating'           => 'review.reviewRating.ratingValue',
+				'name'              => 'name',
+				'description'       => 'description',
+				'organization-name' => 'provider.name',
+				'same-as'           => 'provider.sameAs',
+				'rating'            => 'review.reviewRating.ratingValue',
 			],
 			'person'               => [
 				'name'      => 'name',
@@ -708,7 +709,7 @@ class WP_Schema_Pro extends Plugin_Importer {
 			'job-type'          => 'employmentType',
 			'start-date'        => 'datePosted',
 			'expiry-date'       => 'validThrough',
-			'orgnization-name'  => 'hiringOrganization.name',
+			'organization-name' => 'hiringOrganization.name',
 			'same-as'           => 'hiringOrganization.sameAs',
 			'organization-logo' => 'hiringOrganization.logo',
 			'location-street'   => 'jobLocation.address.streetAddress',
@@ -755,7 +756,7 @@ class WP_Schema_Pro extends Plugin_Importer {
 			'recipe-yield'     => 'recipeYield',
 			'recipe-keywords'  => 'keywords',
 			'nutrition'        => 'nutrition.calories',
-			'preperation-time' => 'prepTime',
+			'preparation-time' => 'prepTime',
 			'cook-time'        => 'cookTime',
 			'ingredients'      => 'recipeIngredient',
 			'rating'           => 'review.reviewRating.ratingValue',

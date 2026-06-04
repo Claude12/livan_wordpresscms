@@ -109,9 +109,6 @@ class Post_Screen implements IScreen {
 		// Classic.
 		if ( Helper::is_block_editor() ) {
 			wp_enqueue_script( 'rank-math-formats' );
-		}
-
-		if ( $is_block_editor ) {
 			wp_enqueue_script( 'rank-math-primary-term', rank_math()->plugin_url() . 'assets/admin/js/gutenberg-primary-term.js', [], rank_math()->version, true );
 		}
 	}
@@ -129,7 +126,7 @@ class Post_Screen implements IScreen {
 			'noFollowDomains'        => Str::to_arr_no_empty( Helper::get_settings( 'general.nofollow_domains' ) ),
 			'noFollowExcludeDomains' => Str::to_arr_no_empty( Helper::get_settings( 'general.nofollow_exclude_domains' ) ),
 			'noFollowExternalLinks'  => Helper::get_settings( 'general.nofollow_external_links' ),
-			'featuredImageNotice'    => esc_html__( 'The featured image should be at least 200 by 200 pixels to be picked up by Facebook and other social media sites.', 'rank-math' ),
+			'featuredImageNotice'    => esc_html__( 'The featured image should be at least 200 by 200 pixels to be picked up by Facebook and other social media sites.', 'seo-by-rank-math' ),
 			'pluginReviewed'         => $this->plugin_reviewed(),
 			'postSettings'           => [
 				'linkSuggestions' => Helper::get_settings( 'titles.pt_' . $post_type . '_link_suggestions' ),

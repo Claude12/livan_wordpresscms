@@ -1,0 +1,39 @@
+@use "abstracts/functions" as *;
+@use "abstracts/variables" as *;
+@use "abstracts/mixins" as *;
+@use "base/colors" as *;
+
+.form {
+  div.wpforms-container {
+    max-width: 600px;
+
+    .wpforms-field-row.wpforms-field-medium,
+    input.wpforms-field-medium {
+      max-width: 100%;
+    }
+  }
+
+  /* Input Fields */
+  .wpforms-form input[type="text"],
+  .wpforms-form input[type="email"],
+  .wpforms-form input[type="url"],
+  .wpforms-form input[type="tel"],
+  .wpforms-form input[type="number"],
+  .wpforms-form input[type="password"],
+  .wpforms-form textarea,
+  .wpforms-form select {
+    transition: transition;
+
+    &:focus,
+    &:hover,
+    &:active {
+      border-color: $color-primary !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  button.wpforms-submit[type=submit] {
+    background-color: $color-primary !important;
+  }
+}

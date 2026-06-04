@@ -203,12 +203,28 @@ class Extension_CloudFlare_Plugin_Admin {
 	 * @return array Updated admin bar menu items.
 	 */
 	public function w3tc_admin_bar_menu( $menu_items ) {
-		$menu_items['20810.cloudflare'] = array(
-			'id'     => 'w3tc_flush_cloudflare',
-			'parent' => 'w3tc_flush',
-			'title'  => __( 'Cloudflare', 'w3-total-cache' ),
-			'href'   => wp_nonce_url( admin_url( 'admin.php?page=w3tc_dashboard&amp;w3tc_cloudflare_flush' ), 'w3tc' ),
-		);
+		if (
+			$this->_config->get_boolean( array( 'cloudflare', 'enabled' ) ) &&
+			Extension_CloudFlare_Api::are_api_credentials_usable(
+				$this->_config->get_string( array( 'cloudflare', 'email' ) ),
+				$this->_config->get_string( array( 'cloudflare', 'key' ) )
+			) &&
+			! empty( $this->_config->get_string( array( 'cloudflare', 'zone_id' ) ) )
+		) {
+			$current_page = Util_Request::get_string( 'page', 'w3tc_dashboard' );
+
+			$menu_items['20810.cloudflare'] = array(
+				'id'     => 'w3tc_flush_cloudflare',
+				'parent' => 'w3tc_flush',
+				'title'  => __( 'Cloudflare', 'w3-total-cache' ),
+				'href'   => wp_nonce_url(
+					admin_url(
+						'admin.php?page=' . $current_page . '&amp;w3tc_cloudflare_flush'
+					),
+					'w3tc'
+				),
+			);
+		}
 
 		return $menu_items;
 	}
@@ -265,42 +281,53 @@ class Extension_CloudFlare_Plugin_Admin {
 		$action   = Util_Request::get_string( 'command' );
 		$value    = Util_Request::get_string( 'value' );
 		$nonce    = Util_Request::get_string( '_wpnonce' );
+		$error    = null;
 
 		if ( ! wp_verify_nonce( $nonce, 'w3tc' ) ) {
 			$error = 'Access denied.';
-		} elseif ( ! $email ) {
-			$error = 'Empty email.';
-		} elseif ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
-			$error = 'Invalid email.';
 		} elseif ( ! $key ) {
 			$error = 'Empty token / global key.';
-		} elseif ( ! $zone ) {
-			$error = 'Empty zone.';
-		} elseif ( strpos( $zone, '.' ) === false ) {
-			$error = 'Invalid domain.';
-		} elseif ( ! in_array( $action, $actions, true ) ) {
-			$error = 'Invalid action.';
-		} else {
-			$config = array(
-				'email' => $email,
-				'key'   => $key,
-				'zone'  => $zone,
-			);
+		} elseif ( Extension_CloudFlare_Api::is_legacy_global_api_key_string( $key ) ) {
+			if ( ! $email ) {
+				$error = 'Empty email.';
+			} elseif ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+				$error = 'Invalid email.';
+			}
+		} elseif ( $email && ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+			$error = 'Invalid email.';
+		} elseif ( ! Extension_CloudFlare_Api::are_api_credentials_usable( $email, $key ) ) {
+			$error = 'Invalid authentication (API token, or Global API key with account email).';
+		}
 
-			@$this->api = new Extension_CloudFlare_Api( $config );
-
-			@set_time_limit( $this->_config->get_integer( array( 'cloudflare', 'timelimit.api_request' ) ) );
-			$response = $this->api->api_request( $action, $value );
-
-			if ( $response ) {
-				if ( 'success' === $response->result ) {
-					$result = true;
-					$error  = 'OK';
-				} else {
-					$error = $response->msg;
-				}
+		if ( null === $error ) {
+			if ( ! $zone ) {
+				$error = 'Empty zone.';
+			} elseif ( strpos( $zone, '.' ) === false ) {
+				$error = 'Invalid domain.';
+			} elseif ( ! in_array( $action, $actions, true ) ) {
+				$error = 'Invalid action.';
 			} else {
-				$error = 'Unable to make Cloudflare API request.';
+				$config = array(
+					'email' => $email,
+					'key'   => $key,
+					'zone'  => $zone,
+				);
+
+				@$this->api = new Extension_CloudFlare_Api( $config );
+
+				@set_time_limit( $this->_config->get_integer( array( 'cloudflare', 'timelimit.api_request' ) ) ); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
+				$response = $this->api->api_request( $action, $value );
+
+				if ( $response ) {
+					if ( 'success' === $response->result ) {
+						$result = true;
+						$error  = 'OK';
+					} else {
+						$error = $response->msg;
+					}
+				} else {
+					$error = 'Unable to make Cloudflare API request.';
+				}
 			}
 		}
 
@@ -351,7 +378,7 @@ class Extension_CloudFlare_Plugin_Admin {
 		$email = $this->_config->get_string( array( 'cloudflare', 'email' ) );
 		$key   = $this->_config->get_string( array( 'cloudflare', 'key' ) );
 
-		if ( empty( $email ) || empty( $key ) ) {
+		if ( ! Extension_CloudFlare_Api::are_api_credentials_usable( $email, $key ) ) {
 			return $actions;
 		}
 

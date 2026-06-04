@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ACF: Flexible Content > Layouts > Services Block
  *
@@ -17,7 +18,7 @@ $icon_background_color = $section['icon_background_color'];
         style="background-color: <?php echo esc_attr($background_color); ?>;">
         <div class="container">
             <?php if ($service_title): ?>
-                <h2><?php echo esc_html($service_title); ?></h2>
+                <h2 animate="fade-in"><?php echo esc_html($service_title); ?></h2>
             <?php endif; ?>
             <div class="service-block__grid">
                 <?php foreach ($service_items as $service_item):
@@ -25,8 +26,8 @@ $icon_background_color = $section['icon_background_color'];
                     $service_heading = $service_item['service_heading'];
                     $service_description = $service_item['service_description'];
                     $service_link = $service_item['service_link'];
-                    ?>
-                    <div class="service-block__item">
+                ?>
+                    <div class="service-block__item" animate="fade-in">
                         <?php if ($service_icon): ?>
                             <div class="service-block__item-image"
                                 style="background-color: <?php echo esc_attr($icon_background_color); ?>;">
@@ -36,13 +37,13 @@ $icon_background_color = $section['icon_background_color'];
                         <?php endif; ?>
 
                         <?php if ($service_heading): ?>
-                            <h3 class="service-block__item-title">
+                            <h3 class="service-block__item-title" animate="fade-in">
                                 <?php echo esc_html($service_heading); ?>
                             </h3>
                         <?php endif; ?>
 
                         <?php if ($service_description): ?>
-                            <div class="service-block__item-description rte">
+                            <div class="service-block__item-description rte" animate="fade-in">
                                 <?php echo wp_kses_post($service_description); ?>
                             </div>
                         <?php endif; ?>

@@ -1,0 +1,19 @@
+@use "abstracts/mixins" as *;
+
+// Classes to display on mobile and hide on desktop
+.d-mobile-only {
+  display: block !important;
+
+  @include min-breakpoint(md) {
+    display: none !important;
+  }
+}
+
+// Classes to display on desktop and hide on mobile
+.d-desktop-only {
+  display: none !important;
+
+  @include min-breakpoint(md) {
+    display: block !important;
+  }
+}

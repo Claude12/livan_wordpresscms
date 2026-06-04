@@ -11,6 +11,7 @@
 namespace RankMath\Sitemap;
 
 use RankMath\Helper;
+use RankMath\Helpers\DB as DB_Helper;
 use RankMath\Helpers\Sitepress;
 use RankMath\Traits\Hooker;
 use RankMath\Sitemap\Html\Sitemap as Html_Sitemap;
@@ -61,6 +62,8 @@ class Sitemap {
 			$this->filter( 'rank_math/sitemap/build_type', 'rank_math_build_sitemap_filter' );
 			$this->filter( 'rank_math/sitemap/entry', 'exclude_hidden_language_posts', 10, 3 );
 		}
+
+		$this->action( 'rank_math/settings/after_save', 'clear_cache' );
 	}
 
 	/**
@@ -114,10 +117,11 @@ class Sitemap {
 	 * @return string
 	 */
 	public function rank_math_build_sitemap_filter( $type ) {
-		global $sitepress_settings;
-		if ( isset( $sitepress_settings['language_negotiation_type'] ) && absint( $sitepress_settings['language_negotiation_type'] ) === 2 ) {
+		if ( Sitepress::get()->is_per_domain() ) {
 			return $type;
 		}
+
+		global $sitepress_settings;
 
 		// Before to build the sitemap and as we are on front-end just make sure the links won't be translated. The setting should not be updated in DB.
 		$sitepress_settings['auto_adjust_ids'] = 0;
@@ -139,11 +143,11 @@ class Sitemap {
 	 */
 	public function new_post_type_notice( $notice, $count ) {
 		/* Translators: placeholder is the post type name. */
-		$notice = __( 'Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+		$notice = __( 'Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'seo-by-rank-math' );
 
 		if ( $count > 1 ) {
 			/* Translators: placeholder is the post type names separated with commas. */
-			$notice = __( 'Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+			$notice = __( 'Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'seo-by-rank-math' );
 		}
 
 		return $notice;
@@ -160,7 +164,7 @@ class Sitemap {
 	 * Exclude object from sitemap.
 	 *
 	 * @param  int     $object_id   Object id.
-	 * @param  string  $object_type Object type. Accetps: post, term, user.
+	 * @param  string  $object_type Object type. Accepts: post, term, user.
 	 * @param  boolean $is_include  Add or Remove object.
 	 */
 	public static function exclude_object( $object_id, $object_type, $is_include ) {
@@ -236,7 +240,7 @@ class Sitemap {
 				GROUP BY p.post_type
 				ORDER BY p.post_modified_gmt DESC";
 
-				foreach ( $wpdb->get_results( $sql ) as $obj ) { // phpcs:ignore
+				foreach ( DB_Helper::get_results( $sql ) as $obj ) {
 					$post_type_dates[ $obj->post_type ] = $obj->date;
 				}
 			}
@@ -327,5 +331,12 @@ class Sitemap {
 		 * @return string
 		 */
 		return apply_filters( 'rank_math/sitemap/index/slug', 'sitemap_index' );
+	}
+
+	/**
+	 * Ensure sitemap cache is invalidated when settings change.
+	 */
+	public function clear_cache() {
+		Cache::invalidate_storage();
 	}
 }

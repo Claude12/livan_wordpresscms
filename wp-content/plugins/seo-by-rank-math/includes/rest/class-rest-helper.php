@@ -12,6 +12,7 @@ namespace RankMath\Rest;
 
 use WP_Error;
 use RankMath\Helper;
+use RankMath\Helpers\DB as DB_Helper;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,7 +46,7 @@ class Rest_Helper {
 		if ( ! Helper::is_module_active( 'redirections' ) || ! Helper::has_cap( 'redirections' ) ) {
 			return new WP_Error(
 				'rest_cannot_edit',
-				__( 'Sorry, you are not allowed to create/update redirection.', 'rank-math' ),
+				__( 'Sorry, you are not allowed to create/update redirection.', 'seo-by-rank-math' ),
 				[ 'status' => rest_authorization_required_code() ]
 			);
 		}
@@ -64,7 +65,7 @@ class Rest_Helper {
 		if ( ! Helper::is_module_active( 'rich-snippet' ) || ! Helper::has_cap( 'onpage_snippet' ) ) {
 			return new WP_Error(
 				'rest_cannot_edit',
-				__( 'Sorry, you are not allowed to create/update schema.', 'rank-math' ),
+				__( 'Sorry, you are not allowed to create/update schema.', 'seo-by-rank-math' ),
 				[ 'status' => rest_authorization_required_code() ]
 			);
 		}
@@ -101,6 +102,13 @@ class Rest_Helper {
 	public static function get_post_permissions_check( $request ) {
 		$object_id = $request->get_param( 'objectID' );
 		if ( $object_id === 0 ) {
+			if ( ! Helper::has_cap( 'titles' ) ) {
+				return new WP_Error(
+					'rest_cannot_edit',
+					__( 'Sorry, you are not allowed to edit homepage SEO settings.', 'seo-by-rank-math' ),
+					[ 'status' => rest_authorization_required_code() ]
+				);
+			}
 			return true;
 		}
 
@@ -109,14 +117,10 @@ class Rest_Helper {
 			return $post;
 		}
 
-		if ( 'rank_math_locations' === $post->post_type ) {
-			return true;
-		}
-
 		if ( ! Helper::is_post_type_accessible( $post->post_type ) && 'rank_math_schema' !== $post->post_type ) {
 			return new WP_Error(
 				'rest_cannot_edit',
-				__( 'Sorry, you are not allowed to edit this post type.', 'rank-math' ),
+				__( 'Sorry, you are not allowed to edit this post type.', 'seo-by-rank-math' ),
 				[ 'status' => rest_authorization_required_code() ]
 			);
 		}
@@ -132,7 +136,7 @@ class Rest_Helper {
 
 		return new WP_Error(
 			'rest_cannot_edit',
-			__( 'Sorry, you are not allowed to edit this post.', 'rank-math' ),
+			__( 'Sorry, you are not allowed to edit this post.', 'seo-by-rank-math' ),
 			[ 'status' => rest_authorization_required_code() ]
 		);
 	}
@@ -147,7 +151,7 @@ class Rest_Helper {
 	public static function get_post( $id ) {
 		$error = new WP_Error(
 			'rest_post_invalid_id',
-			__( 'Invalid post ID.', 'rank-math' ),
+			__( 'Invalid post ID.', 'seo-by-rank-math' ),
 			[ 'status' => 404 ]
 		);
 
@@ -183,7 +187,7 @@ class Rest_Helper {
 		) {
 			return new WP_Error(
 				'rest_cannot_edit',
-				__( 'Sorry, you are not allowed to edit this term.', 'rank-math' ),
+				__( 'Sorry, you are not allowed to edit this term.', 'seo-by-rank-math' ),
 				[ 'status' => rest_authorization_required_code() ]
 			);
 		}
@@ -201,7 +205,7 @@ class Rest_Helper {
 	public static function get_term( $id ) {
 		$error = new WP_Error(
 			'rest_term_invalid_id',
-			__( 'Invalid term ID.', 'rank-math' ),
+			__( 'Invalid term ID.', 'seo-by-rank-math' ),
 			[ 'status' => 404 ]
 		);
 
@@ -210,7 +214,7 @@ class Rest_Helper {
 		}
 
 		global $wpdb;
-		$term = $wpdb->get_row( $wpdb->prepare( "SELECT t.* FROM $wpdb->term_taxonomy AS t WHERE t.term_id = %d LIMIT 1", $id ) );
+		$term = DB_Helper::get_row( $wpdb->prepare( "SELECT t.* FROM $wpdb->term_taxonomy AS t WHERE t.term_id = %d LIMIT 1", $id ) );
 		if ( empty( $term ) || empty( $term->term_id ) ) {
 			return $error;
 		}
@@ -241,7 +245,7 @@ class Rest_Helper {
 		if ( empty( $param ) ) {
 			return new WP_Error(
 				'param_value_empty',
-				esc_html__( 'Sorry, field is empty which is not allowed.', 'rank-math' )
+				esc_html__( 'Sorry, field is empty which is not allowed.', 'seo-by-rank-math' )
 			);
 		}
 		return true;
@@ -256,6 +260,7 @@ class Rest_Helper {
 	 */
 	public static function can_manage_settings( $request ) {
 		$type = $request->get_param( 'type' );
+		$type = $type === 'instant-indexing' ? 'general' : $type;
 		return $type === 'roleCapabilities' ? current_user_can( 'rank_math_role_manager' ) : current_user_can( "rank_math_$type" );
 	}
 
@@ -270,7 +275,7 @@ class Rest_Helper {
 		if ( empty( $param ) ) {
 			return new WP_Error(
 				'param_value_empty',
-				esc_html__( 'Sorry, field is empty which is not allowed.', 'rank-math' )
+				esc_html__( 'Sorry, field is empty which is not allowed.', 'seo-by-rank-math' )
 			);
 		}
 
@@ -288,7 +293,7 @@ class Rest_Helper {
 		if ( ! preg_match( '/^[a-zA-Z0-9]+$/', $param ) ) {
 			return new WP_Error(
 				'param_value_empty',
-				esc_html__( 'Sorry, the field contains invalid characters.', 'rank-math' )
+				esc_html__( 'Sorry, the field contains invalid characters.', 'seo-by-rank-math' )
 			);
 		}
 		return true;

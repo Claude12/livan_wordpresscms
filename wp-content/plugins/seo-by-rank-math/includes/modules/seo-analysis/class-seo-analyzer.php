@@ -73,7 +73,7 @@ class SEO_Analyzer {
 	 *
 	 * @var array
 	 */
-	private $api_error = '';
+	public $api_error = '';
 
 	/**
 	 * Hold local test data.
@@ -101,7 +101,6 @@ class SEO_Analyzer {
 	 * @return void
 	 */
 	public function set_url() {
-		update_option( 'rank_math_viewed_seo_analyer', true, false ); // Code to update the viewed value to remove the New label.
 
 		$this->api_url = $this->do_filter( 'seo_analysis/api_endpoint', 'https://rankmath.com/analyze/v2/json/' );
 		if ( ! empty( $_REQUEST['u'] ) && $this->is_allowed_url( Param::request( 'u' ) ) ) { // phpcs:ignore
@@ -123,11 +122,11 @@ class SEO_Analyzer {
 	}
 
 	/**
-	 * Get graph metrices.
+	 * Get graph metrics.
 	 *
 	 * @return array
 	 */
-	private function get_graph_metrices() {
+	private function get_graph_metrics() {
 		$total       = 0;
 		$percent     = 0;
 		$total_score = 0;
@@ -204,7 +203,7 @@ class SEO_Analyzer {
 		$this->results_date = get_option( $option . '_date' );
 
 		$url = get_option( $option . '_url' );
-		if ( false !== $url ) {
+		if ( $url ) {
 			$this->analyse_url = $url;
 		}
 
@@ -278,34 +277,23 @@ class SEO_Analyzer {
 	}
 
 	/**
-	 * Analyze page.
+	 * Run all SEO analysis tests against the configured URL.
+	 *
+	 * Extracted from analyze_me() so the analyzer can be invoked outside
+	 * the AJAX request lifecycle (e.g. by Rank Math abilities).
+	 *
+	 * @param bool $clear_cache Whether to clear cached results before running.
+	 * @return bool True on success, false if the remote API failed AND no local tests ran.
 	 */
-	public function analyze_me() {
-		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
-		$this->has_cap_ajax( 'site_analysis' );
-
+	public function run_tests( $clear_cache = true ) {
 		$this->results = null;
-		$success       = true;
-		$directory     = __DIR__;
 
-		$this->set_url();
-		if ( ! $this->analyse_subpage ) {
+		if ( ! $this->analyse_subpage && $clear_cache ) {
 			delete_option( 'rank_math_seo_analysis_results' );
 			delete_option( 'rank_math_seo_analysis_date' );
 		}
 
-		if ( ! $this->run_api_tests() ) {
-			$this->error(
-				'<div class="notice notice-error is-dismissible notice-seo-analysis-error rank-math-notice">
-					<p>' .
-						/* translators: API error */
-						sprintf( __( '<strong>API Error:</strong> %s', 'rank-math' ), $this->api_error ) .
-					'</p>
-				</div>'
-			);
-			$success = false;
-			die;
-		}
+		$remote_ok = $this->run_api_tests();
 
 		if ( ! $this->analyse_subpage ) {
 			$this->run_local_tests();
@@ -314,11 +302,34 @@ class SEO_Analyzer {
 		}
 
 		/**
-		 * Action: 'rank_math/seo_analysis/after_analyze' - Fires after the SEO analysis is done.
+		 * Fires after the SEO analysis has completed.
+		 *
+		 * @see action: rank_math/seo_analysis/after_analyze
 		 */
 		$this->do_action( 'seo_analysis/after_analyze', $this );
 		$this->build_results();
 
+		return $remote_ok || ! empty( $this->results );
+	}
+
+	/**
+	 * Whether the most recent run_tests() call reached the remote API.
+	 *
+	 * @return bool
+	 */
+	public function remote_api_succeeded() {
+		return empty( $this->api_error );
+	}
+
+	/**
+	 * AJAX handler — runs the site SEO audit and returns results to the admin UI.
+	 */
+	public function analyze_me() {
+		check_ajax_referer( 'rank-math-ajax-nonce', 'security' );
+		$this->has_cap_ajax( 'site_analysis' );
+
+		$this->set_url();
+		$this->run_tests( true );
 		$this->success( $this->get_results() );
 	}
 
@@ -346,7 +357,7 @@ class SEO_Analyzer {
 		}
 
 		$results['auto_update']['status']  = 'ok';
-		$results['auto_update']['message'] = __( 'Rank Math auto-update option is enabled on your site.', 'rank-math' );
+		$results['auto_update']['message'] = __( 'Rank Math auto-update option is enabled on your site.', 'seo-by-rank-math' );
 		update_option( 'rank_math_seo_analysis_results', $results, false );
 	}
 
@@ -411,14 +422,14 @@ class SEO_Analyzer {
 		$status = absint( wp_remote_retrieve_response_code( $request ) );
 		if ( 200 !== $status ) {
 			// Translators: placeholder is a HTTP error code.
-			$this->api_error = sprintf( __( 'HTTP %d error.', 'rank-math' ), $status );
+			$this->api_error = sprintf( __( 'HTTP %d error.', 'seo-by-rank-math' ), $status );
 			return false;
 		}
 
 		$response = wp_remote_retrieve_body( $request );
 		$response = json_decode( $response, true );
 		if ( ! is_array( $response ) ) {
-			$this->api_error = __( 'Unexpected API response.', 'rank-math' );
+			$this->api_error = __( 'Unexpected API response.', 'seo-by-rank-math' );
 			return false;
 		}
 
@@ -497,7 +508,7 @@ class SEO_Analyzer {
 	private function get_results() {
 		return [
 			'results'  => $this->sort_results_by_category(),
-			'metrices' => $this->get_graph_metrices(),
+			'metrices' => $this->get_graph_metrics(),
 			'date'     => $this->get_last_checked_date(),
 			'serpData' => $this->get_serp_data(),
 		];
@@ -509,8 +520,7 @@ class SEO_Analyzer {
 	 * @return array
 	 */
 	private function get_serp_data() {
-		$src_format = 'https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%%SITEURL%%&size=128';
-		$favicon    = str_replace( '%%SITEURL%%', rawurlencode( $this->analyse_url ), $src_format );
+		$favicon = get_site_icon_url( 128 );
 		if ( is_array( $this->results ) ) {
 			if ( isset( $this->results['title_length'] ) ) {
 				$title_data = $this->results['title_length']->get_result();
@@ -524,7 +534,7 @@ class SEO_Analyzer {
 		}
 
 		if ( empty( $title ) ) {
-			$title = __( '(No Title)', 'rank-math' );
+			$title = __( '(No Title)', 'seo-by-rank-math' );
 		}
 		// Cut title to 60 characters.
 		if ( strlen( $title ) > 60 ) {
@@ -532,7 +542,7 @@ class SEO_Analyzer {
 		}
 
 		if ( empty( $description ) ) {
-			$description = __( '(No Description)', 'rank-math' );
+			$description = __( '(No Description)', 'seo-by-rank-math' );
 		}
 		// Cut description to 160 characters.
 		if ( strlen( $description ) > 160 ) {

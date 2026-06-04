@@ -14,6 +14,7 @@
  * @var string $features_description Features description.
  * @var array  $features             List of features.
  * @var array  $images               List of images.
+ * @var string $license_level        License level.
  * @var string $utm_medium           UTM medium.
  * @var string $utm_content          UTM content.
  * @var string $upgrade_link         Upgrade link.
@@ -40,25 +41,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 	</div>
 
-	<div class="wpforms-education-page-media">
-		<div class="wpforms-education-page-images">
-			<?php
-			if ( isset( $images ) ) :
-				foreach ( $images as $image ) :
-					?>
-				<figure>
-					<div class="wpforms-education-page-images-image">
-						<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['title'] ); ?>" />
-						<a href="<?php echo esc_url( $image['url2x'] ); ?>" class="hover" data-lity data-lity-desc="<?php echo esc_attr( $image['title'] ); ?>"></a>
-					</div>
-					<figcaption><?php echo esc_html( $image['title'] ); ?></figcaption>
-				</figure>
-			<?php
-				endforeach;
-			endif;
-			?>
+	<?php if ( isset( $images ) ) : ?>
+		<div class="wpforms-education-page-media">
+			<div class="wpforms-education-page-images">
+				<?php foreach ( $images as $image ) : ?>
+					<figure>
+						<div class="wpforms-education-page-images-image">
+							<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['title'] ); ?>" />
+							<?php if ( isset( $image['url2x'] ) ) : ?>
+								<a href="<?php echo esc_url( $image['url2x'] ); ?>" class="hover" data-lity data-lity-desc="<?php echo esc_attr( $image['title'] ); ?>"></a>
+							<?php endif; ?>
+						</div>
+						<figcaption><?php echo esc_html( $image['title'] ); ?></figcaption>
+					</figure>
+				<?php endforeach; ?>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 
 	<div class="wpforms-education-page-caps">
 		<?php if ( isset( $features_description ) ) : ?>
@@ -91,7 +90,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				[
 					'medium'  => $utm_medium,
 					'content' => $utm_content,
-				]
+				],
+				$license_level
 			);
 		} else {
 			printf(

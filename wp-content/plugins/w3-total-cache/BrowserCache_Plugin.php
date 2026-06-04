@@ -76,17 +76,17 @@ class BrowserCache_Plugin {
 
 		$v = $this->_config->get_string( 'browsercache.security.session.cookie_httponly' );
 		if ( ! empty( $v ) ) {
-			@ini_set( 'session.cookie_httponly', 'on' === $v ? '1' : '0' );
+			@ini_set( 'session.cookie_httponly', 'on' === $v ? '1' : '0' ); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
 		}
 
 		$v = $this->_config->get_string( 'browsercache.security.session.cookie_secure' );
 		if ( ! empty( $v ) ) {
-			@ini_set( 'session.cookie_secure', 'on' === $v ? '1' : '0' );
+			@ini_set( 'session.cookie_secure', 'on' === $v ? '1' : '0' ); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
 		}
 
 		$v = $this->_config->get_string( 'browsercache.security.session.use_only_cookies' );
 		if ( ! empty( $v ) ) {
-			@ini_set( 'session.use_only_cookies', 'on' === $v ? '1' : '0' );
+			@ini_set( 'session.use_only_cookies', 'on' === $v ? '1' : '0' ); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
 		}
 
 		add_filter( 'w3tc_minify_http2_preload_url', array( $this, 'w3tc_minify_http2_preload_url' ), 4000 );
@@ -182,13 +182,7 @@ class BrowserCache_Plugin {
 			return false;
 		}
 
-		/**
-		 * Check User Agent
-		 */
-		$http_user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
-		if ( stristr( $http_user_agent, W3TC_POWERED_BY ) !== false ) {
-			return false;
-		}
+		// Do not skip output buffering based on User-Agent (client-spoofable); see Generic_Plugin::can_ob().
 
 		return true;
 	}
@@ -450,11 +444,18 @@ class BrowserCache_Plugin {
 		);
 
 		if ( $browsercache_update_media_qs ) {
+			$current_page = Util_Request::get_string( 'page', 'w3tc_dashboard' );
+
 			$menu_items['20190.browsercache'] = array(
 				'id'     => 'w3tc_flush_browsercache',
 				'parent' => 'w3tc_flush',
 				'title'  => __( 'Browser Cache', 'w3-total-cache' ),
-				'href'   => wp_nonce_url( admin_url( 'admin.php?page=w3tc_dashboard&amp;w3tc_flush_browser_cache' ), 'w3tc' ),
+				'href'   => wp_nonce_url(
+					admin_url(
+						'admin.php?page=' . $current_page . '&amp;w3tc_flush_browser_cache'
+					),
+					'w3tc'
+				),
 			);
 		}
 

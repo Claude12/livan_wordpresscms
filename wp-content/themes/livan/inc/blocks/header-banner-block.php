@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ACF: Flexible Content > Layouts > Header Banner Block
  *

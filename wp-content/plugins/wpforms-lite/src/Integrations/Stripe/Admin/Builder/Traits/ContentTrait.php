@@ -2,8 +2,9 @@
 
 namespace WPForms\Integrations\Stripe\Admin\Builder\Traits;
 
-use WPForms\Integrations\Stripe\Helpers;
+use WPForms\Integrations\Stripe\Admin\Connect;
 use WPForms\Integrations\Stripe\Admin\Notices;
+use WPForms\Integrations\Stripe\Helpers;
 
 /**
  * Payment builder settings content trait.
@@ -246,28 +247,43 @@ trait ContentTrait {
 			return false;
 		}
 
-		$this->alert_icon();
-		echo '<div class="wpforms-builder-payment-settings-default-content"><p>';
-		esc_html_e( 'Heads up! Stripe payments can\'t be enabled yet.', 'wpforms-lite' );
-		echo '</p><p>';
-		printf(
-			wp_kses( /* translators: %1$s - admin area Payments settings page URL. */
-				__( 'First, please connect to your Stripe account on the <a href="%1$s" class="secondary-text">WPForms Settings</a> page.', 'wpforms-lite' ),
-				[
-					'a' => [
-						'href'  => [],
-						'class' => [],
-					],
-				]
-			),
-			esc_url( admin_url( 'admin.php?page=wpforms-settings&view=payments' ) )
-		);
-		echo '</p><p class="wpforms-builder-payment-settings-learn-more">';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->learn_more_link();
-		echo '</p></div>';
+		$this->disconnected_alert();
 
 		return true;
+	}
+
+	/**
+	 * Display the disconnected-state alert with an inline Connect button.
+	 *
+	 * @since 1.10.1.1
+	 */
+	private function disconnected_alert(): void {
+
+		$form_id     = isset( $this->form_data['id'] ) ? absint( $this->form_data['id'] ) : 0;
+		$connect_url = ( new Connect() )->get_connect_with_stripe_url( '', $form_id );
+
+		$this->alert_icon();
+		?>
+		<div class="wpforms-builder-payment-settings-default-content">
+			<p><?php esc_html_e( 'Connect to your Stripe account and start accepting payments today.', 'wpforms-lite' ); ?></p>
+			<p class="wpforms-builder-payment-settings-learn-more">
+				<?php echo $this->learn_more_link(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</p>
+			<?php
+			printf(
+				'<a href="%1$s" class="wpforms-btn wpforms-btn-md wpforms-btn-orange wpforms-payments-connect-btn wpforms-stripe-connect" data-gateway-label="%2$s">%3$s</a>',
+				esc_url( $connect_url ),
+				esc_attr__( 'Stripe', 'wpforms-lite' ),
+				esc_html__( 'Connect with Stripe', 'wpforms-lite' )
+			);
+
+			// The WPForms transaction fee applies to Lite only; Pro has no extra fees.
+			if ( ! wpforms()->is_pro() ) {
+				echo '<p class="wpforms-builder-payment-settings-fee-notice">' . esc_html__( 'No extra WPForms transaction fees on Pro.', 'wpforms-lite' ) . '</p>';
+			}
+			?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -281,12 +297,7 @@ trait ContentTrait {
 		?>
 
 		<div id="wpforms-stripe-credit-card-alert" class="wpforms-alert wpforms-alert-info <?php echo esc_attr( $hide_class ); ?>">
-
-			<?php $this->alert_icon(); ?>
-			<div class="wpforms-builder-payment-settings-default-content">
-				<p><?php esc_html_e( 'To use Stripe, first add the Stripe payment field to your form.', 'wpforms-lite' ); ?></p>
-				<p class="wpforms-builder-payment-settings-learn-more"><?php echo $this->learn_more_link(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-			</div>
+			<?php $this->alert_content( '', esc_html__( 'To use Stripe, first add the Stripe payment field to your form.', 'wpforms-lite' ) ); ?>
 		</div>
 
 	<?php
@@ -398,7 +409,9 @@ trait ContentTrait {
 		);
 
 		$content .= $this->get_customer_name_panel_field();
+		$content .= $this->get_customer_phone_field();
 		$content .= $this->get_address_panel_fields();
+		$content .= $this->get_custom_metadata_table();
 		$content .= $this->single_payments_conditional_logic_section();
 
 		return $content;
@@ -451,6 +464,28 @@ trait ContentTrait {
 					'yearly'     => esc_html__( 'Yearly', 'wpforms-lite' ),
 				],
 				'tooltip'    => esc_html__( 'How often you would like the charge to recur.', 'wpforms-lite' ),
+				'class'      => 'wpforms-panel-content-section-payment-plan-period',
+			],
+			false
+		);
+
+		$max_cycles   = $this->get_recurring_max_cycles( $plan_id );
+		$range_cycles = range( 1, $max_cycles );
+
+		$content .= wpforms_panel_field(
+			'select',
+			$this->slug,
+			'cycles',
+			$this->form_data,
+			esc_html__( 'Recurring Cycles', 'wpforms-lite' ),
+			[
+				'parent'     => 'payments',
+				'subsection' => 'recurring',
+				'index'      => $plan_id,
+				'default'    => 'unlimited',
+				'options'    => [ 'unlimited' => esc_html__( 'Unlimited', 'wpforms-lite' ) ] + array_combine( $range_cycles, $range_cycles ),
+				'tooltip'    => esc_html__( 'How many times you want the payment to repeat. Stripe supports up to 100 recurrences or a maximum duration of 20 years, whichever comes first.', 'wpforms-lite' ),
+				'class'      => 'wpforms-panel-content-section-payment-plan-cycles',
 			],
 			false
 		);
@@ -476,7 +511,9 @@ trait ContentTrait {
 		);
 
 		$content .= $this->get_customer_name_panel_field( $plan_id );
+		$content .= $this->get_customer_phone_field( $plan_id );
 		$content .= $this->get_address_panel_fields( $plan_id );
+		$content .= $this->get_custom_metadata_table( $plan_id );
 		$content .= $this->recurring_payments_conditional_logic_section( $plan_id );
 
 		return $content;
@@ -617,5 +654,192 @@ trait ContentTrait {
 		);
 
 		return $output;
+	}
+
+	/**
+	 * Get the Customer phone panel field.
+	 *
+	 * @since 1.9.6
+	 *
+	 * @param string|null $plan_id Plan ID.
+	 *
+	 * @return string
+	 */
+	private function get_customer_phone_field( ?string $plan_id = null ): string {
+
+		$args = [
+			'parent'      => 'payments',
+			'field_map'   => [ 'phone' ],
+			'placeholder' => esc_html__( '--- Select Phone ---', 'wpforms-lite' ),
+		];
+
+		if ( ! is_null( $plan_id ) ) {
+			$args['subsection'] = 'recurring';
+			$args['index']      = $plan_id;
+		}
+
+		$is_pro = wpforms()->is_pro();
+
+		if ( ! $is_pro ) {
+			$args['pro_badge']   = true;
+			$args['data']        = [
+				'action'      => 'upgrade',
+				'name'        => esc_html__( 'Customer Phone', 'wpforms-lite' ),
+				'utm-content' => 'Builder Stripe Phone Field',
+				'licence'     => 'pro',
+			];
+			$args['input_class'] = 'education-modal';
+			$args['readonly']    = true;
+		} else {
+			$args['tooltip'] = esc_html__( 'Select the field that contains the customer\'s phone. This is optional but recommended.', 'wpforms-lite' );
+		}
+
+		return (string) wpforms_panel_field(
+			'select',
+			$this->slug,
+			'customer_phone',
+			$this->form_data,
+			esc_html__( 'Customer Phone', 'wpforms-lite' ),
+			$args,
+			false
+		);
+	}
+
+	/**
+	 * Get custom meta table html.
+	 *
+	 * @since 1.9.6
+	 *
+	 * @param string|null $plan_id Plan ID.
+	 *
+	 * @return string
+	 */
+	private function get_custom_metadata_table( $plan_id = null ): string {
+
+		$subsection      = ! is_null( $plan_id ) ? 'recurring_custom_metadata_' . $plan_id : 'custom_metadata';
+		$custom_metadata = $this->form_data['payments'][ $this->slug ][ $subsection ] ?? [ [] ];
+
+		/**
+		 * Filter the allowed fields for custom metadata.
+		 *
+		 * @since 1.9.6
+		 *
+		 * @param array $allowed_fields Allowed fields.
+		 */
+		$allowed_fields = (array) apply_filters( 'wpforms_stripe_custom_metadata_allowed_fields', $this->get_allowed_meta_value_fields() );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return wpforms_render(
+			'integrations/stripe/builder/custom-metadata',
+			[
+				'custom_metadata' => $custom_metadata,
+				'subsection'      => $subsection,
+				'slug'            => $this->slug,
+				'form_data'       => $this->form_data,
+				'fields'          => $allowed_fields,
+			],
+			true
+		);
+	}
+
+	/**
+	 * Get allowed meta value fields.
+	 *
+	 * @since 1.9.6
+	 *
+	 * @return array
+	 */
+	private function get_allowed_meta_value_fields(): array {
+
+		$fields = [
+			'text',
+			'textarea',
+			'checkbox',
+			'radio',
+			'select',
+			'number',
+			'name',
+			'email',
+			'number-slider',
+			'payment-checkbox',
+			'payment-multiple',
+			'payment-select',
+			'payment-single',
+			'payment-total',
+		];
+
+		if ( ! wpforms()->is_pro() ) {
+			return $fields;
+		}
+
+		return array_merge(
+			$fields,
+			[
+				'address',
+				'date-time',
+				'hidden',
+				'phone',
+				'rating',
+			]
+		);
+	}
+
+	/**
+	 * Get recurring max cycles value.
+	 *
+	 * @param string $plan_id Selected plan id.
+	 *
+	 * @since 1.9.8
+	 *
+	 * @return int
+	 */
+	private function get_recurring_max_cycles( string $plan_id ): int {
+
+		// The API limit is 20 years.
+		if ( ! isset( $this->form_data['payments'][ $this->slug ]['recurring'][ $plan_id ]['period'] ) || $this->form_data['payments'][ $this->slug ]['recurring'][ $plan_id ]['period'] === 'yearly' ) {
+			return 20;
+		}
+
+		// 20 years is 40 semi-years.
+		if ( $this->form_data['payments'][ $this->slug ]['recurring'][ $plan_id ]['period'] === 'semiyearly' ) {
+			return 40;
+		}
+
+		// 20 years is 80 quarters.
+		if ( $this->form_data['payments'][ $this->slug ]['recurring'][ $plan_id ]['period'] === 'quarterly' ) {
+			return 80;
+		}
+
+		return Helpers::recurring_plan_cycles_max();
+	}
+
+	/**
+	 * Display alert content.
+	 *
+	 * @since 1.9.9
+	 *
+	 * @param string $title   Alert title.
+	 * @param string $message Alert message.
+	 */
+	private function alert_content( string $title, string $message ): void {
+		?>
+
+		<?php $this->alert_icon(); ?>
+
+		<div class="wpforms-builder-payment-settings-default-content">
+			<?php if ( ! empty( $title ) ) : ?>
+				<p class="wpforms-builder-payment-settings-error-title">
+					<?php echo esc_html( $title ); ?>
+				</p>
+			<?php endif; ?>
+			<p>
+				<?php echo $message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</p>
+			<p class="wpforms-builder-payment-settings-learn-more">
+				<?php echo $this->learn_more_link(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</p>
+		</div>
+
+		<?php
 	}
 }

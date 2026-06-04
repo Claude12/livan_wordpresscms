@@ -62,6 +62,7 @@ wp-includes/*
 /wp-*.php
 !/wp-config.php
 /xmlrpc.php
+/plugins
 
 # Log files
 *.log

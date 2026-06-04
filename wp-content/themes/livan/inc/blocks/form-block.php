@@ -10,7 +10,7 @@ $background_color = $section['background_color'];
 $form_shortcode = $section['form_shortcode'];
 ?>
 
-<section class="form" style="background-color: <?php echo esc_attr($background_color); ?>;">
+<section class="form" animate="slide-in-up" style="background-color: <?php echo esc_attr($background_color); ?>;">
     <div class="container">
         <?php if ($form_shortcode) { ?>
             <?php echo do_shortcode($form_shortcode); ?>
