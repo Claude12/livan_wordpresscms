@@ -186,6 +186,15 @@ if (defined('JETPACK__VERSION')) {
 }
 
 /**
+ * Remove the default content editor from pages and posts — all content is
+ * managed via ACF flexible content blocks.
+ */
+add_action( 'init', function () {
+	remove_post_type_support( 'page', 'editor' );
+	remove_post_type_support( 'post', 'editor' );
+} );
+
+/**
  * Security Headers.
  */
 function add_custom_security_headers()

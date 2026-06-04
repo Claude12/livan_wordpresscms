@@ -1418,6 +1418,148 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_6850innerbanner1": {
+                    "key": "layout_6850innerbanner1",
+                    "name": "inner_banner_block",
+                    "label": "Inner Banner Block",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_6850ib000001",
+                            "label": "Background Image",
+                            "name": "banner_bg_image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "Optional \u2014 leave empty to use background colour",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "",
+                            "allow_in_bindings": 0,
+                            "preview_size": "medium"
+                        },
+                        {
+                            "key": "field_6850ib000002",
+                            "label": "Background Colour",
+                            "name": "banner_bg_color",
+                            "aria-label": "",
+                            "type": "color_picker",
+                            "instructions": "Used when no background image is set",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "enable_opacity": 0,
+                            "return_format": "string",
+                            "allow_in_bindings": 0,
+                            "custom_palette_source": "",
+                            "palette_colors": "",
+                            "show_color_wheel": true
+                        },
+                        {
+                            "key": "field_6850ib000003",
+                            "label": "Label / Badge",
+                            "name": "banner_label",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Optional \u2014 e.g. 'Case Study' or 'Web Design'",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_6850ib000004",
+                            "label": "Title",
+                            "name": "banner_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Optional \u2014 defaults to the post title if left empty",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_6850ib000005",
+                            "label": "Subtitle",
+                            "name": "banner_subtitle",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "new_lines": "br",
+                            "rows": 3
+                        },
+                        {
+                            "key": "field_6850ib000006",
+                            "label": "Show Post Meta",
+                            "name": "show_meta",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "Shows post date and estimated read time",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 1,
+                            "allow_in_bindings": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",

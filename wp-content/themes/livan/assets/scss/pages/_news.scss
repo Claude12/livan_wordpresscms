@@ -3,6 +3,34 @@
 @use "abstracts/mixins" as *;
 @use "base/colors" as *;
 
+.case-studies-page {
+  margin-top: $spacer-48;
+  margin-bottom: $spacer-96;
+
+  &__grid {
+    display: grid;
+    gap: $spacer-32;
+    grid-template-columns: 1fr;
+
+    @include min-breakpoint(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+.error-404-fallback {
+  padding: $spacer-96 0;
+  text-align: center;
+
+  h1 {
+    margin-bottom: $spacer-16;
+  }
+
+  p {
+    margin-bottom: $spacer-32;
+  }
+}
+
 .news-page {
   margin-top: $spacer-48;
   margin-bottom: $spacer-96;

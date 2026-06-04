@@ -23,6 +23,7 @@ get_header();
 			style="background-image: url('<?php echo esc_url(get_template_directory_uri() . '/images/breadcrumbs.jpg'); ?>');">
 			<div class="container">
 				<h1 class="breadcrumb__title"><?php the_title(); ?></h1>
+				<?php if (function_exists('rank_math_the_breadcrumbs')) rank_math_the_breadcrumbs(); ?>
 			</div>
 		</section>
 	<?php endif; ?>
