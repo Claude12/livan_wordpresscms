@@ -11,6 +11,7 @@
     border-radius: rem(20px);
     padding: $spacer-64 $spacer-32;
     text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 190, 163, 0.45);
 
     @include min-breakpoint(md) {
       padding: $spacer-64;

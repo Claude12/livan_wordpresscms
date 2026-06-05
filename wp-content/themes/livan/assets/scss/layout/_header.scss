@@ -9,9 +9,19 @@
   width: 100%;
   position: relative;
   z-index: 100;
-  background-color: $black-bold-5;
+  background-color: rgba(26, 26, 26, 0.7);
   padding-top: $spacer-24;
   padding-bottom: $spacer-24;
+}
+
+body.home,
+body.front-page {
+  .header {
+    background-color: $black-bold-5;
+  }
+}
+
+.header {
 
   &__container {
     padding: 0 30px;

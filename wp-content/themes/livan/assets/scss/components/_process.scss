@@ -4,7 +4,7 @@
 @use "base/colors" as *;
 
 .process-block {
-  padding-bottom: $spacer-24;
+  padding-bottom: $spacer-48;
   &__header {
     text-align: center;
     margin-bottom: $spacer-48;
@@ -32,9 +32,10 @@
 
   &__card {
     background-color: $white-clean;
-    border-radius: 8px;
+    border-radius: rem(12px);
+    border: 1px solid rgba(0, 190, 163, 0.3);
     padding: $spacer-24;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18), 0 2px 10px rgba(0, 190, 163, 0.25);
     transition: $transition;
 
     @include min-breakpoint(lg) {
@@ -42,8 +43,9 @@
     }
 
     &:hover {
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
-      transform: translateY(-5px);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 190, 163, 0.35);
+      transform: translateY(-4px);
+      border-color: rgba(0, 190, 163, 0.45);
     }
   }
 
@@ -68,5 +70,26 @@
     color: $gray-neutral;
     margin: 0;
     line-height: 1.6;
+  }
+
+  &--four-col {
+    .process-block__header {
+      text-align: left;
+    }
+
+    .process-block__grid {
+      @include min-breakpoint(lg) {
+        display: grid;
+        flex-wrap: unset;
+        justify-content: unset;
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .process-block__card {
+      @include min-breakpoint(lg) {
+        flex: unset;
+      }
+    }
   }
 }

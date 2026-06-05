@@ -1091,6 +1091,27 @@
                             "delay": 0
                         },
                         {
+                            "key": "field_6850a1b2c3d55",
+                            "label": "Four Columns",
+                            "name": "four_columns",
+                            "aria-label": "",
+                            "type": "true_false",
+                            "instructions": "When enabled: displays 4 cards per row and left-aligns the title and cards",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "",
+                            "default_value": 0,
+                            "allow_in_bindings": 0,
+                            "ui": 1,
+                            "ui_on_text": "",
+                            "ui_off_text": ""
+                        },
+                        {
                             "key": "field_6850a1b2c3d52",
                             "label": "Process Items",
                             "name": "process_items",
@@ -1595,5 +1616,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1780566947
+    "modified": 1780660800
 }

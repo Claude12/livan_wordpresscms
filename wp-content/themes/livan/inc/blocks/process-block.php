@@ -9,10 +9,11 @@
 $background_color = $section['background_color'];
 $section_title    = $section['section_title'];
 $process_items    = $section['process_items'];
+$four_columns     = $section['four_columns'];
 ?>
 
 <?php if ($process_items && is_array($process_items) && count($process_items) > 0): ?>
-    <section class="process-block" style="background-color: <?php echo esc_attr($background_color); ?>;">
+    <section class="process-block<?php echo $four_columns ? ' process-block--four-col' : ''; ?>" style="background-color: <?php echo esc_attr($background_color); ?>;">
         <div class="container">
 
             <?php if ($section_title): ?>
