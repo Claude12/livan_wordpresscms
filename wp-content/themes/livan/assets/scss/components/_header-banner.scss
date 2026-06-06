@@ -73,7 +73,7 @@
 
   &__cta {
     position: absolute;
-    bottom: -100px; /* Initially hidden */
+    bottom: -100px;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -81,6 +81,11 @@
     z-index: 3;
     font-size: rem(16px);
     padding: rem(24px) rem(32px);
+
+    &.is-visible {
+      bottom: 165px;
+      opacity: 1;
+    }
 
     @include min-breakpoint(md) {
       padding: rem(24px) rem(64px);

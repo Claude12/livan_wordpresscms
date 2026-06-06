@@ -143,20 +143,55 @@ add_action('widgets_init', 'livan_widgets_init');
  */
 function livan_scripts()
 {
-	// Get the last modified time
-	$css_version = date("ymd-Gis", filemtime(get_template_directory() . '/dist/css/style.css'));
-	$js_version = date("ymd-Gis", filemtime(get_template_directory() . '/dist/js/main.js'));
+	$css_version = filemtime(get_template_directory() . '/dist/css/style.css');
+	$js_version  = filemtime(get_template_directory() . '/dist/js/main.js');
 
-	// Enqueue CSS
 	wp_enqueue_style('theme-style', get_template_directory_uri() . '/dist/css/style.css', array(), $css_version);
-	wp_enqueue_style('splide-css', get_template_directory_uri() . '/dist/vendor/splide.min.css', array(), null);
-	wp_enqueue_style('splide-default-theme', get_template_directory_uri() . '/dist/vendor/splide-default.min.css', array('splide-css'), null);
 
-	// Enqueue JS
+	// jQuery is bundled via webpack externals — WP's own copy is used as the global.
 	wp_enqueue_script('theme-script', get_template_directory_uri() . '/dist/js/main.js', array('jquery'), $js_version, true);
-	wp_enqueue_script('splide-js', get_template_directory_uri() . '/dist/vendor/splide.min.js', array(), null, true);
+
+	// Splide: only load on pages that opt-in — uncomment when a carousel block is built.
+	// if (livan_needs_splide()) {
+	// 	wp_enqueue_style('splide-css', get_template_directory_uri() . '/dist/vendor/splide.min.css', array(), null);
+	// 	wp_enqueue_style('splide-default-theme', get_template_directory_uri() . '/dist/vendor/splide-default.min.css', array('splide-css'), null);
+	// 	wp_enqueue_script('splide-js', get_template_directory_uri() . '/dist/vendor/splide.min.js', array(), null, true);
+	// }
 }
 add_action('wp_enqueue_scripts', 'livan_scripts');
+
+/**
+ * Splide opt-in system.
+ *
+ * Block templates run AFTER wp_head() fires wp_enqueue_scripts, so they
+ * cannot call an enqueue function directly. Instead, detection runs on the
+ * 'wp' action (before wp_head) by scanning the page's ACF layouts.
+ *
+ * To add Splide support to a new block, add its acf_fc_layout key to the
+ * $splide_layouts array below.
+ */
+add_action('wp', function () {
+	// Add any acf_fc_layout key whose block template initialises Splide.
+	$splide_layouts = [];
+
+	// Skip the DB query entirely until at least one layout is registered.
+	if (empty($splide_layouts) || !is_singular() || !function_exists('get_field')) return;
+
+	$sections = get_field('content_sections');
+	if (!$sections || !is_array($sections)) return;
+
+	foreach ($sections as $section) {
+		if (in_array($section['acf_fc_layout'], $splide_layouts, true)) {
+			$GLOBALS['livan_needs_splide'] = true;
+			return;
+		}
+	}
+});
+
+function livan_needs_splide(): bool
+{
+	return !empty($GLOBALS['livan_needs_splide']);
+}
 
 /**
  * Implement the Custom Header feature.
@@ -193,6 +228,47 @@ add_action( 'init', function () {
 	remove_post_type_support( 'page', 'editor' );
 	remove_post_type_support( 'post', 'editor' );
 } );
+
+/**
+ * Performance: disable WordPress emoji scripts/styles — unused on this site
+ * and they add a DNS prefetch hint + inline JS to every page.
+ */
+add_action('init', function () {
+	remove_action('wp_head', 'print_emoji_detection_script', 7);
+	remove_action('wp_print_styles', 'print_emoji_styles');
+	remove_action('admin_print_scripts', 'print_emoji_detection_script');
+	remove_action('admin_print_styles', 'print_emoji_styles');
+	remove_filter('the_content_feed', 'wp_staticize_emoji');
+	remove_filter('comment_text_rss', 'wp_staticize_emoji');
+	remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+	add_filter('tiny_mce_plugins', function ($plugins) {
+		return array_diff($plugins, ['wpemoji']);
+	});
+	add_filter('wp_resource_hints', function ($urls, $relation_type) {
+		if ('dns-prefetch' === $relation_type) {
+			return array_filter($urls, fn($url) => strpos((string) $url, 'emoji') === false);
+		}
+		return $urls;
+	}, 10, 2);
+});
+
+/**
+ * Performance: strip low-value <head> tags — EditURI, Windows Live Writer
+ * manifest, WP version generator, shortlink, adjacent-post links, REST
+ * discovery link, and oEmbed discovery. None are needed on a public site.
+ */
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wp_shortlink_wp_head', 10);
+remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10);
+remove_action('wp_head', 'rest_output_link_wp_head', 10);
+remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
+
+// Splide defer strategy — re-enable alongside the enqueue block above when a carousel block is built.
+// add_action('wp_enqueue_scripts', function () {
+// 	wp_script_add_data('splide-js', 'strategy', 'defer');
+// }, 20);
 
 /**
  * Security Headers.

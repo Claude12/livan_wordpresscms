@@ -1,24 +1,18 @@
 function headerBanner() {
-    // Fade-in animation for the content
-    $('.header-banner__content').hide().fadeIn(2000);
+  // __content fades in via its own CSS keyframe animation — no JS needed.
+  // __cta slides up when .is-visible is added, triggering the CSS transition.
+  const cta = document.querySelector('.header-banner__cta');
+  if (cta) {
+    setTimeout(() => cta.classList.add('is-visible'), 2000);
+  }
 
-    // Display the CTA button with a slide-up animation after other animations
-    setTimeout(function () {
-        $('.header-banner__cta').css({
-            bottom: '165px', // Slide it into view
-            opacity: 1, // Make it visible
-        });
-    }, 2000); // Delay to sync with other animations
-
-    $("#scrollButton").on("click", function (e) {
-        e.preventDefault(); // Prevent default behavior
-
-        // Animate the scroll 600px down from the current position
-        $("html, body").animate(
-            { scrollTop: $(window).scrollTop() + 500 },
-            300 // Duration in milliseconds for smooth scroll
-        );
+  const scrollBtn = document.getElementById('scrollButton');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: window.scrollY + 500, behavior: 'smooth' });
     });
+  }
 }
 
 export default headerBanner;

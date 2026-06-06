@@ -23,10 +23,14 @@ $socials = get_field('socials', 'option'); // Social links stored in options
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
+	<!-- Font preconnect (reduces DNS + TLS latency before wp_head loads font CSS) -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 	<!-- WordPress Head -->
 	<?php wp_head(); ?>
 
-	<!-- Fonts -->
+	<!-- Fonts (async load, noscript fallback) -->
 	<link rel="preload"
 		href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@500;600;700&display=swap"
 		as="style" onload="this.onload=null;this.rel='stylesheet'" />
@@ -47,8 +51,10 @@ $socials = get_field('socials', 'option'); // Social links stored in options
 				<div class="header__logo">
 					<a href="<?php echo esc_url(home_url('/')); ?>">
 						<?php if ($site_logo): ?>
-							<img src="<?php echo esc_url($site_logo['url']); ?>" alt="<?php bloginfo('name'); ?>" width="46"
-								height="46" class="header__logo-image" />
+							<img src="<?php echo esc_url($site_logo['url']); ?>"
+								alt="<?php echo esc_attr(get_bloginfo('name')); ?>"
+								width="46" height="46" class="header__logo-image"
+								decoding="async" />
 						<?php endif; ?>
 						<span class="header__title"><?php bloginfo('name'); ?></span>
 					</a>

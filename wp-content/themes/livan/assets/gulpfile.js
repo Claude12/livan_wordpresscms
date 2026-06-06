@@ -34,6 +34,9 @@ const js = () => {
       webpack({
         mode: 'production',
         devtool: 'source-map',
+        externals: {
+          jquery: 'jQuery',
+        },
         plugins: [new ESLintPlugin()],
       })
     )

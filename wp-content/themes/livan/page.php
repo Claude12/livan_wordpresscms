@@ -35,10 +35,11 @@ get_header();
 		$sections = get_field('content_sections');
 
 		if ($sections):
-			foreach ($sections as $section):
+			foreach ($sections as $block_index => $section):
 
 				$template = str_replace('_', '-', $section['acf_fc_layout']);
 				set_query_var('section', $section);
+				set_query_var('block_index', $block_index);
 				get_template_part('inc/blocks/' . $template);
 			endforeach;
 		endif;

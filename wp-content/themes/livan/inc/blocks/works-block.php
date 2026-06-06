@@ -11,6 +11,7 @@ $works_intro = $section['works_intro'];
 $works_items = $section['works_items']; // each item: link, image, title, description
 $block_anchor = $section['block_anchor'];
 $background_color = $section['background_color'];
+$img_loading = get_query_var('block_index', 1) === 0 ? 'eager' : 'lazy';
 ?>
 
 <?php if ($works_items && is_array($works_items) && count($works_items) > 0): ?>
@@ -39,7 +40,11 @@ $background_color = $section['background_color'];
                         <?php if ($image): ?>
                             <div class="works-block__image">
                                 <img src="<?php echo esc_url($image['url']); ?>"
-                                    alt="<?php echo esc_attr($image['alt'] ?: $title); ?>" />
+                                    alt="<?php echo esc_attr($image['alt'] ?: $title); ?>"
+                                    width="<?php echo esc_attr($image['width']); ?>"
+                                    height="<?php echo esc_attr($image['height']); ?>"
+                                    loading="<?php echo esc_attr($img_loading); ?>"
+                                    decoding="async" />
                             </div>
                         <?php endif; ?>
 

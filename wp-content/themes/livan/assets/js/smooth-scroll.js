@@ -1,34 +1,50 @@
 function smoothScroll() {
   const OFFSET = 123;
-  const $scrollToTop = $('#scroll-to-top');
+  const scrollToTop = document.getElementById('scroll-to-top');
 
+  // Anchor links — native smooth scroll with header offset.
+  // Exclude [data-goto] links: header.js owns those with its own scroll + menu-close logic.
+  document.querySelectorAll('a[href^="#"]:not([data-goto])').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const hash = link.getAttribute('href');
 
-  $('a[href^="#"]').on('click', function (e) {
-    e.preventDefault();
+      // Always prevent default for hash links so the browser doesn't
+      // perform its own instant jump (including the bare "#" snap-to-top).
+      e.preventDefault();
 
-    const target = $(this.hash);
-    if (target.length) {
-      const targetOffset = target.offset().top - OFFSET;
+      if (hash === '#') return;
 
-      $('html, body').animate({
-        scrollTop: targetOffset
-      }, 300);
-    }
+      // querySelector throws SyntaxError for CSS-invalid IDs (spaces, colons,
+      // leading digits) — guard so one bad link doesn't crash all others.
+      let target;
+      try {
+        target = document.querySelector(hash);
+      } catch (_) {
+        return;
+      }
+      if (!target) return;
+
+      const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
   });
 
-  // Show or hide the button
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > 2000) {
-      $scrollToTop.addClass('show');
-    } else {
-      $scrollToTop.removeClass('show');
-    }
-  });
+  if (!scrollToTop) return;
 
-  // Smooth scroll to top
-  $scrollToTop.on('click', function () {
-    $('html, body').animate({ scrollTop: 0 }, 600);
-    return false;
+  // Show/hide scroll-to-top button — passive + rAF so classList.toggle
+  // runs at most once per animation frame, not on every scroll event.
+  let rafPending = false;
+  window.addEventListener('scroll', () => {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      scrollToTop.classList.toggle('show', window.scrollY > 2000);
+      rafPending = false;
+    });
+  }, { passive: true });
+
+  scrollToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 

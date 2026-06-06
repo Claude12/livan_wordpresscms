@@ -11,6 +11,7 @@ $service_items = $section['service_items'];
 $block_anchor = $section['block_anchor'];
 $background_color = $section['background_color'];
 $icon_background_color = $section['icon_background_color'];
+$img_loading = get_query_var('block_index', 1) === 0 ? 'eager' : 'lazy';
 ?>
 
 <?php if ($service_items && is_array($service_items) && count($service_items) > 0): ?>
@@ -32,7 +33,10 @@ $icon_background_color = $section['icon_background_color'];
                             <div class="service-block__item-image"
                                 style="background-color: <?php echo esc_attr($icon_background_color); ?>;">
                                 <img src="<?php echo esc_url($service_icon['url']); ?>"
-                                    alt="<?php echo esc_attr($service_icon['alt']); ?>" width="56" height="56" />
+                                    alt="<?php echo esc_attr($service_icon['alt']); ?>"
+                                    width="56" height="56"
+                                    loading="<?php echo esc_attr($img_loading); ?>"
+                                    decoding="async" />
                             </div>
                         <?php endif; ?>
 
