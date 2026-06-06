@@ -14,7 +14,7 @@ $cta_link   = $section['cta_card_link'];
 <section class="cta-card-block">
     <div class="container">
         <div class="cta-card-block__card" animate="fade-in">
-            <svg class="cta-card-block__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+            <svg class="cta-card-block__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"></path><circle class="cta-card-block__icon-lens" cx="11" cy="11" r="8"></circle></svg>
 
             <?php if ($heading): ?>
                 <h2 class="cta-card-block__heading"><?php echo esc_html($heading); ?></h2>

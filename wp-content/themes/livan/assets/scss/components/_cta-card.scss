@@ -24,6 +24,12 @@
     height: rem(48px);
     margin: 0 auto $spacer-24;
     color: $color-primary;
+    animation: cta-icon-search 3s linear infinite;
+    transform-origin: center;
+  }
+
+  &__icon-lens {
+    // no separate animation needed
   }
 
   &__heading {
@@ -41,6 +47,11 @@
     margin: 0 auto $spacer-48;
     line-height: 1.6;
   }
+}
+
+@keyframes cta-icon-search {
+  0%   { transform: rotate(0deg)   translate(10px) rotate(0deg); }
+  100% { transform: rotate(360deg) translate(10px) rotate(-360deg); }
 }
 
 .button--cta-card {
